@@ -123,7 +123,7 @@ table {
   );
 }
 
-src/app/register/RegisterPage.css .custom-scrollbar {
+.custom-scrollbar {
   /* For WebKit-based browsers */
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: transparent transparent; /* Firefox */

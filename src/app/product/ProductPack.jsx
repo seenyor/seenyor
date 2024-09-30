@@ -1,3 +1,4 @@
+"use client"
 import { Button, Heading, Img, Text } from "../../components";
 
 export default function ProductPack() {

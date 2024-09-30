@@ -86,7 +86,7 @@ const EmailInput = ({ email, setEmail }) => (
       as="h2"
       className="text-[1.13rem] font-semibold capitalize text-text sm:ml-[2rem]"
     >
-      Customer's E-mail
+      Customer&apos;s E-mail
     </Heading>
     <Input
       shape="round"

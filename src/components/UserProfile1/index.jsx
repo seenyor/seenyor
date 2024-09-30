@@ -1,6 +1,5 @@
+"use client"
 import { Heading } from "../Heading";
-
-
 export default function UserProfile1({
   userMultiplier, 
   userFeature,

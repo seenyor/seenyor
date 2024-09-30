@@ -29,7 +29,7 @@ const ForgotPasswordForm = () => (
   <div className="flex w-[80%] flex-col items-start gap-[1.00rem] md:w-full">
     <div className="flex flex-col items-start gap-[0.38rem] self-stretch">
       <Heading size="headingmd" as="h2" className="text-[1.13rem] font-semibold capitalize text-text">
-        Customer's E-mail
+        Customer&apos;s E-mail
       </Heading>
       <Input
         shape="round"

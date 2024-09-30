@@ -110,7 +110,7 @@ const SingUpOpt = ({onVerify, onResend, error, setError }) => {
               as="p"
               className="text-[1.5rem] font-normal leading-[1.69rem] text-body"
             >
-              We've emailed a 6-digit code to{" "}
+              We&apos;ve emailed a 6-digit code to{" "}
               <span className="font-medium text-text">{email}</span>.
               Please use it soon.
             </Text>
@@ -143,7 +143,7 @@ const SingUpOpt = ({onVerify, onResend, error, setError }) => {
               Verify Code
             </button>
             <Text as="p" className="text-[1.13rem] font-normal text-text">
-              Didn't get the code?{" "}
+              Didn&apos;t get the code?{" "}
               <button 
                 onClick={handleResend} 
                 className="font-medium text-primary hover:underline"

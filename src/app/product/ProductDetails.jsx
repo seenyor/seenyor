@@ -1,3 +1,4 @@
+"use client"
 import { Button, Heading, Img } from "@/components";
 import UserProfile1 from "../../components/UserProfile1";
 import { useCart } from "../../context/CartContext";
