@@ -5,7 +5,7 @@ const sizes = {
   web_body_1: "font-segoeui text-[0.88rem] font-normal",
   text_sm_normal: "font-inter text-[0.88rem] font-normal not-italic",
   textxl: "text-[1.00rem] font-normal not-italic",
-  text2xl: "text-[1.13rem] font-normal not-italic",
+  text2xl: "text-[1.13rem] font-normal",
   text5xl: "text-[1.56rem] font-normal not-italic md:text-[1.44rem] sm:text-[1.31rem]",
 };
 

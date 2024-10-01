@@ -44,38 +44,38 @@ export default function FallDetectorProfile({
   return (
     <div
       {...props}
-      className={`${props.className} flex md:flex-col items-center p-[2.13rem] sm:p-[1.25rem] bg-gray-100_01 flex-1 rounded-[24px] container-xs`}
+      className={`${props.className} flex tab:flex-col items-center p-[2.13rem] sm:p-[1.25rem] bg-gray-100_01 flex-1 rounded-[24px] container-xs`}
     >
       {/* Image Section */}
-      <div className="flex flex-1 items-center gap-[1.75rem] md:flex-col md:self-stretch">
+      <div className="flex flex-1 items-center gap-[1.75rem] tab:flex-col tab:self-stretch">
         <Img
           src={fallDetectorImage}
           width={130}
           height={184}
           alt="Fall Detector 2"
-          className="h-[11.50rem] w-[14%] object-contain md:w-full"
+          className="h-[11.50rem] w-[14%] object-contain tab:w-full"
         />
-        <div className="flex flex-1 flex-col items-start gap-[0.38rem] md:self-stretch">
+        <div className="flex flex-1 flex-col items-start gap-[0.38rem] tab:self-stretch">
           <Heading size="headingxl" as="h5" className="text-[1.38rem] font-semibold capitalize text-text">
             {fallDetectorTitle}
           </Heading>
-          <Heading as="p" className="w-[76%] text-[1.00rem] font-normal leading-[1.50rem] text-body md:w-full">
+          <Heading as="p" className="w-[76%] text-[1.00rem] font-normal leading-[1.50rem] text-body tab:w-full">
             {fallDetectorDescription}
           </Heading>
         </div>
       </div>
 
       {/* Price and Quantity Section */}
-      <div className="flex w-[28%] flex-col items-end gap-[1.25rem] md:w-full">
+      <div className="flex w-[28%] flex-col items-end gap-[1.25rem] tab:w-full">
         <Heading
           size="heading4xl"
           as="h3"
-          className="text-[1.75rem] font-bold lowercase text-text md:text-[1.63rem] sm:text-[1.50rem]"
+          className="text-[1.75rem] font-bold lowercase text-text tab:text-[1.63rem] sm:text-[1.50rem]"
         >
           ${price}
         </Heading>
         <div className="flex flex-col items-end gap-[0.38rem] self-stretch">
-          <div className="flex w-[38%] justify-end md:justify-center rounded-lg border border-solid border-primary md:w-full">
+          <div className="flex w-[38%] justify-end tab:justify-center rounded-lg border border-solid border-primary tab:w-full">
             {/* Decrement Button */}
             <div
               onClick={handleDecrement}

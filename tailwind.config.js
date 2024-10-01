@@ -167,19 +167,16 @@ module.exports = {
 		  gradient2: "radial-gradient(328deg, #ffffff, #eeeeee)",
 		},
 		fontFamily: {
-		  segoeui: "Segoe UI",
-		  inter: "Inter",
 		  poppins: "Poppins",
-		  montserrat: "Montserrat",
-		  roboto: "Roboto",
 		},
 		textShadow: {
 		  ts: "0px 1px 1px #0000000c",
 		},
 	  },
 	  screens: {
-		md: { max: "1050px" },
-		sm: { max: "750px" },
+		md: { max: "1024px" },
+		tab: {max: "768px" },
+		sm: { max: "550px" },
 	  },
   	
   },

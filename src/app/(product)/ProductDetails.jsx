@@ -82,10 +82,10 @@ export default function ProductDetails() {
                           </Heading>
                         </div>
                         <div className="flex justify-between items-center rounded-[10px] bg-gray-100_01 p-[1.25rem] ">
-                          <span className="text-[1.25rem]  font-semibold text-blue_gray-400">
+                          <span className="text-[1.25rem] sm:text-[1rem] font-semibold text-blue_gray-400">
                             AI Monitoring Service
                           </span>
-                          <span className="text-[1.25rem] font-bold text-blue_gray-900 ">
+                          <span className="text-[1.25rem] font-bold text-blue_gray-900 sm:text-[1rem]  ">
                             $49.99{" "}
                             <span className="text-blue_gray-400 ">AUD/mo</span>
                           </span>
@@ -108,7 +108,7 @@ export default function ProductDetails() {
                             Additional Devices
                           </Heading>
                         </div>
-                        <div className="flex flex-col gap-[1.38rem] rounded-[10px] bg-gray-100_01 p-[1.25rem]">
+                        <div className="flex flex-col gap-[1.38rem] rounded-[10px] bg-gray-100_01 p-[1.25rem] sm:text-[1rem] ">
                           {cart.map((item) => (
                             <UserProfile1
                               key={item.id}
@@ -121,8 +121,12 @@ export default function ProductDetails() {
                       </div>
                     </div>
                     <div className="rounded-[10px] bg-text p-[1.25rem]">
-                      <div className="mb-[2.63rem] flex flex-col gap-[0.63rem]">
-                        <div className="flex flex-wrap justify-end gap-[3.38rem] border-b border-solid border-color_white-a700_66 py-[0.63rem] md:gap-[1.25rem]">
+                      <div className="flex flex-col gap-[0.63rem]">
+
+                        {/* add this if need in future */}
+
+                        
+                        {/* <div className="flex flex-wrap justify-end gap-[3.38rem] border-b border-solid border-color_white-a700_66 py-[0.63rem] md:gap-[1.25rem]">
                           <Heading
                             size="text2xl"
                             as="h6"
@@ -137,14 +141,14 @@ export default function ProductDetails() {
                           >
                             ${subtotal.toFixed(2)} AUD
                           </Heading>
-                        </div>
-                        <div className="flex flex-wrap justify-between gap-[1.25rem]">
+                        </div> */}
+                        <div className="flex flex-wrap justify-between items-center gap-[1.25rem]">
                           <Heading
                             size="heading3xl"
                             as="h4"
                             className="text-[1.50rem] font-semibold text-white md:text-[1.38rem] sm:text-[1rem]"
                           >
-                            Grand Total :
+                            Total:
                           </Heading>
                           <Heading
                             size="heading3xl"

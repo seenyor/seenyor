@@ -41,7 +41,7 @@ export default function ProductService() {
   if (!serviceTerms) return <div>Loading...</div>;
 
   return (
-    <div className="flex justify-center">
+    
       <div className="container-xs flex justify-center md:px-5">
         <div className="w-full rounded-[40px] bg-gradient1 relative overflow-hidden">
           {/* Background image */}
@@ -51,30 +51,30 @@ export default function ProductService() {
               alt="Background"
               width={500}
               height={720}
-              className="absolute right-0 top-0 h-full w-auto object-contain white-shade-mask"
+              className="absolute right-0 top-0 h-full sm:h-[86%] w-auto object-contain white-shade-mask"
             />
           </div>
           <div className="relative z-10 p-10 md:p-6 sm:p-4">
-            <div className="flex flex-col gap-6 md:gap-4">
-              <div className="flex items-center gap-4 md:flex-col">
+            <div className="flex flex-col gap-6 tab:gap-4">
+              <div className="flex items-center gap-4 tab:flex-col">
                 <div className="flex-1 flex flex-col gap-8 md:gap-6">
-                  <div className="flex flex-col items-center md:items-start">
+                  <div className="flex flex-col items-center">
                     <Heading
                       size="heading8xl"
                       as="h1"
-                      className="text-center md:text-left text-4xl md:text-3xl sm:text-2xl font-bold capitalize leading-tight text-white"
+                      className="text-center tab:text-left text-4xl tab:text-2xl sm:text-xl font-bold capitalize leading-tight text-white"
                     >
                       Services Terms
                     </Heading>
                     <Text
                       as="p"
-                      className="mt-2 text-lg md:text-base sm:text-sm font-medium capitalize text-color_white-a700_d1"
+                      className="mt-2 text-lg tab:text-base sm:text-sm font-medium capitalize text-color_white-a700_d1"
                     >
                       {serviceTerms.details}
                     </Text>
                   </div>
 
-                  <div className="flex  gap-8 md:gap-6 sm:gap-4 md:flex-col w-[60%] m-auto md:m-0 ">
+                  <div className="flex gap-8 md:gap-6 sm:gap-4 tab:flex-col w-[70%] md:w-full m-auto tab:m-0 ">
                     <UserProfile
                       coolingOffText={serviceTerms.terms[0]}
                       monthlyChargeText={serviceTerms.terms[2]}
@@ -89,7 +89,7 @@ export default function ProductService() {
 
               <Text
                 as="p"
-                className="text-center text-base sm:text-sm font-normal capitalize italic leading-relaxed text-color_white-a700_cc w-[67%] md:w-[80%] m-auto"
+                className="text-center text-base sm:text-sm font-normal capitalize italic leading-relaxed text-color_white-a700_cc w-[67%] tab:w-[80%] m-auto"
               >
                 {serviceTerms.note}
               </Text>
@@ -97,6 +97,5 @@ export default function ProductService() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

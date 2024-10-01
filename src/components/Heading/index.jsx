@@ -17,7 +17,7 @@ const sizes = {
   heading3xl: "text-[1.50rem] font-semibold md:text-[1.38rem]",
   heading4xl: "text-[1.75rem] font-bold md:text-[1.63rem] sm:text-[1.50rem]",
   heading5xl: "text-[1.88rem] font-semibold md:text-[1.75rem] sm:text-[1.63rem]",
-  heading6xl: "text-[2.00rem] font-bold md:text-[1.88rem] sm:text-[1.75rem]",
+  heading6xl: "text-[2.00rem] font-bold md:text-[1.88rem] sm:text-[1.30rem]",
   heading7xl: "text-[2.11rem] font-bold md:text-[2.00rem] sm:text-[1.88rem]",
   heading8xl: "text-[2.25rem] font-semibold md:text-[2.13rem] sm:text-[2.00rem]",
   heading9xl: "text-[2.38rem] font-bold md:text-[2.25rem] sm:text-[2.13rem]",

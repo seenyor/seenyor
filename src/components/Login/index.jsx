@@ -39,7 +39,7 @@ const RightSection = () => {
 
   return (
     
-    <div className="flex flex-col gap-[1.88rem] h-[80vh] w-full justify-center items-center">
+    <div className="flex flex-col gap-[1.88rem] h-[80vh] md:h-full w-full justify-center md:justify-start items-center md:my-[5rem]">
       <div className="flex w-[90%] flex-col justify-start items-center md:justify-start  gap-[0.50rem] md:w-full sm:pl-[2rem]">
         <Heading
           size="heading7xl"
