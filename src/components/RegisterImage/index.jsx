@@ -3,7 +3,7 @@ import AlertNotification from "../AlertNotification"
 
 function index() {
   return (
-    <div className="flex w-[42%] flex-col items-start md:w-full md:px-[1.25rem]">
+    <div className="flex w-[42%] flex-col items-start md:w-full md:px-[1.25rem] md:hidden">
     <div className="w-[80%] bg-green-50 md:w-full md:h-[20%]">
       <div className="mt-[3.13rem] flex flex-col gap-[2.50rem]">
         <div className="flex flex-col items-center gap-[2.63rem]">

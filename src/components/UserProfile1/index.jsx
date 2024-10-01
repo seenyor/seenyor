@@ -15,7 +15,7 @@ export default function UserProfile1({
         <Heading
           size="headinglg"
           as="h5"
-          className="text-[1.25rem] font-bold text-secodary sm:text-[1.06rem]"
+          className="text-[1.25rem] font-bold text-secodary sm:text-[1.06rem] xss:text-[0.80rem]"
         >
           {userMultiplier}
         </Heading>

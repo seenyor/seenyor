@@ -177,6 +177,7 @@ module.exports = {
 		md: { max: "1024px" },
 		tab: {max: "768px" },
 		sm: { max: "550px" },
+		xss: { max: "480px" },
 	  },
   	
   },

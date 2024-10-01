@@ -55,11 +55,11 @@ export default function ProductDetails() {
                             Packages
                           </Heading>
                         </div>
-                        <div className="flex justify-between items-center rounded-[10px] bg-gray-100_01 p-[1.25rem] sm:text-[1rem]">
-                          <span className="text-[1.25rem] sm:text-[1rem] font-semibold text-blue_gray-400">
+                        <div className="flex justify-between items-center rounded-[10px] bg-gray-100_01 p-[1.25rem] sm:text-[1rem] ">
+                          <span className="text-[1.25rem] sm:text-[1rem] xss:text-[0.80rem] font-semibold text-blue_gray-400">
                             Standard Package
                           </span>
-                          <span className="text-[1.25rem] sm:text-[1rem] font-bold text-blue_gray-900">
+                          <span className="text-[1.25rem] sm:text-[1rem] xss:text-[0.80rem] font-bold text-blue_gray-900">
                             $999 <span className="text-blue_gray-400">AUD</span>
                           </span>
                         </div>
@@ -82,10 +82,10 @@ export default function ProductDetails() {
                           </Heading>
                         </div>
                         <div className="flex justify-between items-center rounded-[10px] bg-gray-100_01 p-[1.25rem] ">
-                          <span className="text-[1.25rem] sm:text-[1rem] font-semibold text-blue_gray-400">
+                          <span className="text-[1.25rem] sm:text-[1rem] xss:text-[0.80rem] font-semibold text-blue_gray-400">
                             AI Monitoring Service
                           </span>
-                          <span className="text-[1.25rem] font-bold text-blue_gray-900 sm:text-[1rem]  ">
+                          <span className="text-[1.25rem] font-bold text-blue_gray-900 sm:text-[1rem] xss:text-[0.80rem]">
                             $49.99{" "}
                             <span className="text-blue_gray-400 ">AUD/mo</span>
                           </span>
@@ -108,7 +108,7 @@ export default function ProductDetails() {
                             Additional Devices
                           </Heading>
                         </div>
-                        <div className="flex flex-col gap-[1.38rem] rounded-[10px] bg-gray-100_01 p-[1.25rem] sm:text-[1rem] ">
+                        <div className="flex flex-col gap-[1.38rem] rounded-[10px] bg-gray-100_01 p-[1.25rem] sm:text-[1rem] xss:text-[0.8rem]">
                           {cart.map((item) => (
                             <UserProfile1
                               key={item.id}

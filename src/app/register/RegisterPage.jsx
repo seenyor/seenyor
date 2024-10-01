@@ -1,4 +1,5 @@
 "use client";
+import Logo from "@/components/Logo";
 import SingUpOpt from "@/components/SingUpOpt";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
@@ -198,7 +199,7 @@ export default function RegisterPage() {
 
   if (isOtpSent) {
     return (
-      <div className="md:min-h-screen mb-[9.75rem] mt-[5.00rem] flex flex-1 flex-col items-center gap-[2.25rem] px-[3.50rem] md:self-stretch md:px-[1.25rem] overflow-y-auto sm:overflow-x-hidden custom-scrollbar ml-[10rem] sm:ml-0">
+      <div className="md:min-h-screen mb-[9.75rem] mt-[5.00rem] flex flex-1 flex-col items-center gap-[2.25rem] px-[3.50rem] md:self-stretch md:px-[1.25rem] overflow-y-auto tab:overflow-hidden custom-scrollbar ml-[10rem] sm:ml-0">
         <SingUpOpt
           email={formData.email}
           onVerify={handleOtpVerification}
@@ -211,6 +212,8 @@ export default function RegisterPage() {
   }
 
   return (
+    <>
+    <Logo />
     <form
       onSubmit={handleSubmit}
       className=" md:min-h-screen mb-[9.75rem] mt-[5.00rem] flex flex-1 flex-col items-center gap-[2.25rem] px-[3.50rem] md:self-stretch md:px-[1.25rem] overflow-y-auto sm:overflow-x-hidden custom-scrollbar ml-[10rem] sm:ml-0"
@@ -409,12 +412,12 @@ export default function RegisterPage() {
               type="submit"
               shape="round"
               color="green_200_green_400_01"
-              className=" w-[76%] rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] mt-3"
+              className=" w-[76%] sm:w-full rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] mt-3"
             >
               Sign Up
             </Button>
 
-            <Text as="p" className="text-center mt-5 text-lg text-body">
+            <Text as="p" className="text-center mt-5 text-lg text-body w-[75%] md:pb-2 md:w-auto">
               <span className="inline-flex items-center">
                 Already have an account?
                 <Link href="/login" className="font-semibold text-primary ml-2">
@@ -427,5 +430,6 @@ export default function RegisterPage() {
         </div>
       </div>
     </form>
+    </>
   );
 }

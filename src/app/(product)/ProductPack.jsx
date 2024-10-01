@@ -55,7 +55,7 @@ export default function ProductPack() {
             <div className="flex w-full flex-col md:flex-col tab:items-center sm:gap-[2rem]">
               {/* Fall Detector section */}
               <div className="flex w-full items-center gap-[1.50rem] tab:flex-col tab:items-center">
-                <div className="relative h-[13.25rem] w-[42%] content-end tab:h-auto tab:w-full tab:max-w-[120px]">
+                <div className="relative h-[13.25rem] w-[42%] content-end tab:h-auto tab:w-full tab:max-w-[170px]">
                   <Img
                     src="img_fall_detector_2.png"
                     width={132}

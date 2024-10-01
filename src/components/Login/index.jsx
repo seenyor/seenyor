@@ -1,5 +1,6 @@
 "use client";
 
+import Logo from "@/components/Logo";
 import Cookies from 'js-cookie';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,19 +39,22 @@ const RightSection = () => {
   };
 
   return (
-    
-    <div className="flex flex-col gap-[1.88rem] h-[80vh] md:h-full w-full justify-center md:justify-start items-center md:my-[5rem]">
-      <div className="flex w-[90%] flex-col justify-start items-center md:justify-start  gap-[0.50rem] md:w-full sm:pl-[2rem]">
+    <>
+    <Logo />
+  
+    <div className="flex flex-col gap-[1.88rem] h-[80vh]  w-full justify-center items-center md:my-[5rem]">
+
+      <div className="flex w-[90%] flex-col justify-center items-center md:justify-start  gap-[0.50rem] tab:w-full tab:ml-[3rem] xss:pl-[1rem] xss:mr-[2rem] md:w-full ">
         <Heading
           size="heading7xl"
           as="h1"
-          className="w-[55%] md:w-[100%] text-[2.13rem] font-bold text-text md:text-[2.00rem] sm:text-[1.4rem] sm:pl-[0rem]"
+          className="w-[55%] md:w-[100%] text-[2.13rem] font-bold text-text md:text-[2.00rem] sm:text-[1.4rem]"
         >
           Sign In to Seenyor
         </Heading>
         <Text
           as="p"
-          className="w-[55%] text-[1.13rem] sm:text-[1rem] font-normal capitalize leading-[1.69rem] text-body md:w-full sm:m-auto"
+          className="w-[55%] text-[1.13rem] sm:text-[1rem] xss:text-[0.9rem] font-normal capitalize leading-[1.69rem] text-body md:w-full sm:m-auto"
         >
           Enter your details to sign in to your account.
         </Text>
@@ -67,16 +71,17 @@ const RightSection = () => {
           Sign In&nbsp;
         </Button>
         {error && <Text className="text-red-500 text-sm">{error}</Text>}
-        <Text as="p" className="text-center text-lg text-body sm:m-auto">
+        {/* <Text as="p" className="text-center text-lg text-body sm:m-auto">
           <span className="inline-flex items-center">
             Need to create an account?
             <Link href="/register" className="font-semibold text-primary ml-2">
               Sign Up
             </Link>
           </span>
-        </Text>
+        </Text> */}
       </form>
     </div>
+    </>
   );
 };
 
@@ -130,11 +135,12 @@ const PasswordInput = ({ password, setPassword }) => (
       className="w-[90%] rounded-[12px] !border px-[1.63rem] capitalize sm:px-[1.25rem] sm:m-auto"
     />
   </div>
+
 );
 
 export default function LoginPage() {
   return (
-    <div className="flex w-[50%] sm:w-[100%] items-center bg-white md:flex-col">
+    <div className="flex w-[50%] tab:w-auto sm:w-[100%] items-center bg-white md:flex-col">
       <RightSection />
     </div>
   );

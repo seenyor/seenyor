@@ -62,7 +62,7 @@ export default function ProductService() {
                     <Heading
                       size="heading8xl"
                       as="h1"
-                      className="text-center tab:text-left text-4xl tab:text-2xl sm:text-xl font-bold capitalize leading-tight text-white"
+                      className="text-center tab:text-left capitalize text-white"
                     >
                       Services Terms
                     </Heading>

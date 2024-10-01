@@ -11,7 +11,7 @@ const sizes = {
   headingxs: "text-[0.88rem] font-semibold",
   headings: "text-[1.00rem] font-semibold",
   headingmd: "text-[1.13rem] font-semibold",
-  headinglg: "text-[1.25rem] font-bold",
+  headinglg: "text-[1.25rem] font-bold xss:text-[0.80rem]",
   headingxl: "text-[1.38rem] font-semibold",
   heading2xl: "text-[1.44rem] font-bold md:text-[1.31rem]",
   heading3xl: "text-[1.50rem] font-semibold md:text-[1.38rem]",
