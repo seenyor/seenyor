@@ -177,7 +177,7 @@ export default function ProductDetails() {
                     </a>
                   </Heading>
                   <a
-                    href="https://www.youtube.com/embed/bv8Fxk0sz7I"
+                    href=""
                     target="_blank"
                   >
                     <Button
