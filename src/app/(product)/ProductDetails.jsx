@@ -178,7 +178,7 @@ export default function ProductDetails() {
                   </Heading>
                   <a
                     href=""
-                    target="_blank"
+                    target=""
                   >
                     <Button
                       variant="outline"

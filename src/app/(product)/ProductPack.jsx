@@ -53,16 +53,16 @@ export default function ProductPack() {
 
             <div className="mr-[1.13rem] flex w-[70%] items-center justify-center md:mr-0 md:w-full md:flex-col">
               {/* Changed to flex-col for small devices */}
-              <div className="flex w-full flex-col md:flex-col sm:items-center sm:gap-[2rem]">
+              <div className="flex w-full flex-col md:flex-col md:items-center sm:gap-[2rem]">
                 {/* Fall Detector section */}
-                <div className="flex w-full items-center gap-[1.50rem] md:flex-col sm:items-center">
-                  <div className="relative h-[13.25rem] w-[42%] content-end md:h-auto sm:w-full sm:max-w-[250px]">
+                <div className="flex w-full items-center gap-[1.50rem] md:flex-col md:items-center">
+                  <div className="relative h-[13.25rem] w-[42%] content-end md:h-auto md:w-full md:max-w-[177px]">
                     <Img
                       src="img_fall_detector_2.png"
                       width={132}
                       height={188}
                       alt="Fall Detector 2"
-                      className="mb-[0.25rem] ml-auto h-[11.75rem] w-[78%] object-contain sm:ml-0 sm:w-full"
+                      className="mb-[0.25rem] ml-auto h-[11.75rem] w-[78%] object-contain md:ml-0 md:w-full"
                     />
                     <Img
                       src="img_fall_detector_1.png"
@@ -80,7 +80,7 @@ export default function ProductPack() {
                     >
                       3x
                     </Heading>
-                    <div className="flex flex-col items-start self-stretch sm:items-center">
+                    <div className="flex flex-col items-start self-stretch md:items-center">
                       <Heading
                         size="headingxl"
                         as="h5"
@@ -100,8 +100,8 @@ export default function ProductPack() {
               </div>
 
               {/* Added margin-top for small devices to separate sections */}
-              <div className="flex w-full items-center justify-end gap-[1.56rem] self-end md:self-auto sm:flex-col sm:items-center sm:mt-[2rem]">
-                <div className="h-[9.75rem] w-[40%] sm:w-full sm:max-w-[250px]">
+              <div className="flex w-full items-center justify-end gap-[1.56rem] self-end md:self-auto md:flex-col md:items-center md:mt-[2rem]">
+                <div className="h-[9.75rem] w-[40%] md:w-full md:max-w-[250px]">
                   <Img
                     src="img_sleep_monitoring.png"
                     width={158}
@@ -110,30 +110,30 @@ export default function ProductPack() {
                     className="h-full w-full object-contain"
                   />
                 </div>
-                <div className="flex w-[44%] flex-col items-start gap-[1.25rem] self-end sm:w-full sm:items-center sm:text-center">
-                  <Heading
-                    size="heading2xl"
-                    as="h5"
-                    className="flex h-[3.38rem] w-[3.38rem] items-center justify-center rounded-[26px] bg-gradient text-center text-[1.44rem] font-bold text-white md:text-[1.31rem]"
-                  >
-                    1x
-                  </Heading>
-                  <div className="flex flex-col items-start self-stretch sm:items-center">
+                <div className="flex flex-1 flex-col items-start gap-[1.25rem] self-end md:self-center md:items-center md:text-center">
                     <Heading
-                      size="headingxl"
-                      as="h5"
-                      className="text-[1.38rem] font-semibold capitalize text-white"
+                      size="heading2xl"
+                      as="h4"
+                      className="flex h-[3.38rem] w-[3.38rem] items-center justify-center rounded-[26px] bg-gradient text-center text-[1.44rem] font-bold text-white md:text-[1.31rem]"
                     >
-                      Sleep Guardian
+                      3x
                     </Heading>
-                    <Heading
-                      as="p"
-                      className="text-[1.00rem] font-medium capitalize !text-primary underline"
-                    >
-                      Device Details
-                    </Heading>
+                    <div className="flex flex-col items-start self-stretch md:items-center">
+                      <Heading
+                        size="headingxl"
+                        as="h5"
+                        className="text-[1.38rem] font-semibold capitalize text-white"
+                      >
+                        Fall Detector
+                      </Heading>
+                      <Heading
+                        as="h6"
+                        className="text-[1.00rem] font-medium capitalize !text-primary underline"
+                      >
+                        Device Details
+                      </Heading>
+                    </div>
                   </div>
-                </div>
               </div>
             </div>
           </div>
