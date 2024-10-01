@@ -15,7 +15,7 @@ export default function ProductHero() {
           />
           <Text
             as="p"
-            className="font-montserrat text-[1.13rem] font-medium text-body"
+            className="text-[1.13rem] font-medium text-body"
           >
             System Builder
           </Text>
@@ -40,9 +40,9 @@ export default function ProductHero() {
             </Button>
             <div className="flex flex-col items-center self-stretch">
               <Heading
-                size="heading7xl"
+                size="heading6xl"
                 as="h1"
-                className=" w-full text-[2.13rem] font-bold capitalize text-text md:text-[2.00rem] sm:text-[1.88rem]"
+                className="w-full capitalize text-text"
               >
                 Customize your elderly care system
               </Heading>

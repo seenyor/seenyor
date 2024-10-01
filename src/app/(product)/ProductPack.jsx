@@ -24,7 +24,7 @@ export default function ProductPack() {
           </div>
 
           <div className="flex flex-col items-center gap-[2.00rem] px-[3.50rem] md:px-[1.25rem]">
-            <div className="flex w-[16%] flex-col gap-[0.50rem] md:w-full">
+            <div className="flex w-[16%] flex-col gap-[0.50rem] md:w-[25%] sm:w-full">
               <Button
                 color="green_300_19"
                 size="xs"

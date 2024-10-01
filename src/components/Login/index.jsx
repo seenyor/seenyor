@@ -38,23 +38,24 @@ const RightSection = () => {
   };
 
   return (
-    <div className="flex flex-1 flex-col items-center gap-[2.13rem] px-[3.50rem] md:self-stretch md:px-[1.25rem] md:w-[100%]">
-      <div className="flex w-[50%] flex-col items-start gap-[0.50rem] md:w-full">
+    
+    <div className="flex flex-col gap-[1.88rem] h-[80vh] w-full justify-center items-center">
+      <div className="flex w-[90%] flex-col justify-start items-center md:justify-start  gap-[0.50rem] md:w-full sm:pl-[2rem]">
         <Heading
           size="heading7xl"
           as="h1"
-          className="text-[2.13rem] font-bold text-text md:text-[2.00rem] sm:text-[1.88rem] sm:m-auto"
+          className="w-[55%] md:w-[100%] text-[2.13rem] font-bold text-text md:text-[2.00rem] sm:text-[1.4rem] sm:pl-[0rem]"
         >
           Sign In to Seenyor
         </Heading>
         <Text
           as="p"
-          className="w-[50%] text-[1.13rem] font-normal capitalize leading-[1.69rem] text-body md:w-full sm:m-auto"
+          className="w-[55%] text-[1.13rem] sm:text-[1rem] font-normal capitalize leading-[1.69rem] text-body md:w-full sm:m-auto"
         >
           Enter your details to sign in to your account.
         </Text>
       </div>
-      <form onSubmit={handleLogin} className="flex w-[50%] flex-col items-start gap-[0.75rem] md:w-full sm:m-auto">
+      <form onSubmit={handleLogin} className="flex w-[50%] flex-col items-start gap-[0.75rem] md:w-full sm:my-0 sm:mx-auto ">
         <EmailInput email={email} setEmail={setEmail} />
         <PasswordInput password={password} setPassword={setPassword} />
         <Button
@@ -133,7 +134,7 @@ const PasswordInput = ({ password, setPassword }) => (
 
 export default function LoginPage() {
   return (
-    <div className="flex w-full items-center bg-white md:flex-col">
+    <div className="flex w-[50%] sm:w-[100%] items-center bg-white md:flex-col">
       <RightSection />
     </div>
   );
