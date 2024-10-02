@@ -42,6 +42,7 @@ const Button = ({
   shape,
   className = "",
   leftIcon,
+  disabled = false, // Default disabled state is false
   ...restProps
 }) => {
   return (
@@ -49,7 +50,9 @@ const Button = ({
       className={`${className} flex flex-row items-center justify-center text-center cursor-pointer whitespace-nowrap 
         ${shape && shapes[shape]} 
         ${size && sizes[size]} 
-        ${variant && variants[variant]?.[color]}`}
+        ${variant && variants[variant]?.[color]} 
+        ${disabled ? "opacity-50 cursor-not-allowed" : ""}`} // Add disabled styles
+      disabled={disabled} // Set the disabled property
       {...restProps}
     >
       {!!leftIcon && leftIcon}
@@ -77,7 +80,7 @@ Button.propTypes = {
     "body",
     "green_200_green_400_01",
   ]),
+  disabled: PropTypes.bool, // Add disabled prop type
 };
 
 export { Button };
-
