@@ -30,6 +30,7 @@ const Checkbox = ({ checked, onChange, disabled }) => (
 );
 
 const TermsCheckbox = ({ onMainCheckboxChange }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [termChecks, setTermChecks] = useState({
     term1: false,
     term2: false,
@@ -44,9 +45,17 @@ const TermsCheckbox = ({ onMainCheckboxChange }) => {
     const updatedChecks = { ...termChecks, [term]: !termChecks[term] };
     setTermChecks(updatedChecks);
   };
+  const handleMainCheckboxClick = () => {
+    if (!allChecked) {
+      setIsModalOpen(true);
+    }
+  };
   // Update the parent when the main checkbox is checked/unchecked
   useEffect(() => {
     onMainCheckboxChange(allChecked);
+    if (allChecked) {
+      setIsModalOpen(false); // Close modal when all checkboxes are checked
+    }
   }, [allChecked]);
   const terms = [
     {
@@ -84,11 +93,11 @@ const TermsCheckbox = ({ onMainCheckboxChange }) => {
     <div className="flex items-center">
       <Checkbox
         checked={allChecked}
-        onChange={() => {}}
         disabled={!allChecked}
+        onChange={handleMainCheckboxClick}
       />
 
-      <Dialog.Root>
+      <Dialog.Root open={isModalOpen} onOpenChange={setIsModalOpen}>
         <Dialog.Trigger asChild>
           <label className="ml-2 text-gray-600 cursor-pointer">
             <span className="text-primary underline cursor-pointer">
