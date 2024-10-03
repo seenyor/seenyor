@@ -1,10 +1,9 @@
-
 /* reset */
-button,
+/* button,
 fieldset,
 input {
   all: unset;
-}
+} */
 
 .DialogOverlay {
   background-color: var(--black-a9);
@@ -16,7 +15,8 @@ input {
 .DialogContent {
   background-color: white;
   border-radius: 6px;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
+    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -65,7 +65,6 @@ input {
   box-shadow: 0 0 0 2px var(--violet-7);
 }
 
-
 @keyframes overlayShow {
   from {
     opacity: 0;
@@ -87,12 +86,12 @@ input {
 }
 
 /* //Exceptional */
-.price{
+.price {
   position: absolute;
   right: 64px;
 }
-@media screen and (max-width:1024px) {
-  .price{
+@media screen and (max-width: 1024px) {
+  .price {
     position: unset;
     right: 0;
   }

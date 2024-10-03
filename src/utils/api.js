@@ -13,6 +13,15 @@ export const useApi = () => {
       throw error.response ? error.response.data : new Error('An error occurred');
     }
   };
+  const get = async (url, params) => {
+    try {
+      const response = await api.get(url, { params });
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : new Error('An error occurred');
+    }
+  };
 
-  return { post };
+
+  return { post, get };
 };

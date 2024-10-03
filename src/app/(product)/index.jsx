@@ -1,18 +1,20 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import dynamic from "next/dynamic";
-import ProductAction from "./ProductAction";
-import { Button, Heading, Img, Text } from "../../components";
+import { useAuth } from "@/context/AuthContext";
 import {
-  PlusCircledIcon,
   MinusCircledIcon,
+  PlusCircledIcon,
   StarIcon,
 } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { Button, Img } from "../../components";
 import RadioButtonGroup from "./RadioGroupFInstallation";
 import TermsCheckbox from "./TermsCheckbox ";
 import "./style.css";
 export default function HomePage() {
+  const router = useRouter();
+  const { user } = useAuth();
+  const [products, setProducts] = useState([]);
   let [kitPrice, setKitPrice] = useState(1100);
   let [installationPrice, setInstallationPrice] = useState(300);
   let [addonDevicePrice, setAddonDevicePrice] = useState(400);
@@ -20,6 +22,87 @@ export default function HomePage() {
   let [quantity, setQuantity] = useState(0);
   const [selecteInstallation, setselecteInstallation] = useState(1);
   const [isChecked, setIsChecked] = useState(false);
+
+  // Dummy product data
+  const dummyProducts = [
+    {
+      id: "prod_Qx7rH2Vg1xC7n8",
+      name: "Laptop",
+      description: "test laptop",
+      price: 1000,
+      currency: "usd",
+      isRecurring: false,
+      priceId: "price_1Q5Dc1Anr9h8Jix3IZme7C2h",
+      recurringInterval: null,
+    },
+    {
+      id: "prod_QwjrIO8THaUv7t",
+      name: "Computer",
+      description: "this is the best computer",
+      price: 100,
+      currency: "usd",
+      isRecurring: true,
+      priceId: "price_1Q4qOBAnr9h8Jix3QzDMlQQt",
+      recurringInterval: "month",
+    },
+  ];
+
+  const fetchProducts = useCallback(() => {
+    try {
+      // const productsData = await getProducts();
+      // setProducts(productsData);
+      const productsData = dummyProducts;
+      // Custom default prices
+      const defaultKitPrice = 1100;
+      const defaultInstallationPrice = 300;
+      const defaultAddonDevicePrice = 400;
+
+      // Set prices, using custom defaults if data is missing or undefined
+      setKitPrice(productsData[0]?.price ?? defaultKitPrice);
+      setInstallationPrice(productsData[1]?.price ?? defaultInstallationPrice);
+      setAddonDevicePrice(productsData[2]?.price ?? defaultAddonDevicePrice);
+
+      // Ensure products array has at least 3 items with valid priceIds
+      const updatedProducts = [
+        {
+          ...productsData[0],
+          priceId: productsData[0]?.priceId ?? "default_kit_price_id",
+        },
+        {
+          ...productsData[1],
+          priceId: productsData[1]?.priceId ?? "default_installation_price_id",
+        },
+        {
+          ...productsData[2],
+          priceId: productsData[2]?.priceId ?? "default_addon_device_price_id",
+        },
+      ];
+      setProducts(updatedProducts);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      // Set default prices in case of error
+      setKitPrice(1100);
+      setInstallationPrice(300);
+      setAddonDevicePrice(400);
+      setProducts([
+        { id: "default_kit_id", priceId: "default_kit_price_id", price: 1100 },
+        {
+          id: "default_installation_id",
+          priceId: "default_installation_price_id",
+          price: 300,
+        },
+        {
+          id: "default_addon_device_id",
+          priceId: "default_addon_device_price_id",
+          price: 400,
+        },
+      ]);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   //TOtal Price
   useEffect(() => {
@@ -35,6 +118,26 @@ export default function HomePage() {
     addonDevicePrice,
     quantity,
   ]);
+
+  const handleCheckout = () => {
+    if (!user) {
+      // User is not logged in, redirect to registration page
+      router.push("/register");
+    } else {
+      // User is logged in, proceed to payment page
+      // Store the order details in localStorage or context
+      const orderDetails = {
+        kitPrice,
+        installationPrice: selecteInstallation === 1 ? installationPrice : 0,
+        addonDevicePrice,
+        addonQuantity: quantity,
+        total,
+        products: products.map((p) => ({ id: p.id, priceId: p.priceId })),
+      };
+      localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
+      router.push("/payment");
+    }
+  };
 
   return (
     <div className="flex w-full flex-col gap-10 bg-white p-5">
@@ -330,6 +433,7 @@ export default function HomePage() {
 
               <Button
                 disabled={!isChecked}
+                onClick={handleCheckout}
                 type="submit"
                 shape="round"
                 color="green_200_green_400_01"

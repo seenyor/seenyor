@@ -14,7 +14,7 @@ const OtpInput = React.memo(({ onChange, onKeyDown, onPaste, inputRef }) => (
     onChange={onChange}
     onKeyDown={onKeyDown}
     onPaste={onPaste}
-    className="w-16 sm:w-[2rem] h-16 sm:h-[2rem]  text-center text-2xl font-semibold text-text border-2 border-solid border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
+    className="w-16 sm:w-[2.5rem] h-16 sm:h-[2.5rem]  text-center text-2xl font-semibold text-text border-2 border-solid border-border rounded-lg focus:border-primary focus:outline-none transition-colors"
   />
 ));
 OtpInput.displayName = "OtpInput";
@@ -82,10 +82,11 @@ const SingUpOpt = ({onVerify, onResend, error, setError }) => {
 
   return (
     <>
-    <Logo />
+
       {/* Right side */}
-      <div className="flex w-[50%] md:w-[100%] tab:w-auto sm:w-[100%] items-center bg-white md:flex-col">
-        <div className="flex flex-col gap-[1.88rem] h-screen  w-full justify-center md:my-[5rem]">
+      <div className="flex w-[50%] flex-2 md:w-[100%] sm:w-[100%] items-center bg-white md:flex-col">
+      <Logo />
+        <div className="flex flex-col gap-[1rem] h-screen  w-full justify-center ">
           {/* Back button */}
           <button className="flex text-body w-[40%] hover:text-primary transition-colors">
             <Img
@@ -110,7 +111,7 @@ const SingUpOpt = ({onVerify, onResend, error, setError }) => {
             </Heading>
             <Text
               as="p"
-              className="text-[1.5rem] sm:text-[1rem] font-normal leading-[1.69rem] text-body sm:text-center"
+              className="text-[1.5rem] sm:text-[1rem] font-normal leading-[1.69rem] text-body md:text-center sm:px-2"
             >
               We&apos;ve emailed a 6-digit code to{" "}
               <span className="font-medium text-text">{email}</span>.
@@ -120,7 +121,7 @@ const SingUpOpt = ({onVerify, onResend, error, setError }) => {
 
           {/* OTP Input */}
           <div className="flex flex-col items-center justify-center gap-6 w-full">
-            <div className="flex justify-between w-[50%] tab:w-full sm:w-[76%] gap-4 px-6 py-3.5 sm:px-5">
+            <div className="flex justify-center md:justify-center w-[100%] flex-2 md:w-full gap-4 px-6 py-3.5 sm:px-5">
             {Array(6)
                 .fill(0)
                 .map((_, index) => (
