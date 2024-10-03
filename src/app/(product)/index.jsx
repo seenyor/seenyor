@@ -324,12 +324,12 @@ export default function HomePage() {
               </em>
 
               <TermsCheckbox
-                checked={isChecked}
-                onChange={() => setIsChecked(!isChecked)}
+                // checked={isChecked}
+                onMainCheckboxChange={() => setIsChecked(!isChecked)}
               />
 
               <Button
-                disabled={!isChecked}
+                disabled={isChecked}
                 type="submit"
                 shape="round"
                 color="green_200_green_400_01"
