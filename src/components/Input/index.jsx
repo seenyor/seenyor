@@ -66,6 +66,7 @@ const Input = React.forwardRef(
           name={name}
           placeholder={placeholder}
           onChange={onChange}
+          className={`${type === "date" ? "!uppercase" : ""}`}
           {...restProps}
         />
         {!!suffix && suffix}
@@ -90,4 +91,3 @@ Input.propTypes = {
 };
 
 export { Input };
-
