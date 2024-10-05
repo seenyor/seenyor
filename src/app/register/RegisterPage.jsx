@@ -139,7 +139,7 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
+  
     const currentFormData = Object.keys(formRefs).reduce((acc, key) => {
       if (formRefs[key].current) {
         acc[key] = formRefs[key].current.value;
@@ -149,17 +149,17 @@ export default function RegisterPage() {
       }
       return acc;
     }, {});
-
+  
     if (currentFormData.password !== currentFormData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-
+  
     try {
       const { confirmPassword, ...dataToSend } = currentFormData;
       const response = await registerUser(dataToSend);
       if (response.success) {
-        setEmail(currentFormData.email);
+        setFormData(prevState => ({ ...prevState, email: currentFormData.email }));
         setIsOtpSent(true);
       } else {
         setError(response.message || "Registration failed. Please try again.");
@@ -172,29 +172,26 @@ export default function RegisterPage() {
   const handleOtpVerification = async (otp) => {
     try {
       const response = await verifyOtp({
-        email: formRefs.email.current.value,
+        email: formData.email,
         otp: otp,
       });
       if (response.success) {
         router.push("/payment");
       } else {
-        setError(
-          response.message || "OTP verification failed. Please try again."
-        );
+        setError(response.message || "OTP verification failed. Please try again.");
       }
     } catch (err) {
       setError(err.message || "An error occurred during OTP verification");
     }
   };
-
+  
   const handleResendOtp = async () => {
     try {
       const response = await resendOtp({
-        email: formRefs.email.current.value,
+        email: formData.email,
       });
       if (response.success) {
-        setError(""); // Clear any existing errors
-        // Optionally, show a success message
+        setError("");
       } else {
         setError(response.message || "Failed to resend OTP. Please try again.");
       }
@@ -206,7 +203,7 @@ export default function RegisterPage() {
   if (isOtpSent) {
     return (
       <SingUpOpt
-        email={formRefs.email.current.value}
+        email={formData.email}
         onVerify={handleOtpVerification}
         onResend={handleResendOtp}
         error={error}
