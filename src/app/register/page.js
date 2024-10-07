@@ -1,4 +1,3 @@
-import RegisterImage from "@/components/RegisterImage";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import RegisterPage from "./RegisterPage";

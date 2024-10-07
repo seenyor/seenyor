@@ -1,19 +1,18 @@
 "use client";
-import { useAuth } from "@/context/AuthContext";
+import { useUserService } from "@/services/userService";
 import {
   MinusCircledIcon,
   PlusCircledIcon,
   StarIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Img } from "../../components";
 import RadioButtonGroup from "./RadioGroupFInstallation";
 import TermsCheckbox from "./TermsCheckbox ";
 import "./style.css";
 export default function HomePage() {
   const router = useRouter();
-  const { user } = useAuth();
   const [products, setProducts] = useState([]);
   let [kitPrice, setKitPrice] = useState(1100);
   let [installationPrice, setInstallationPrice] = useState(300);
@@ -22,89 +21,35 @@ export default function HomePage() {
   let [quantity, setQuantity] = useState(0);
   const [selecteInstallation, setselecteInstallation] = useState(1);
   const [isChecked, setIsChecked] = useState(false);
-
-  // Dummy product data
-  const dummyProducts = [
-    {
-      id: "prod_Qx7rH2Vg1xC7n8",
-      name: "Laptop",
-      description: "test laptop",
-      price: 1000,
-      currency: "usd",
-      isRecurring: false,
-      priceId: "price_1Q5Dc1Anr9h8Jix3IZme7C2h",
-      recurringInterval: null,
-    },
-    {
-      id: "prod_QwjrIO8THaUv7t",
-      name: "Computer",
-      description: "this is the best computer",
-      price: 100,
-      currency: "usd",
-      isRecurring: true,
-      priceId: "price_1Q4qOBAnr9h8Jix3QzDMlQQt",
-      recurringInterval: "month",
-    },
-  ];
-
-  const fetchProducts = useCallback(() => {
-    try {
-      // const productsData = await getProducts();
-      // setProducts(productsData);
-      const productsData = dummyProducts;
-      // Custom default prices
-      const defaultKitPrice = 1100;
-      const defaultInstallationPrice = 300;
-      const defaultAddonDevicePrice = 400;
-
-      // Set prices, using custom defaults if data is missing or undefined
-      setKitPrice(productsData[0]?.price ?? defaultKitPrice);
-      setInstallationPrice(productsData[1]?.price ?? defaultInstallationPrice);
-      setAddonDevicePrice(productsData[2]?.price ?? defaultAddonDevicePrice);
-
-      // Ensure products array has at least 3 items with valid priceIds
-      const updatedProducts = [
-        {
-          ...productsData[0],
-          priceId: productsData[0]?.priceId ?? "default_kit_price_id",
-        },
-        {
-          ...productsData[1],
-          priceId: productsData[1]?.priceId ?? "default_installation_price_id",
-        },
-        {
-          ...productsData[2],
-          priceId: productsData[2]?.priceId ?? "default_addon_device_price_id",
-        },
-      ];
-      setProducts(updatedProducts);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      // Set default prices in case of error
-      setKitPrice(1100);
-      setInstallationPrice(300);
-      setAddonDevicePrice(400);
-      setProducts([
-        { id: "default_kit_id", priceId: "default_kit_price_id", price: 1100 },
-        {
-          id: "default_installation_id",
-          priceId: "default_installation_price_id",
-          price: 300,
-        },
-        {
-          id: "default_addon_device_id",
-          priceId: "default_addon_device_price_id",
-          price: 400,
-        },
-      ]);
-    }
-  }, []);
+  const { getProducts, getStripeCustomerId } = useUserService();
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    const fetchProducts = async () => {
+      try {
+        const fetchedProducts = await getProducts();
+        setProducts(fetchedProducts);
 
-  //TOtal Price
+        // Set prices based on fetched products
+        const kit = fetchedProducts.find((p) => p.name === "Seenyor Kit");
+        const addon = fetchedProducts.find(
+          (p) => p.name === "Additional Device"
+        );
+        const installation = fetchedProducts.find(
+          (p) => p.name === "Installation"
+        );
+
+        if (kit) setKitPrice(kit.price);
+        if (addon) setAddonDevicePrice(addon.price);
+        if (installation) setInstallationPrice(installation.price);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Total Price calculation
   useEffect(() => {
     const calculatedTotal =
       kitPrice +
@@ -119,20 +64,32 @@ export default function HomePage() {
     quantity,
   ]);
 
-  const handleCheckout = () => {
-    if (!user) {
+  const handleCheckout = async () => {
+    const stripeCustomerId = await getStripeCustomerId();
+    console.log("i stripeCustomerId from cookes", stripeCustomerId);
+    if (!stripeCustomerId) {
       // User is not logged in, redirect to registration page
       router.push("/register");
     } else {
       // User is logged in, proceed to payment page
-      // Store the order details in localStorage or context
       const orderDetails = {
         kitPrice,
         installationPrice: selecteInstallation === 1 ? installationPrice : 0,
         addonDevicePrice,
         addonQuantity: quantity,
         total,
-        products: products.map((p) => ({ id: p.id, priceId: p.priceId })),
+        products: products.map((p) => ({
+          id: p.id,
+          priceId: p.priceId,
+          quantity:
+            p.name === "Seenyor Kit"
+              ? 1
+              : p.name === "Additional Device"
+              ? quantity
+              : p.name === "Installation" && selecteInstallation === 1
+              ? 1
+              : 0,
+        })),
       };
       localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
       router.push("/payment");

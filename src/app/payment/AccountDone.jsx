@@ -1,18 +1,22 @@
 "use client";
-import { useAuth } from "@/context/AuthContext";
 import { useUserService } from "@/services/userService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Button, Heading, Img, Text } from "..";
+import { Button, Heading, Img, Text } from "../../components";
 
 export default function AccountDone() {
-  const { user } = useAuth();
-  const { createStripeCustomer, createStripeSession } = useUserService();
+  const {
+    createStripeCustomer,
+    createStripeSession,
+    getStripeCustomerId,
+    removeStripeCustomerId,
+  } = useUserService();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const processPayment = async () => {
-    if (!user) {
+    const stripeCustomerId = await getStripeCustomerId();
+    if (!stripeCustomerId) {
       router.push("/register");
       return;
     }
@@ -22,45 +26,34 @@ export default function AccountDone() {
       router.push("/");
       return;
     }
-
     setIsProcessing(true);
 
     try {
-      let customerId = user.stripeCustomerId;
-      if (!customerId) {
-        const customer = await createStripeCustomer({
-          email: user.email,
-          name: user.name,
-        });
-        customerId = customer.id;
-        // Update user context or make an API call to update user data with Stripe customer ID
-      }
-
       const lineItems = [
-        // {
-        //   price: orderDetails.products[0].priceId, // Kit
-        //   quantity: 1,
-        //   adjustable_quantity: { enabled: true },
-        // },
+        {
+          price: orderDetails.products[3].priceId, // kit
+          quantity: 1,
+          adjustable_quantity: { enabled: false },
+        },
       ];
 
       if (orderDetails.addonQuantity > 0) {
         lineItems.push({
-          price: "price_1Q5Dc1Anr9h8Jix3IZme7C2h", // Addon device
+          price: orderDetails.products[2].priceId, // Addon device
           quantity: orderDetails.addonQuantity,
           adjustable_quantity: { enabled: true, minimum: 0, maximum: 10 },
         });
       }
       if (orderDetails.installationPrice > 0) {
         lineItems.push({
-          price: "price_1Q5Dc1Anr9h8Jix3IZme7C2h", // Installation
+          price: orderDetails.products[1].priceId, // Installation
           quantity: 1,
           adjustable_quantity: { enabled: false },
         });
       }
 
       const session = await createStripeSession({
-        customer: "cus_Qw0yUkLc0RWUt1",
+        customer: stripeCustomerId,
         line_items: lineItems,
       });
       // Redirect to Stripe Checkout

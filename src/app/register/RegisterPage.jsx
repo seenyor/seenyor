@@ -4,7 +4,7 @@ import SingUpOpt from "@/components/SingUpOpt";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { forwardRef, useEffect, useRef, useState } from "react";
+import { forwardRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Heading, Input, Text } from "../../components";
 import { useUserService } from "../../services/userService";
@@ -99,111 +99,72 @@ export default function RegisterPage() {
     trigger,
     setValue,
     watch,
+    reset,
   } = useForm();
   const router = useRouter();
   const { registerUser, verifyOtp, resendOtp } = useUserService();
-  const { setEmail, user } = useAuth();
-  const [formData, setFormData] = useState({
-    country_id: "",
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    contact_number: "",
-    address: "",
-    agent_id: "",
-    city: "",
-  });
+  const { setEmail, email, user } = useAuth();
+  console.log("i am the user id...", user);
+
   const [error, setError] = useState("");
   const [cityOptions, setCityOptions] = useState([]);
   const [isOtpSent, setIsOtpSent] = useState(false);
 
-  const formRefs = {
-    country_id: useRef(null),
-    name: useRef(null),
-    email: useRef(null),
-    password: useRef(null),
-    confirmPassword: useRef(null),
-    contact_number: useRef(null),
-    address: useRef(null),
-    agent_id: useRef(null),
-    city: useRef(null),
-  };
+  const onSubmit = async (data) => {
+    const formattedData = {
+      agent_id: data.badge_id,
+      email: data.customer_email,
+      name: data.customer_first_name,
+      last_name: data.customer_last_name,
+      address: data.customer_address,
+      address2: data.customer_address_2,
+      city: data.customer_city,
+      country_id: data.customer_country_id,
+      post_Code: data.customer_zipcode,
+      state: data.customer_state,
+      contact_number: data.customer_contact_number,
+      password: data.password,
+      customer_info: {
+        country_id: data.endUser_country_id,
+        name: data.endUser_first_name,
+        last_name: data.endUser_last_name,
+        contact_number: data.endUser_contact_number,
+        address: data.endUser_address,
+        address2: data.endUser_address_2,
+        city: data.endUser_city,
+        post_Code: data.endUser_zipcode,
+        state: data.endUser_state,
+        email: data.endUser_email,
+        agent_name: data.agent_name,
+        installation_date: data.installation_date,
+        elderly_Count: data.live_with === "alone" ? 1 : 2, // Assuming "alone" means 1, otherwise 2
+        lead: data.source_lead,
+        installer_id: data.customer_country_id, // Using customer's country_id as installer_id for now
+      },
+    };
 
-  useEffect(() => {
-    if (formData.country_id) {
-      setCityOptions(cities[formData.country_id] || []);
-    } else {
-      setCityOptions([]);
-    }
-  }, [formData.country_id]);
-
-  const handleInputChange = (e) => {
-    const { name, value, type } = e.target;
-    console.log(name);
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-
-    if (type === "select-one") {
-      if (name === "country_id") {
-        setFormData((prevState) => ({
-          ...prevState,
-          city: "",
-          cityLabel: "",
-        }));
+    try {
+      setError("");
+      const response = await registerUser(formattedData);
+      if (response.status) {
+        setEmail(formattedData.email);
+        setIsOtpSent(true);
+        reset();
+      } else {
+        setError(response.message || "Registration failed. Please try again.");
       }
+    } catch (err) {
+      setError(err.message || "An error occurred during registration");
     }
   };
-  //updated form data with all necessary validation
-  const onSubmit = (e) => {
-    console.log(e);
-  };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setError("");
-
-  //   const currentFormData = Object.keys(formRefs).reduce((acc, key) => {
-  //     if (formRefs[key].current) {
-  //       acc[key] = formRefs[key].current.value;
-  //     } else {
-  //       console.warn(`Ref for ${key} is not attached to an element`);
-  //       acc[key] = "";
-  //     }
-  //     return acc;
-  //   }, {});
-
-  //   if (currentFormData.password !== currentFormData.confirmPassword) {
-  //     setError("Passwords do not match");
-  //     return;
-  //   }
-
-  //   try {
-  //     const { confirmPassword, ...dataToSend } = currentFormData;
-  //     const response = await registerUser(dataToSend);
-  //     if (response.success) {
-  //       setFormData((prevState) => ({
-  //         ...prevState,
-  //         email: currentFormData.email,
-  //       }));
-  //       setIsOtpSent(true);
-  //     } else {
-  //       setError(response.message || "Registration failed. Please try again.");
-  //     }
-  //   } catch (err) {
-  //     setError(err.message || "An error occurred during registration");
-  //   }
-  // };
 
   const handleOtpVerification = async (otp) => {
     try {
       const response = await verifyOtp({
-        email: formData.email,
+        email,
         otp: otp,
       });
-      if (response.success) {
+      if (response.status) {
         router.push("/payment");
       } else {
         setError(
@@ -218,9 +179,9 @@ export default function RegisterPage() {
   const handleResendOtp = async () => {
     try {
       const response = await resendOtp({
-        email: formData.email,
+        email,
       });
-      if (response.success) {
+      if (response.status) {
         setError("");
       } else {
         setError(response.message || "Failed to resend OTP. Please try again.");
@@ -233,7 +194,7 @@ export default function RegisterPage() {
   if (isOtpSent) {
     return (
       <SingUpOpt
-        email={formData.email}
+        email={email}
         onVerify={handleOtpVerification}
         onResend={handleResendOtp}
         error={error}
@@ -393,8 +354,8 @@ export default function RegisterPage() {
                     {renderField({
                       label: "City",
                       name: "customer_city",
-                      type: "tel",
-                      placeholder: "+353",
+                      type: "text",
+                      placeholder: "City",
                     })}
                   </div>
                   <div
@@ -496,8 +457,8 @@ export default function RegisterPage() {
                     {renderField({
                       label: "City",
                       name: "endUser_city",
-                      type: "tel",
-                      placeholder: "+353",
+                      type: "text",
+                      placeholder: "City",
                     })}
                   </div>
                   <div
@@ -600,13 +561,13 @@ export default function RegisterPage() {
                   {renderField({
                     label: "Password",
                     name: "password",
-                    type: "text",
+                    type: "password",
                     placeholder: "Password",
                   })}
                   {renderField({
                     label: "Confirm Password",
                     name: "confirm_password",
-                    type: "text",
+                    type: "password",
                     placeholder: "Confirm Password",
                     validate: (value) =>
                       value === password || "Passwords do not match",

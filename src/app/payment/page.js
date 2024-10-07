@@ -1,17 +1,13 @@
-import AccountComplete from "@/components/AccountComplete";
-function page() {
-  // const cookieStore = cookies();
-  // const accessToken = cookieStore.get("access_token");
+import { cookies } from "next/headers";
+import { redirect } from 'next/navigation';
+import Page from ".";
+export default function PaymentPage() {
+  const cookieStore = cookies();
+  const stripeCustomerId = cookieStore.get("stripeCustomerId");
 
-  // if (!accessToken) {
-  //   redirect("/");
-  // }
+  if (!stripeCustomerId) {
+    redirect('/register');
+  }
 
-  return (
-    <div>
-      <AccountComplete />
-    </div>
-  );
+  return <Page />;
 }
-
-export default page;

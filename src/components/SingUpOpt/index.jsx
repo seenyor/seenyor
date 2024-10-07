@@ -84,11 +84,11 @@ const SingUpOpt = ({onVerify, onResend, error, setError }) => {
     <>
 
       {/* Right side */}
-      <div className="flex w-[50%] flex-2 md:w-[100%] sm:w-[100%] items-center bg-white md:flex-col">
+      <div className="flex w-full items-center bg-white md:flex-col">
       <Logo />
         <div className="flex flex-col gap-[1rem] h-screen  w-full justify-center ">
           {/* Back button */}
-          <button className="flex text-body w-[40%] hover:text-primary transition-colors">
+          <button className="flex text-body  hover:text-primary transition-colors items-center w-full justify-center">
             <Img
               src="img_arrow_left.svg"
               width={18}
