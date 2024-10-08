@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Heading, Img, Text } from "../../components";
 
 export default function PaymentMsg() {
@@ -31,7 +32,10 @@ export default function PaymentMsg() {
         <div className="container-xs flex flex-col items-center px-[3.50rem] md:px-[1.25rem]">
           <div className="flex items-center gap-[0.63rem]">
             <Text as="p" className="text-[1.13rem] font-medium text-text">
+              <Link href="/" >
               Try Again
+              </Link>
+            
             </Text>
             <Img
               src="img_arrowleft_text.svg"

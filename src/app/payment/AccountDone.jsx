@@ -51,6 +51,13 @@ export default function AccountDone() {
           adjustable_quantity: { enabled: false },
         });
       }
+      if (orderDetails.aiMonitoringPrice) {
+        lineItems.push({
+          price: orderDetails.products[0].priceId, // Installation
+          quantity: 1,
+          adjustable_quantity: { enabled: false },
+        });
+      }
 
       const session = await createStripeSession({
         customer: stripeCustomerId,

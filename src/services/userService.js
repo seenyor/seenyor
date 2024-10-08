@@ -1,6 +1,19 @@
 import Cookies from "js-cookie";
 import { useApi } from "../utils/api";
 
+// Helper function to determine the appropriate cookie domain
+const getCookieDomain = () => {
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return null; // No domain for localhost
+    } else if (hostname.endsWith('seenyor.com')) {
+      return '.seenyor.com'; // Dot prefix allows cookie to be shared across subdomains
+    }
+  }
+  return null; // Default to no domain if we can't determine it
+};
+
 export const useUserService = () => {
   const { post, get } = useApi();
 
@@ -20,13 +33,20 @@ export const useUserService = () => {
         ...userResponse,
         stripeCustomerId: stripeCustomerResponse.id,
       };
-      console.log("i am stripe user", combinedUserData.stripeCustomerId);
 
-      // Store only the Stripe customer ID in a cookie
-      Cookies.set("stripeCustomerId", combinedUserData.stripeCustomerId, {
-        expires: 1,
-      }); // Expires in 7 days
+       // Store only the Stripe customer ID in a cookie
+       const cookieOptions = {
+        expires: 1, // 1 day
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Lax'
+      };
 
+      const domain = getCookieDomain();
+      if (domain) {
+        cookieOptions.domain = domain;
+      }
+
+      Cookies.set("stripeCustomerId", combinedUserData.stripeCustomerId, cookieOptions);
       return combinedUserData;
     } catch (error) {
       console.error("Error during user registration:", error);
@@ -75,7 +95,17 @@ export const useUserService = () => {
 
   const removeStripeCustomerId = async () => {
     try {
-      Cookies.remove("stripeCustomerId");
+      const cookieOptions = {
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Lax'
+      };
+
+      const domain = getCookieDomain();
+      if (domain) {
+        cookieOptions.domain = domain;
+      }
+
+      Cookies.remove("stripeCustomerId", cookieOptions);
       return true; // Indicates successful removal
     } catch (error) {
       console.error("Error removing Stripe customer ID:", error);
