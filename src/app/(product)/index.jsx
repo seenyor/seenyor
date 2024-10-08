@@ -12,6 +12,10 @@ import { Button, Img } from "../../components";
 import RadioButtonGroup from "./RadioGroupFInstallation";
 import TermsCheckbox from "./TermsCheckbox ";
 import "./style.css";
+
+
+
+
 export default function HomePage() {
   const router = useRouter();
   const [products, setProducts] = useState([]);
@@ -67,91 +71,111 @@ export default function HomePage() {
     quantity,
   ]);
 
+  const updateOrderDetails = () => {
+    const orderDetails = {
+      kitPrice,
+      installationPrice: selecteInstallation === 1 ? installationPrice : 0,
+      addonDevicePrice,
+      addonQuantity: quantity,
+      total,
+      products: products.map((p) => ({
+        id: p.id,
+        priceId: p.priceId,
+        quantity:
+          p.name === "Seenyor Kit"
+            ? 1
+            : p.name === "Additional Device"
+            ? quantity
+            : p.name === "Installation" && selecteInstallation === 1
+            ? 1
+            : 0,
+      })),
+    };
+    localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
+  };
+
+  useEffect(() => {
+    updateOrderDetails();
+  }, [
+    kitPrice,
+    installationPrice,
+    addonDevicePrice,
+    quantity,
+    selecteInstallation,
+    total,
+    products,
+  ]);
+
   const handleCheckout = async () => {
     const stripeCustomerId = await getStripeCustomerId();
-    console.log("i stripeCustomerId from cookes", stripeCustomerId);
     if (!stripeCustomerId) {
       // User is not logged in, redirect to registration page
       router.push("/register");
-    } else {
-      // User is logged in, proceed to payment page
-      const orderDetails = {
-        kitPrice,
-        installationPrice: selecteInstallation === 1 ? installationPrice : 0,
-        addonDevicePrice,
-        addonQuantity: quantity,
-        total,
-        products: products.map((p) => ({
-          id: p.id,
-          priceId: p.priceId,
-          quantity:
-            p.name === "Seenyor Kit"
-              ? 1
-              : p.name === "Additional Device"
-              ? quantity
-              : p.name === "Installation" && selecteInstallation === 1
-              ? 1
-              : 0,
-        })),
-      };
-      localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
+    }
 
-      if (accessToken) {
-        const lineItems = [];
-        const kitProduct = products.find((p) => p.name === "Seenoyr Kit");
-        if (kitProduct) {
+    // Ensure order details are up to date in localStorage
+    updateOrderDetails();
+
+    const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
+    if (!orderDetails) {
+      throw new Error("No order details found");
+    }
+
+    if (accessToken) {
+      const lineItems = [];
+      const kitProduct = products.find((p) => p.name === "Seenoyr Kit");
+      if (kitProduct) {
+        lineItems.push({
+          price: kitProduct.priceId,
+          quantity: 1,
+          adjustable_quantity: { enabled: false },
+        });
+      } else {
+        throw new Error("Seenyor Kit product not found");
+      }
+
+      if (quantity > 0) {
+        const addonProduct = products.find(
+          (p) => p.name === "Additional device"
+        );
+        if (addonProduct) {
           lineItems.push({
-            price: kitProduct.priceId,
+            price: addonProduct.priceId,
+            quantity: quantity,
+            adjustable_quantity: { enabled: true, minimum: 0, maximum: 10 },
+          });
+        } else {
+          throw new Error("Additional Device product not found");
+        }
+      }
+
+      if (selecteInstallation === 1) {
+        const installationProduct = products.find(
+          (p) => p.name === "Installation"
+        );
+        if (installationProduct) {
+          lineItems.push({
+            price: installationProduct.priceId,
             quantity: 1,
             adjustable_quantity: { enabled: false },
           });
         } else {
-          throw new Error("Seenyor Kit product not found");
+          throw new Error("Installation product not found");
         }
-
-        if (quantity > 0) {
-          const addonProduct = products.find(
-            (p) => p.name === "Additional device"
-          );
-          if (addonProduct) {
-            lineItems.push({
-              price: addonProduct.priceId,
-              quantity: quantity,
-              adjustable_quantity: { enabled: true, minimum: 0, maximum: 10 },
-            });
-          } else {
-            throw new Error("Additional Device product not found");
-          }
-        }
-
-        if (selecteInstallation === 1) {
-          const installationProduct = products.find(
-            (p) => p.name === "Installation"
-          );
-          if (installationProduct) {
-            lineItems.push({
-              price: installationProduct.priceId,
-              quantity: 1,
-              adjustable_quantity: { enabled: false },
-            });
-          } else {
-            throw new Error("Installation product not found");
-          }
-        }
-
-        if (lineItems.length === 0) {
-          throw new Error("No products selected for checkout");
-        }
-
-        const session = await createStripeSession({
-          customer: stripeCustomerId,
-          line_items: lineItems,
-        });
-
-        window.location.href = session.url;
-      } else {
-        router.push("/payment");
       }
+
+      if (lineItems.length === 0) {
+        throw new Error("No products selected for checkout");
+      }
+
+      const session = await createStripeSession({
+        customer: stripeCustomerId,
+        line_items: lineItems,
+      });
+
+      window.location.href = session.url;
+    } else {
+      router.push("/payment");
     }
   };
 
