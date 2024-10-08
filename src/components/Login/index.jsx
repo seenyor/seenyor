@@ -45,7 +45,7 @@ const RightSection = () => {
 
       if (response && response.data && response.data.access_token) {
         // Set cookie to expire in 2 days
-        Cookies.set("access_token", token, cookieOptions);
+        Cookies.remove("access_token", cookieOptions);
         
         console.log("Login successful, token set in cookie");
         router.push("/profile");
