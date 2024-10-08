@@ -13,7 +13,28 @@ const RightSection = () => {
   const [error, setError] = useState("");
   const router = useRouter();
   const { login } = useUserService();
+  const getCookieDomain = () => {
+    if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return null; // No domain for localhost
+      } else if (hostname.endsWith('seenyor.com')) {
+        return '.seenyor.com'; // Dot prefix allows cookie to be shared across subdomains
+      }
+    }
+    return null; // Default to no domain if we can't determine it
+  };
+  // Store only the Stripe customer ID in a cookie
+  const cookieOptions = {
+    expires: 1, // 1 day
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Lax'
+  };
 
+  const domain = getCookieDomain();
+  if (domain) {
+    cookieOptions.domain = domain;
+  }  
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -24,7 +45,8 @@ const RightSection = () => {
 
       if (response && response.data && response.data.access_token) {
         // Set cookie to expire in 2 days
-        Cookies.set("access_token", response.data.access_token, { expires: 2 });
+        Cookies.set("access_token", token, cookieOptions);
+        
         console.log("Login successful, token set in cookie");
         router.push("/profile");
       } else {

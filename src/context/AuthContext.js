@@ -3,7 +3,13 @@ import Cookies from "js-cookie";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
-// Helper function to determine the appropriate cookie domain
+
+export const AuthProvider = ({ children }) => {
+  const [email, setEmail] = useState("");
+  const [accessToken, setAccessToken] = useState(null);
+  const [user, setUser] = useState(null);
+
+  // Helper function to determine the appropriate cookie domain
 const getCookieDomain = () => {
   if (typeof window !== 'undefined') {
     const hostname = window.location.hostname;
@@ -16,11 +22,6 @@ const getCookieDomain = () => {
   return null; // Default to no domain if we can't determine it
 };
 
-export const AuthProvider = ({ children }) => {
-  const [email, setEmail] = useState("");
-  const [accessToken, setAccessToken] = useState(null);
-  const [user, setUser] = useState(null);
-
   useEffect(() => {
     const token = Cookies.get("access_token");
     if (token) {
@@ -29,7 +30,6 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (token) => {
-    // Store only the Stripe customer ID in a cookie
     const cookieOptions = {
       expires: 1, // 1 day
       secure: process.env.NODE_ENV === "production",
@@ -39,10 +39,10 @@ export const AuthProvider = ({ children }) => {
     if (domain) {
       cookieOptions.domain = domain; // Set the domain for the cookie
     }
-
     Cookies.set("access_token", token, cookieOptions);
     setAccessToken(token);
   };
+
 
   const logout = () => {
     const cookieOptions = {
