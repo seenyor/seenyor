@@ -3,7 +3,6 @@ import Cookies from "js-cookie";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
-
 // Helper function to determine the appropriate cookie domain
 const getCookieDomain = () => {
   if (typeof window !== 'undefined') {
@@ -35,12 +34,6 @@ export const AuthProvider = ({ children }) => {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Lax'
     };
-
-    const domain = getCookieDomain();
-    if (domain) {
-      cookieOptions.domain = domain;
-    }
-
     Cookies.set("access_token", token, cookieOptions);
     setAccessToken(token);
   };
@@ -59,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("access_token", cookieOptions);
     setAccessToken(null);
   };
-
+  
   return (
     <AuthContext.Provider
       value={{ email, setEmail, login, logout, accessToken, user, setUser }}
