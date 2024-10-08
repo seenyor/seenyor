@@ -61,8 +61,29 @@ export const useUserService = () => {
   const resendOtp = async (emailData) => {
     return post("/auth/send-otp", emailData);
   };
+  
   const login = async (credentials) => {
-    return post("/auth/login", credentials);
+    try {
+      const response = await post("/auth/login", credentials);
+      const accessToken = response.data.access_token; 
+      // Set the access token in a cookie
+      const cookieOptions = {
+        expires: 1, // 1 day
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Lax'
+      };
+
+      const domain = getCookieDomain();
+      if (domain) {
+        cookieOptions.domain = domain; // Set the domain for the cookie
+      }
+
+      Cookies.set("access_token", accessToken, cookieOptions); // Set the access token cookie
+      return response; // Return the response for further processing if needed
+    } catch (error) {
+      console.error("Error during login:", error);
+      throw error;
+    }
   };
 
   const getProducts = async () => {

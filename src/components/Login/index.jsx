@@ -1,6 +1,5 @@
 "use client";
 
-import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -45,9 +44,6 @@ const RightSection = () => {
 
       if (response && response.data && response.data.access_token) {
         // Set cookie to expire in 2 days
-        Cookies.set("access_token", cookieOptions);
-        
-        console.log("Login successful, token set in cookie");
         router.push("/profile");
       } else {
         console.log("Login failed, unexpected response structure:", response);
