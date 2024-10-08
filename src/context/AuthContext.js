@@ -29,19 +29,25 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (token) => {
+    // Store only the Stripe customer ID in a cookie
     const cookieOptions = {
-      expires: 2, // 2 days
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Lax'
+      expires: 1, // 1 day
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
     };
+    const domain = getCookieDomain();
+    if (domain) {
+      cookieOptions.domain = domain; // Set the domain for the cookie
+    }
+
     Cookies.set("access_token", token, cookieOptions);
     setAccessToken(token);
   };
 
   const logout = () => {
     const cookieOptions = {
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'Lax'
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax",
     };
 
     const domain = getCookieDomain();
@@ -52,7 +58,7 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("access_token", cookieOptions);
     setAccessToken(null);
   };
-  
+
   return (
     <AuthContext.Provider
       value={{ email, setEmail, login, logout, accessToken, user, setUser }}
