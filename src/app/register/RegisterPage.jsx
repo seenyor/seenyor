@@ -1,84 +1,14 @@
 "use client";
-import Logo from "@/components/Logo";
 import SingUpOpt from "@/components/SingUpOpt";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Heading, Input, Text } from "../../components";
 import { useUserService } from "../../services/userService";
 
-// Custom SelectBox component
-const SelectBox = forwardRef(
-  ({ name, placeholder, options, onChange, disabled, className }, ref) => {
-    const handleChange = (e) => {
-      onChange({
-        target: {
-          name,
-          value: e.target.value,
-          type: "select-one",
-        },
-      });
-    };
 
-    return (
-      <select
-        ref={ref}
-        name={name}
-        onChange={handleChange}
-        disabled={disabled}
-        className={className}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    );
-  }
-);
-
-SelectBox.displayName = "SelectBox";
-
-// Sample data for dropdowns
-const countries = [
-  { label: "United States", value: "66ec80829adf64ab302207f0" },
-  { label: "United Kingdom", value: "66ec80829adf64ab302207f1" },
-  { label: "Canada", value: "66ec80829adf64ab302207f2" },
-  { label: "Australia", value: "66ec80829adf64ab302207f3" },
-];
-
-const cities = {
-  "66ec80829adf64ab302207f0": [
-    { label: "New York", value: "ny" },
-    { label: "Los Angeles", value: "la" },
-    { label: "Chicago", value: "ch" },
-  ],
-  "66ec80829adf64ab302207f1": [
-    { label: "London", value: "ld" },
-    { label: "Manchester", value: "mc" },
-    { label: "Birmingham", value: "bm" },
-  ],
-  "66ec80829adf64ab302207f2": [
-    { label: "Toronto", value: "to" },
-    { label: "Vancouver", value: "vc" },
-    { label: "Montreal", value: "mt" },
-  ],
-  "66ec80829adf64ab302207f3": [
-    { label: "Sydney", value: "sy" },
-    { label: "Melbourne", value: "ml" },
-    { label: "Brisbane", value: "br" },
-  ],
-};
-
-const agents = [
-  { label: "Agent 001", value: "000001" },
-  { label: "Agent 002", value: "000002" },
-  { label: "Agent 003", value: "000003" },
-];
 const liveWith = [
   { label: "Alone", value: "0" },
   { label: "With Someone", value: "0" },
@@ -91,6 +21,29 @@ const SourceofLeads = [
   { label: "Nursing Home", value: "nursing_home" },
 ];
 
+
+const SelectBox = forwardRef(
+  ({ name, placeholder, options = [], onChange, className, ...rest }, ref) => (
+    <select
+      ref={ref}
+      name={name}
+      onChange={onChange}
+      className={className}
+      {...rest}
+    >
+      <option value="">{placeholder}</option>
+      {Array.isArray(options) && options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
+  )
+);
+
+SelectBox.displayName = "SelectBox";
+
+
 export default function RegisterPage() {
   const {
     register,
@@ -102,15 +55,79 @@ export default function RegisterPage() {
     reset,
   } = useForm();
   const router = useRouter();
-  const { registerUser, verifyOtp, resendOtp } = useUserService();
+  const { registerUser, verifyOtp, resendOtp, getCountries, getAgents } = useUserService();
+  const [countries, setCountries] = useState([]);
+  const [agents, setAgents] = useState([]);
   const { setEmail, email, user } = useAuth();
-  console.log("i am the user id...", user);
-
   const [error, setError] = useState("");
   const [cityOptions, setCityOptions] = useState([]);
   const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch countries
+        console.log("Fetching countries...");
+        const countriesResponse = await getCountries();
+        console.log("Countries response:", countriesResponse);
+  
+        if (countriesResponse && countriesResponse.data && Array.isArray(countriesResponse.data)) {
+          const formattedCountries = countriesResponse.data.map(country => ({
+            label: country.country_name,
+            value: country._id
+          }));
+          setCountries(formattedCountries);
+          console.log("Formatted countries:", formattedCountries);
+        } else {
+          console.error("Invalid country data structure:", countriesResponse);
+          throw new Error("Invalid country data structure received from the API");
+        }
+  
+        // Fetch agents
+        console.log("Fetching agents...");
+        const agentsResponse = await getAgents();
+        console.log("Agents response:", agentsResponse);
+  
+        if (agentsResponse && agentsResponse.data && Array.isArray(agentsResponse.data)) {
+          const formattedAgents = agentsResponse.data.map(agent => ({
+            label:`${agent.agent_id}`,
+            value: agent.agent_id
+          }));
+          setAgents(formattedAgents);
+          console.log("Formatted agents:", formattedAgents);
+        } else {
+          console.error("Invalid agent data structure:", agentsResponse);
+          throw new Error("Invalid agent data structure received from the API");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        if (error.response) {
+          console.error("Error response:", error.response.data);
+          console.error("Error status:", error.response.status);
+        }
+        setError("Failed to load necessary data. Please try again.");
+      }
+    };
+  
+    fetchData();
+  }, []);
 
   const onSubmit = async (data) => {
+        // // Perform client-side validation
+        // const validationErrors = validateForm(data);
+        // if (Object.keys(validationErrors).length > 0) {
+        //   // Set errors in the form
+        //   Object.keys(validationErrors).forEach(key => {
+        //     setError(key, {
+        //       type: "manual",
+        //       message: validationErrors[key]
+        //     });
+        //   });
+        //   return; // Stop submission if there are validation errors
+        // }
     const formattedData = {
       agent_id: data.badge_id,
       email: data.customer_email,
@@ -165,6 +182,7 @@ export default function RegisterPage() {
         otp: otp,
       });
       if (response.status) {
+        setIsOtpVerified(true)
         router.push("/payment");
       } else {
         setError(
@@ -191,7 +209,7 @@ export default function RegisterPage() {
     }
   };
 
-  if (isOtpSent) {
+  if (isOtpSent && !isOtpVerified) {
     return (
       <SingUpOpt
         email={email}
@@ -232,7 +250,7 @@ export default function RegisterPage() {
         <SelectBox
           name={name}
           placeholder={placeholder}
-          options={options}
+          options={name === "badge_id" ? agents : (name.includes("country") ? countries : options)}
           {...register(name, { required })}
           onChange={(e) => {
             setValue(name, e.target.value);
@@ -264,7 +282,6 @@ export default function RegisterPage() {
 
   return (
     <>
-      <Logo />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className=" md:min-h-screen mb-[9.75rem] mt-[2rem] flex flex-1 flex-col items-center gap-[2.25rem] px-[3.50rem] md:self-stretch md:px-[1.25rem] sm:overflow-x-hidden custom-scrollbar "
@@ -513,7 +530,7 @@ export default function RegisterPage() {
                     {renderField({
                       label: "Badge ID",
                       name: "badge_id",
-                      type: "text",
+                      type: "select",
                       placeholder: "Agent ID",
                       required: false,
                     })}

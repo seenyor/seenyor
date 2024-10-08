@@ -2,11 +2,14 @@
 import { Heading, Img, Text } from "@/components";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-
+import { useUserService } from "../../services/userService";
 function ProfileSection() {
   const router = useRouter();
+  const { removeStripeCustomerId } = useUserService()
   const { accessToken, logout } = useAuth();
+
   const handleLogout = () => {
+    removeStripeCustomerId()
     logout();
     router.push("/login");
   };

@@ -84,13 +84,13 @@ export default function AccountDone() {
         <Heading
           size="heading4xl"
           as="h1"
-          className="text-[2rem] font-bold text-text md:text-[1.75rem] sm:text-[1.50rem]"
+          className="font-bold text-text  text-center"
         >
           Account Created Successful!
         </Heading>
         <Text
           as="p"
-          className="w-[54%] text-center text-[1.13rem] font-normal leading-[1.69rem] text-body md:w-full"
+          className="w-[54%] text-center text-[1.13rem] font-normal leading-[1.69rem] text-body md:w-full flex justify-center items-center"
         >
           Your account created successfully. Please make payment to complete
           your purchase. If payment failed your account will be suspended.
@@ -112,7 +112,7 @@ export default function AccountDone() {
           onClick={processPayment}
           disabled={isProcessing}
         >
-          {isProcessing ? "Processing..." : "Make Payment"}
+          {isProcessing ? "Processing..." : "Continue to Secure Checkout"}
         </Button>
       </div>
     </div>

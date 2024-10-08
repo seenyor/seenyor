@@ -1,5 +1,4 @@
 import Login from "@/components/Login";
-import RegisterImage from "@/components/RegisterImage";
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -13,7 +12,7 @@ export default function LoginPage() {
 
   return (
     <div className="flex w-full items-center bg-white md:flex-col">
-      <RegisterImage />
+      {/* <RegisterImage /> */}
       <Login />
     </div>
   );

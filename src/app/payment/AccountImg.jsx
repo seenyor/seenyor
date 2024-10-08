@@ -9,7 +9,7 @@ export default function SixtysixGroup257() {
             width={156}
             height={32}
             alt="Group 1"
-            className="h-[2.00rem] w-[12%] object-contain filter drop-shadow-md hover:scale-105 transition-transform duration-300"
+            className="h-[50%] sm:h-[1rem] w-[20%] sm:w-[100%] object-contain hover:scale-105 transition-transform duration-300 sm:text-center"
           />
         </div>
       </div>

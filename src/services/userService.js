@@ -48,6 +48,13 @@ export const useUserService = () => {
   const getProducts = async () => {
     return get("orders/get-products");
   };
+  const getCountries = async () => {
+    return get("/countries");
+  };
+
+  const getAgents = async () => {
+    return get("/users/agents");
+  };
   const createStripeCustomer = async (userData) => {
     return post("/orders/create-stripe-customer", userData);
   };
@@ -86,5 +93,7 @@ export const useUserService = () => {
     getProducts,
     getStripeCustomerId,
     removeStripeCustomerId,
+    getCountries,
+    getAgents
   };
 };

@@ -1,6 +1,5 @@
 "use client";
 
-import Logo from "@/components/Logo";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -40,11 +39,10 @@ const RightSection = () => {
 
   return (
     <>
-      <Logo />
-      <div className="flex flex-col gap-[1.88rem] h-[80vh]  w-full justify-center items-center md:my-[5rem]">
+      <div className="flex flex-col gap-[1.88rem] h-screen w-full justify-center items-center">
         <form
           onSubmit={handleLogin}
-          className="flex w-[50%] flex-col items-start gap-[0.75rem] md:w-[90%] md:items-center"
+          className="flex  flex-col items-start gap-[0.75rem] sm:w-[90%] md:items-center"
         >
           <EmailInput email={email} setEmail={setEmail} />
           <PasswordInput password={password} setPassword={setPassword} />
@@ -124,7 +122,7 @@ const PasswordInput = ({ password, setPassword }) => (
 
 export default function LoginPage() {
   return (
-    <div className="flex w-[50%] md:w-full items-center bg-white md:flex-col md:items-center">
+    <div className="flex  w-full items-center bg-white md:flex-col md:items-center">
       <RightSection />
     </div>
   );

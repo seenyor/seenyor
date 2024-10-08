@@ -4,22 +4,22 @@ import AccountImg from "./AccountImg";
 
 export default function SixtySixPage() {
   return (
-    <div className="flex w-full flex-col gap-[1.63rem] bg-gradient-to-b from-white to-blue-50">
+    <div className="flex w-full h-screen flex-col gap-[1.63rem] bg-gradient-to-b from-white to-blue-50">
       <AccountImg />
       <div>
         <AccountDone />
-        <div className="flex flex-col items-center py-[3.75rem] md:py-[1.25rem] ">
+        <div className="flex flex-col items-center">
           <div className="container-xs mb-[1.63rem] flex flex-col items-center gap-[1.25rem] px-[3.50rem] md:px-[1.25rem]">
             <div className="flex w-[36%] flex-col items-center gap-[0.63rem] px-[2.25rem] md:w-full sm:px-[1.25rem]">
-              <div className="w-[32%] rounded-[14px] border border-solid border-purple-300 p-[0.75rem] md:w-full bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
+             
                 <Img
                   src="img_printer.svg"
                   width={90}
                   height={90}
                   alt="Printer"
-                  className="h-[5.63rem] w-[5.63rem] transform hover:scale-105 transition-transform duration-300"
+                  className="h-[5.63rem] w-[5.63rem] transform hover:scale-105 transition-transform duration-300 mt-8"
                 />
-              </div>
+              
               <Heading
                 size="text5xl"
                 as="h2"

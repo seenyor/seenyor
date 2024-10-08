@@ -3,7 +3,7 @@ import { Img } from "..";
 function index() {
   return (
     <>
-      <div className="gap-[2.63rem] hidden md:block w-[40%] mx-auto pt-[2rem]">
+      <div className="gap-[2.63rem] ">
         <Img
           src="img_group_1.svg"
           width={156}
