@@ -79,7 +79,7 @@ export const useUserService = () => {
       }
 
       Cookies.set("access_token", accessToken, cookieOptions); // Set the access token cookie
-      return response; // Return the response for further processing if needed
+      return response; 
     } catch (error) {
       console.error("Error during login:", error);
       throw error;
@@ -134,6 +134,28 @@ export const useUserService = () => {
     }
   };
 
+
+   const getSessionDetails = async (sessionId) => {
+    try {
+      const sessionDetails = await get(`/orders/session-details/${sessionId}`);
+      return sessionDetails; // Return the session details
+    } catch (error) {
+      console.error("Error fetching session details:", error);
+      throw error; 
+    }
+  };
+
+
+  const createOrder = async (orderData) => {
+    try {
+      const response = await post("/orders/create", orderData); 
+      return response;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      throw error; 
+    }
+  };
+
   return {
     registerUser,
     verifyOtp,
@@ -145,6 +167,8 @@ export const useUserService = () => {
     getStripeCustomerId,
     removeStripeCustomerId,
     getCountries,
-    getAgents
+    getAgents,
+    getSessionDetails, 
+    createOrder
   };
 };
