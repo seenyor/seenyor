@@ -25,7 +25,7 @@ const AccountSetting = () => {
           </Heading>
           <Text
             as="p"
-            className="mb-[1.25rem] text-[1.13rem] font-normal text-body"
+            className="mb-[0.05rem] text-[1.13rem] font-normal text-body"
           >
             Update your email or change your password
           </Text>
@@ -36,11 +36,11 @@ const AccountSetting = () => {
           onClose={closeAddressModal}
         />
         {/* Email Section */}
-        <div className="bg-white rounded-lg  p-6">
+        <div className="bg-white rounded-lg">
           <Heading
             size="text3xl"
             as="h4"
-            className="text-[1.50rem] font-medium text-text md:text-[1.38rem] mb-4"
+            className="text-[1.50rem] font-medium text-text md:text-[1.38rem] mb-1"
           >
             E-mail
           </Heading>
@@ -99,7 +99,7 @@ const AccountSetting = () => {
         </div>
 
         {/* Password Section */}
-        <div className="bg-white rounded-lg p-6 mb-6">
+        <div className="bg-white rounded-lg  mb-6">
           <Heading
             size="text3xl"
             as="p"
@@ -159,7 +159,7 @@ const AccountSetting = () => {
 
         {/* Address Change Section */}
         {/* Address Change Button */}
-        <div className="bg-white rounded-lg  p-6">
+        <div className="bg-white rounded-lg">
           <Heading
             size="text3xl"
             as="p"

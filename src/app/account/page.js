@@ -1,6 +1,5 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import ProfileContent from './ProfileContent';
 
 export default function ProfilePage() {
   const cookieStore = cookies();
@@ -10,5 +9,5 @@ export default function ProfilePage() {
     redirect('/login');
   }
 
-  return <ProfileContent />;
+  return <> <h1>home</h1> </>;
 }
