@@ -30,6 +30,7 @@ export default function HomePage() {
   const { getProducts, getStripeCustomerId, createStripeSession } =
     useUserService();
   const { accessToken } = useAuth();
+  console.log("i am accesstoken", accessToken)
 
   useEffect(() => {
     const fetchProducts = async () => {

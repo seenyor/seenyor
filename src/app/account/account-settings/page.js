@@ -1,7 +1,10 @@
+import AccountSetting from "@/components/AccountSetting"
 
 function page() {
   return (
-    <div>account settings</div>
+    <div>
+      <AccountSetting />
+    </div>
   )
 }
 

@@ -7,7 +7,7 @@ export default function LoginPage() {
   const accessToken = cookieStore.get('access_token');
 
   if (accessToken) {
-    redirect('/profile');
+    redirect('/account');
   }
 
   return (

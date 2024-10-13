@@ -41,7 +41,7 @@ export default function ProfileNav() {
       </div>
       <div className="flex flex-col items-start">
         <Link href="/edit-profile">
-          <div className={`flex self-stretch p-[0.88rem] hover:bg-gray-100 transition-colors duration-200 ${pathname === 'account/edit-profile' ? 'bg-gray-200' : ''}`}>
+          <div className={`flex self-stretch p-[0.88rem] hover:bg-gray-100 transition-colors duration-200 bg-gray-200`}>
             <Heading as="h2" className="text-[1.00rem] font-medium text-text">
               Edit Profile
             </Heading>
@@ -58,7 +58,7 @@ export default function ProfileNav() {
         <Link href="/account/billing-information">
           <Heading
             as="h4"
-            className={`ml-[0.88rem] mt-[1.75rem] text-[1.00rem] font-normal text-body md:ml-0 hover:text-blue-600 transition-colors duration-200 ${pathname === '/account/billing-information' ? 'text-blue-600 bold' : ''}`}
+            className={`ml-[0.88rem] mt-[1.75rem] text-[1.00rem] font-normal text-body md:ml-0 hover:text-blue-600 transition-colors duration-200 ${pathname === '/account/billing-information' ? 'text-blue-600' : ''}`}
           >
             Billing Information
           </Heading>

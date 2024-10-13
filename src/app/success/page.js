@@ -10,12 +10,18 @@ function Page() {
   const [isProcessing, setIsProcessing] = useState(false); // State to track processing
 
   useEffect(() => {
-    const sessionId = new URLSearchParams(window.location.search).get('session_id');
+    const sessionId = new URLSearchParams(window.location.search).get(
+      "session_id"
+    );
     console.log("i am searchURL", sessionId);
     if (sessionId) {
       getSessionDetails(sessionId)
-        .then(session => {
-          // Create the order with the session details
+        .then((session) => {
+          // Retrieve products from local storage
+          const storedProducts = localStorage.getItem("orderDetails");
+          const products = storedProducts ? JSON.parse(storedProducts) : []; // Parse the products or default to an empty array
+
+          // Create the order with the session details and products from local storage
           const orderData = {
             total: session.amount_total,
             grand_total: session.amount_total, // Adjust if you have discounts or shipping
@@ -24,12 +30,12 @@ function Page() {
             payment_method: "Credit Card", // Assuming credit card for now
             transaction_id: session.payment_intent, // Use the payment intent ID
             agent_unique_id: "000001", // Replace with actual agent ID if available
-            products: session.line_items?.map(item => ({
-              id: item.price.product, // Product ID from Stripe
-              name: item.description, // Assuming description is the product name
-              price: item.price.unit_amount / 100, // Convert cents to dollars
-              quantity: item.quantity,
-              priceId: item.price.id,
+            products: products.map((item) => ({
+              id: item.id, // Assuming the product object has an id
+              name: item.name, // Assuming the product object has a name
+              price: item.price, // Assuming the product object has a price
+              quantity: item.quantity, // Assuming the product object has a quantity
+              priceId: item.priceId, // Assuming the product object has a priceId
             })),
             total_details: {
               amount_discount: session.total_details.amount_discount,
@@ -45,7 +51,7 @@ function Page() {
               state: session.customer_details.address?.state || "",
             },
           };
-    
+
           // Prevent multiple requests
           if (isProcessing) return; // Skip if already processing
 
@@ -56,21 +62,20 @@ function Page() {
             .then(() => {
               // Handle successful order creation (e.g., redirect to a confirmation page)
               console.log("Order Creation Data:", orderData);
-
-              router.push('/');
+              router.push("/");
             })
-            .catch(error => {
+            .catch((error) => {
               console.error("Error creating order:", error);
             })
             .finally(() => {
               setIsProcessing(false); // Reset processing state
             });
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("Error fetching session details:", error);
         });
     }
-  }, [isProcessing]); // Add isProcessing to the dependency array
+  }, []); // Add isProcessing to the dependency array
 
   return (
     <div className="flex w-full flex-col gap-[1.63rem] bg-gradient-to-b from-white to-blue-50">

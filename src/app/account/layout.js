@@ -18,5 +18,6 @@ export default function AccountLayout({ children }) {
         </div>
       </div>
     </div>
+
   );
 }
