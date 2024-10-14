@@ -2,7 +2,7 @@
 
 import { createColumnHelper } from "@tanstack/react-table";
 import React from "react";
-import { Button, Heading, Text } from "../../components";
+import { Heading } from "../../components";
 import { ReactTable } from "../../components/ReactTable";
 
 const tableData = [
@@ -108,46 +108,6 @@ export default function BillingStatus() {
 
   return (
     <div className="mb-[13.75rem] flex flex-1 flex-col gap-[2.50rem] md:self-stretch">
-      <div className="flex flex-col items-start border-b border-solid border-border">
-        <Heading
-          size="text5xl"
-          as="h6"
-          className="text-[1.75rem] font-medium text-text md:text-[1.63rem] sm:text-[1.50rem]"
-        >
-          Billing Information
-        </Heading>
-        <Text
-          as="p"
-          className="mb-[1.25rem] text-[1.13rem] font-normal text-body"
-        >
-          Update your email and manage your account
-        </Text>
-      </div>
-      <div className="mx-[0.88rem] flex items-center justify-center md:mx-0 sm:flex-col">
-        <Heading as="p" className="text-[1.00rem] font-normal text-body">
-          Overview
-        </Heading>
-        <Button
-          color="gray_10101"
-          size="xs"
-          variant="fill"
-          className="ml-[0.88rem] min-w-[5.13rem] rounded-[18px] px-[0.88rem] sm:ml-0"
-        >
-          History
-        </Button>
-        <Heading
-          as="p"
-          className="ml-[0.88rem] text-[1.00rem] font-normal text-body sm:ml-0"
-        >
-          Billing Emails
-        </Heading>
-        <Heading
-          as="p"
-          className="ml-[1.75rem] text-[1.00rem] font-normal text-body sm:ml-0"
-        >
-          Payment Methods
-        </Heading>
-      </div>
       <ReactTable
         size="xs"
         bodyProps={{ className: "" }}

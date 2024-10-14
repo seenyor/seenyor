@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import AddressChangeModal from "@/modals/AddressChangeModal";
 import Link from "next/link";
 import { useState } from "react";
@@ -30,7 +30,7 @@ const AccountSetting = () => {
             Update your email or change your password
           </Text>
         </div>
-  {/* Address Change Modal */}
+        {/* Address Change Modal */}
         <AddressChangeModal
           isOpen={isAddressModalOpen}
           onClose={closeAddressModal}
@@ -176,8 +176,6 @@ const AccountSetting = () => {
             Change Address
           </Button>
         </div>
-
-      
       </div>
     </div>
   );
