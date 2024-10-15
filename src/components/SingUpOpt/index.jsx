@@ -102,7 +102,7 @@ const SingUpOpt = ({
               className="h-4.5 w-4.5 mr-2"
             />
             <Text
-              onClick={() => setIsOtpVerified(false)}
+              onClick={() => setIsOtpPageOpen(false)}
               as="span"
               className="text-[1.13rem] font-medium"
             >

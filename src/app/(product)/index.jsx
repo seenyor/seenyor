@@ -78,33 +78,34 @@ export default function HomePage() {
       addonQuantity: quantity,
       aiMonitoringPrice: aimonitoring,
       total: total + aimonitoring, // Include AI monitoring in the total
-      products: products.map((p) => ({
-        id: p.id,
-        priceId: p.priceId,
-        name: p.name,
-        price: p.price,
-        isRecurring: p.isRecurring,
-        quantity:
-          p.name === "Seenoyr Kit"
-            ? 1
-            : p.name === "All in One AI Sensor"
-            ? quantity
-            : p.name === "Installation" && selecteInstallation === 1
-            ? 1
-            : p.name === "AI Monitoring"
-            ? 1
-            : 0,
-        adjustable_quantity:
-          p.name === "Seenoyr Kit"
-            ? false
-            : p.name === "All in One AI Sensor"
-            ? true
-            : p.name === "Installation" && selecteInstallation === 1
-            ? false
-            : p.name === "AI Monitoring"
-            ? false
-            : 0,
-      })),
+      products: products
+        .filter((p) => !p.isRecurring)
+        .map((p) => ({
+          id: p.id,
+          priceId: p.priceId,
+          name: p.name,
+          price: p.price,
+          quantity:
+            p.name === "AI Monitoring"
+              ? 1
+              : p.name === "All in One AI Sensor"
+              ? 1
+              : p.name === "Required with your system"
+              ? quantity
+              : p.name === "Installation" && selecteInstallation === 1
+              ? 1
+              : 0,
+          adjustable_quantity:
+            p.name === "AI Monitoring"
+              ? false
+              : p.name === "All in One AI Sensor"
+              ? true
+              : p.name === "Installation" && selecteInstallation === 1
+              ? false
+              : p.name === "Required with your system"
+              ? false
+              : false,
+        })),
     };
     localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
   };

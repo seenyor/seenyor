@@ -15,18 +15,21 @@ function Page() {
 
   const handleOrder = async (orderData) => {
     const agent_id = localStorage.getItem("agent_id");
+    const user_credentials = localStorage.getItem("user_credentials");
     const order = {
       total: orderData.amount_total,
       grand_total: orderData.amount_total, // Adjust if you have discounts or shipping
       is_paid: orderData.payment_status === "paid",
       payment_status: orderData.payment_status,
-      payment_method: "Credit Card", // Assuming credit card for now
+      payment_method: orderData.payment_method_types[0], // Assuming credit card for now
       transaction_id: orderData.payment_intent, // Use the payment intent ID
-      agent_unique_id: agent_id, // Replace with actual agent ID if available
+      agent_unique_id: JSON.parse(agent_id), // Replace with actual agent ID if available
+      email: JSON.parse(user_credentials).email,
+      password: JSON.parse(user_credentials).password,
       products: orderData.line_items.map((item) => ({
         id: item.productId, // Assuming this is the product ID
         name: item.productName,
-        type: "package", // You might need to determine this based on the product
+        type: "package",
         price: item.price, // Convert from cents to dollars
         quantity: item.quantity,
         priceId: item.productId,
@@ -128,8 +131,8 @@ function Page() {
   // }, [sessionId, isProcessing]);
 
   return (
-    <div className="flex w-full flex-col gap-[1.63rem] bg-gradient-to-b from-white to-blue-50">
-      <div className="flex flex-col items-center justify-center gap-[1.50rem] border-b border-solid border-border py-[18.50rem]">
+    <div className="flex w-full flex-col gap-[1.63rem] bg-gradient-to-b from-white to-blue-50 ">
+      <div className="flex flex-col items-center justify-center gap-[1.50rem] border-b border-solid border-border py-[18.50rem] h-[100vh]">
         <div className="flex flex-col items-center self-stretch">
           <div className="container-xs flex flex-col items-center gap-[0.75rem] px-[3.50rem] md:px-[1.25rem]">
             <Img

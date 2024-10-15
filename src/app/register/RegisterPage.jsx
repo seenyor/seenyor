@@ -173,6 +173,13 @@ export default function RegisterPage() {
       const response = await registerUser(formattedData);
       if (response.status) {
         setEmail(formattedData.email);
+        localStorage.setItem(
+          "user_credentials",
+          JSON.stringify({
+            email: formattedData.email,
+            password: formattedData.password,
+          })
+        );
         setIsOtpSent(true);
         reset();
       } else {
