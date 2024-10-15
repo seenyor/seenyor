@@ -37,7 +37,9 @@ export default function HomePage() {
         console.log(fetchedProducts);
 
         // Set prices based on fetched products
-        const kit = fetchedProducts.find((p) => p.name === "Seenoyr Kit");
+        const kit = fetchedProducts.find(
+          (p) => p.name === "Required with your system"
+        );
         const addon = fetchedProducts.find(
           (p) => p.name === "All in One AI Sensor"
         );
