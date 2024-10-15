@@ -16,12 +16,15 @@ export default function AccountDone() {
 
   const processPayment = async () => {
     const stripeCustomerId = await getStripeCustomerId();
+    console.log("i am stripeCustomerId", stripeCustomerId);
+
     if (!stripeCustomerId) {
       router.push("/register");
       return;
     }
 
     const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
+    console.log("i am orderDetails", orderDetails);
     if (!orderDetails) {
       router.push("/");
       return;
@@ -29,35 +32,59 @@ export default function AccountDone() {
     setIsProcessing(true);
 
     try {
-      const lineItems = [
-        {
-          price: orderDetails.products[3].priceId, // kit
-          quantity: 1,
-          adjustable_quantity: { enabled: false },
-        },
-      ];
+      // const lineItems = [
+      //   {
+      //     price: orderDetails.products[3].priceId, // kit
+      //     quantity: 1,
+      //     adjustable_quantity: { enabled: false },
+      //   },
+      // ];
 
-      if (orderDetails.addonQuantity > 0) {
-        lineItems.push({
-          price: orderDetails.products[2].priceId, // Addon device
-          quantity: orderDetails.addonQuantity,
-          adjustable_quantity: { enabled: true, minimum: 0, maximum: 10 },
-        });
-      }
-      if (orderDetails.installationPrice > 0) {
-        lineItems.push({
-          price: orderDetails.products[1].priceId, // Installation
-          quantity: 1,
-          adjustable_quantity: { enabled: false },
-        });
-      }
-      if (orderDetails.aiMonitoringPrice) {
-        lineItems.push({
-          price: orderDetails.products[0].priceId, // Installation
-          quantity: 1,
-          adjustable_quantity: { enabled: false },
-        });
-      }
+      // if (orderDetails.addonQuantity > 0) {
+      //   lineItems.push({
+      //     price: orderDetails.products[2].priceId, // Addon device
+      //     quantity: orderDetails.addonQuantity,
+      //     adjustable_quantity: { enabled: true, minimum: 0, maximum: 10 },
+      //   });
+      // }
+      // if (orderDetails.installationPrice > 0) {
+      //   lineItems.push({
+      //     price: orderDetails.products[1].priceId, // Installation
+      //     quantity: 1,
+      //     adjustable_quantity: { enabled: false },
+      //   });
+      // }
+      // if (orderDetails.aiMonitoringPrice) {
+      //   lineItems.push({
+      //     price: orderDetails.products[0].priceId, // Installation
+      //     quantity: 1,
+      //     adjustable_quantity: { enabled: false },
+      //   });
+      // }
+
+      const lineItems = orderDetails.products
+        .map((product) => ({
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: product.name,
+              description: `Description for ${product.name}`,
+              metadata: {
+                category: product.isRecurring ? "subscription" : "one-time",
+              },
+            },
+            unit_amount: product.price * 100, // Assuming price is in dollars, convert to cents
+          },
+          quantity: product.quantity,
+          adjustable_quantity: product.adjustable_quantity
+            ? {
+                enabled: true,
+                minimum: 0,
+                maximum: 10,
+              }
+            : undefined,
+        }))
+        .filter((item) => item.quantity > 0);
 
       const session = await createStripeSession({
         customer: stripeCustomerId,

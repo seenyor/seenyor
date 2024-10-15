@@ -13,9 +13,6 @@ import RadioButtonGroup from "./RadioGroupFInstallation";
 import TermsCheckbox from "./TermsCheckbox ";
 import "./style.css";
 
-
-
-
 export default function HomePage() {
   const router = useRouter();
   const [products, setProducts] = useState([]);
@@ -30,23 +27,25 @@ export default function HomePage() {
   const { getProducts, getStripeCustomerId, createStripeSession } =
     useUserService();
   const { accessToken } = useAuth();
-  console.log("i am accesstoken", accessToken)
+  console.log("i am accesstoken", accessToken);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const fetchedProducts = await getProducts();
         setProducts(fetchedProducts);
+        console.log(fetchedProducts);
 
         // Set prices based on fetched products
-        const kit = fetchedProducts.find((p) => p.name === "Seenyor Kit");
+        const kit = fetchedProducts.find(
+          (p) => p.name === "Required with your system"
+        );
         const addon = fetchedProducts.find(
-          (p) => p.name === "Additional Device"
+          (p) => p.name === "All in One AI Sensor"
         );
         const installation = fetchedProducts.find(
           (p) => p.name === "Installation"
         );
-
         if (kit) setKitPrice(kit.price);
         if (addon) setAddonDevicePrice(addon.price);
         if (installation) setInstallationPrice(installation.price);
@@ -81,27 +80,50 @@ export default function HomePage() {
       addonQuantity: quantity,
       aiMonitoringPrice: aimonitoring,
       total: total + aimonitoring, // Include AI monitoring in the total
-      products: products.map((p) => ({
-        id: p.id,
-        priceId: p.priceId,
-        quantity:
-          p.name === "Seenyor Kit"
-          ? 1
-          : p.name === "Additional Device"
-          ? quantity
-          : p.name === "Installation" && selecteInstallation === 1
-          ? 1
-          : p.name === "AI Monitoring"
-          ? 1
-          : 0,
-      })),
+      products: products
+        .filter((p) => !p.isRecurring)
+        .map((p) => ({
+          id: p.id,
+          priceId: p.priceId,
+          name: p.name,
+          price: p.price,
+          quantity:
+            p.name === "AI Monitoring"
+              ? 1
+              : p.name === "All in One AI Sensor"
+              ? quantity
+              : p.name === "Required with your system"
+              ? 1
+              : p.name === "Installation" && selecteInstallation === 1
+              ? 1
+              : 0,
+          adjustable_quantity:
+            p.name === "AI Monitoring"
+              ? false
+              : p.name === "All in One AI Sensor"
+              ? true
+              : p.name === "Installation" && selecteInstallation === 1
+              ? false
+              : p.name === "Required with your system"
+              ? false
+              : false,
+        })),
     };
     localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
   };
 
   useEffect(() => {
     updateOrderDetails();
-  }, [kitPrice, installationPrice, addonDevicePrice, quantity, selecteInstallation, total, products, aimonitoring]);
+  }, [
+    kitPrice,
+    installationPrice,
+    addonDevicePrice,
+    quantity,
+    selecteInstallation,
+    total,
+    products,
+    aimonitoring,
+  ]);
 
   const handleCheckout = async () => {
     const stripeCustomerId = await getStripeCustomerId();
@@ -160,17 +182,19 @@ export default function HomePage() {
           throw new Error("Installation product not found");
         }
       }
-         // Add AI Monitoring
-         const aiMonitoringProduct = products.find((p) => p.name === "AI Monitoring");
-         if (aiMonitoringProduct) {
-           lineItems.push({
-             price: aiMonitoringProduct.priceId,
-             quantity: 1,
-             adjustable_quantity: { enabled: false },
-           });
-         } else {
-           throw new Error("AI Monitoring product not found");
-         }
+      // Add AI Monitoring
+      const aiMonitoringProduct = products.find(
+        (p) => p.name === "AI Monitoring"
+      );
+      if (aiMonitoringProduct) {
+        lineItems.push({
+          price: aiMonitoringProduct.priceId,
+          quantity: 1,
+          adjustable_quantity: { enabled: false },
+        });
+      } else {
+        throw new Error("AI Monitoring product not found");
+      }
 
       if (lineItems.length === 0) {
         throw new Error("No products selected for checkout");

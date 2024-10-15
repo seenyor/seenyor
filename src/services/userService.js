@@ -3,12 +3,12 @@ import { useApi } from "../utils/api";
 
 // Helper function to determine the appropriate cookie domain
 const getCookieDomain = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     const hostname = window.location.hostname;
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
       return null; // No domain for localhost
-    } else if (hostname.endsWith('seenyor.com')) {
-      return '.seenyor.com'; // Dot prefix allows cookie to be shared across subdomains
+    } else if (hostname.endsWith("seenyor.com")) {
+      return ".seenyor.com"; // Dot prefix allows cookie to be shared across subdomains
     }
   }
   return null; // Default to no domain if we can't determine it
@@ -34,11 +34,11 @@ export const useUserService = () => {
         stripeCustomerId: stripeCustomerResponse.id,
       };
 
-       // Store only the Stripe customer ID in a cookie
-       const cookieOptions = {
+      // Store only the Stripe customer ID in a cookie
+      const cookieOptions = {
         expires: 1, // 1 day
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Lax'
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax",
       };
 
       const domain = getCookieDomain();
@@ -46,7 +46,11 @@ export const useUserService = () => {
         cookieOptions.domain = domain;
       }
 
-      Cookies.set("stripeCustomerId", combinedUserData.stripeCustomerId, cookieOptions);
+      Cookies.set(
+        "stripeCustomerId",
+        combinedUserData.stripeCustomerId,
+        cookieOptions
+      );
       return combinedUserData;
     } catch (error) {
       console.error("Error during user registration:", error);
@@ -61,16 +65,16 @@ export const useUserService = () => {
   const resendOtp = async (emailData) => {
     return post("/auth/send-otp", emailData);
   };
-  
+
   const login = async (credentials) => {
     try {
       const response = await post("/auth/login", credentials);
-      const accessToken = response.data.access_token; 
+      const accessToken = response.data.access_token;
       // Set the access token in a cookie
       const cookieOptions = {
         expires: 1, // 1 day
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Lax'
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax",
       };
 
       const domain = getCookieDomain();
@@ -79,7 +83,7 @@ export const useUserService = () => {
       }
 
       Cookies.set("access_token", accessToken, cookieOptions); // Set the access token cookie
-      return response; 
+      return response;
     } catch (error) {
       console.error("Error during login:", error);
       throw error;
@@ -117,8 +121,8 @@ export const useUserService = () => {
   const removeStripeCustomerId = async () => {
     try {
       const cookieOptions = {
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'Lax'
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Lax",
       };
 
       const domain = getCookieDomain();
@@ -134,25 +138,17 @@ export const useUserService = () => {
     }
   };
 
-
-   const getSessionDetails = async (sessionId) => {
-    try {
-      const sessionDetails = await get(`/orders/session-details/${sessionId}`);
-      return sessionDetails; // Return the session details
-    } catch (error) {
-      console.error("Error fetching session details:", error);
-      throw error; 
-    }
+  const getSessionDetails = async (sessionId) => {
+    return get(`/orders/session-details/${sessionId}`);
   };
-
 
   const createOrder = async (orderData) => {
     try {
-      const response = await post("/orders/create", orderData); 
+      const response = await post("/orders", orderData);
       return response;
     } catch (error) {
       console.error("Error creating order:", error);
-      throw error; 
+      throw error;
     }
   };
 
@@ -168,7 +164,7 @@ export const useUserService = () => {
     removeStripeCustomerId,
     getCountries,
     getAgents,
-    getSessionDetails, 
-    createOrder
+    getSessionDetails,
+    createOrder,
   };
 };

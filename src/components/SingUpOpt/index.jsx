@@ -19,7 +19,13 @@ const OtpInput = React.memo(({ onChange, onKeyDown, onPaste, inputRef }) => (
 ));
 OtpInput.displayName = "OtpInput";
 
-const SingUpOpt = ({ onVerify, onResend, error, setError }) => {
+const SingUpOpt = ({
+  onVerify,
+  onResend,
+  error,
+  setError,
+  setIsOtpPageOpen,
+}) => {
   const [isResending, setIsResending] = useState(false);
   const { email } = useAuth();
   const inputRefs = useRef([]);
@@ -95,7 +101,11 @@ const SingUpOpt = ({ onVerify, onResend, error, setError }) => {
               alt="Arrow Left"
               className="h-4.5 w-4.5 mr-2"
             />
-            <Text as="span" className="text-[1.13rem] font-medium">
+            <Text
+              onClick={() => setIsOtpPageOpen(false)}
+              as="span"
+              className="text-[1.13rem] font-medium"
+            >
               Back
             </Text>
           </button>
