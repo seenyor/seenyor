@@ -89,9 +89,9 @@ export default function HomePage() {
             p.name === "AI Monitoring"
               ? 1
               : p.name === "All in One AI Sensor"
-              ? 1
-              : p.name === "Required with your system"
               ? quantity
+              : p.name === "Required with your system"
+              ? 1
               : p.name === "Installation" && selecteInstallation === 1
               ? 1
               : 0,

@@ -29,7 +29,15 @@ function Page() {
       products: orderData.line_items.map((item) => ({
         id: item.productId, // Assuming this is the product ID
         name: item.productName,
-        type: "package",
+        type:
+          item.productName === "AI Monitoring" ||
+          item.productName === "Required with your system"
+            ? "Seenyor Kit"
+            : item.productName === "Installation"
+            ? "Installation"
+            : item.productName === "All in One AI Sensor"
+            ? `AI Sensor ${item.quantity}x`
+            : "package",
         price: item.price, // Convert from cents to dollars
         quantity: item.quantity,
         priceId: item.productId,
