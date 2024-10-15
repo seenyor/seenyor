@@ -82,7 +82,7 @@ function Page() {
           setIsProcessing(false);
         });
     }
-  }, [sessionId, isProcessing]);
+  }, []);
 
   // useEffect(() => {
   //   if (sessionId) {
