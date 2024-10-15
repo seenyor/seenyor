@@ -17,8 +17,8 @@ function Page() {
     const agent_id = localStorage.getItem("agent_id");
     const user_credentials = localStorage.getItem("user_credentials");
     const order = {
-      total: orderData.amount_total,
-      grand_total: orderData.amount_total, // Adjust if you have discounts or shipping
+      total: orderData.amount_total / 100,
+      grand_total: orderData.amount_total / 100, // Adjust if you have discounts or shipping
       is_paid: orderData.payment_status === "paid",
       payment_status: orderData.payment_status,
       payment_method: orderData.payment_method_types[0], // Assuming credit card for now
