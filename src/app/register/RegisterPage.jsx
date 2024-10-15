@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import { Button, Heading, Input, Text } from "../../components";
 import { useUserService } from "../../services/userService";
 
-
 const liveWith = [
   { label: "Alone", value: "0" },
   { label: "With Someone", value: "0" },
@@ -21,7 +20,6 @@ const SourceofLeads = [
   { label: "Nursing Home", value: "nursing_home" },
 ];
 
-
 const SelectBox = forwardRef(
   ({ name, placeholder, options = [], onChange, className, ...rest }, ref) => (
     <select
@@ -32,17 +30,17 @@ const SelectBox = forwardRef(
       {...rest}
     >
       <option value="">{placeholder}</option>
-      {Array.isArray(options) && options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
+      {Array.isArray(options) &&
+        options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
     </select>
   )
 );
 
 SelectBox.displayName = "SelectBox";
-
 
 export default function RegisterPage() {
   const {
@@ -55,7 +53,8 @@ export default function RegisterPage() {
     reset,
   } = useForm();
   const router = useRouter();
-  const { registerUser, verifyOtp, resendOtp, getCountries, getAgents } = useUserService();
+  const { registerUser, verifyOtp, resendOtp, getCountries, getAgents } =
+    useUserService();
   const [countries, setCountries] = useState([]);
   const [agents, setAgents] = useState([]);
   const { setEmail, email, user } = useAuth();
@@ -64,8 +63,6 @@ export default function RegisterPage() {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
 
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,28 +70,38 @@ export default function RegisterPage() {
         console.log("Fetching countries...");
         const countriesResponse = await getCountries();
         console.log("Countries response:", countriesResponse);
-  
-        if (countriesResponse && countriesResponse.data && Array.isArray(countriesResponse.data)) {
-          const formattedCountries = countriesResponse.data.map(country => ({
+
+        if (
+          countriesResponse &&
+          countriesResponse.data &&
+          Array.isArray(countriesResponse.data)
+        ) {
+          const formattedCountries = countriesResponse.data.map((country) => ({
             label: country.country_name,
-            value: country._id
+            value: country._id,
           }));
           setCountries(formattedCountries);
           console.log("Formatted countries:", formattedCountries);
         } else {
           console.error("Invalid country data structure:", countriesResponse);
-          throw new Error("Invalid country data structure received from the API");
+          throw new Error(
+            "Invalid country data structure received from the API"
+          );
         }
-  
+
         // Fetch agents
         console.log("Fetching agents...");
         const agentsResponse = await getAgents();
         console.log("Agents response:", agentsResponse);
-  
-        if (agentsResponse && agentsResponse.data && Array.isArray(agentsResponse.data)) {
-          const formattedAgents = agentsResponse.data.map(agent => ({
-            label:`${agent.agent_id}`,
-            value: agent.agent_id
+
+        if (
+          agentsResponse &&
+          agentsResponse.data &&
+          Array.isArray(agentsResponse.data)
+        ) {
+          const formattedAgents = agentsResponse.data.map((agent) => ({
+            label: `${agent.agent_id}`,
+            value: agent.agent_id,
           }));
           setAgents(formattedAgents);
           console.log("Formatted agents:", formattedAgents);
@@ -111,47 +118,47 @@ export default function RegisterPage() {
         setError("Failed to load necessary data. Please try again.");
       }
     };
-  
+
     fetchData();
   }, []);
 
   const onSubmit = async (data) => {
-        // // Perform client-side validation
-        // const validationErrors = validateForm(data);
-        // if (Object.keys(validationErrors).length > 0) {
-        //   // Set errors in the form
-        //   Object.keys(validationErrors).forEach(key => {
-        //     setError(key, {
-        //       type: "manual",
-        //       message: validationErrors[key]
-        //     });
-        //   });
-        //   return; // Stop submission if there are validation errors
-        // }
+    // // Perform client-side validation
+    // const validationErrors = validateForm(data);
+    // if (Object.keys(validationErrors).length > 0) {
+    //   // Set errors in the form
+    //   Object.keys(validationErrors).forEach(key => {
+    //     setError(key, {
+    //       type: "manual",
+    //       message: validationErrors[key]
+    //     });
+    //   });
+    //   return; // Stop submission if there are validation errors
+    // }
     const formattedData = {
-      agent_id: data.badge_id,
-      email: data.customer_email,
-      name: data.customer_first_name,
-      last_name: data.customer_last_name,
-      address: data.customer_address,
-      address2: data.customer_address_2,
-      city: data.customer_city,
-      country_id: data.customer_country_id,
-      post_Code: data.customer_zipcode,
-      state: data.customer_state,
-      contact_number: data.customer_contact_number,
+      agent_id: data.agent_id,
+      email: data.endUser_email,
+      name: data.endUser_first_name,
+      last_name: data.endUser_last_name,
+      address: data.endUser_address,
+      address2: data.endUser_address_2,
+      city: data.endUser_city,
+      country_id: data.endUser_country_id,
+      post_Code: data.endUser_zipcode,
+      state: data.endUser_state,
+      contact_number: data.endUser_contact_number,
       password: data.password,
       customer_info: {
-        country_id: data.endUser_country_id,
-        name: data.endUser_first_name,
-        last_name: data.endUser_last_name,
-        contact_number: data.endUser_contact_number,
-        address: data.endUser_address,
-        address2: data.endUser_address_2,
-        city: data.endUser_city,
-        post_Code: data.endUser_zipcode,
-        state: data.endUser_state,
-        email: data.endUser_email,
+        country_id: data.customer_country_id,
+        name: data.customer_first_name,
+        last_name: data.customer_last_name,
+        contact_number: data.customer_contact_number,
+        address: data.customer_address,
+        address2: data.customer_address_2,
+        city: data.customer_city,
+        post_Code: data.customer_zipcode,
+        state: data.customer_state,
+        email: data.customer_email,
         agent_name: data.agent_name,
         installation_date: data.installation_date,
         elderly_Count: data.live_with === "alone" ? 1 : 2, // Assuming "alone" means 1, otherwise 2
@@ -159,6 +166,7 @@ export default function RegisterPage() {
         installer_id: data.customer_country_id, // Using customer's country_id as installer_id for now
       },
     };
+    localStorage.setItem("agent_id", JSON.stringify(data.agent_id));
 
     try {
       setError("");
@@ -182,7 +190,7 @@ export default function RegisterPage() {
         otp: otp,
       });
       if (response.status) {
-        setIsOtpVerified(true)
+        setIsOtpVerified(true);
         router.push("/payment");
       } else {
         setError(
@@ -212,6 +220,7 @@ export default function RegisterPage() {
   if (isOtpSent && !isOtpVerified) {
     return (
       <SingUpOpt
+        setIsOtpPageOpen={setIsOtpSent}
         email={email}
         onVerify={handleOtpVerification}
         onResend={handleResendOtp}
@@ -250,7 +259,13 @@ export default function RegisterPage() {
         <SelectBox
           name={name}
           placeholder={placeholder}
-          options={name === "badge_id" ? agents : (name.includes("country") ? countries : options)}
+          options={
+            name === "badge_id"
+              ? agents
+              : name.includes("country")
+              ? countries
+              : options
+          }
           {...register(name, { required })}
           onChange={(e) => {
             setValue(name, e.target.value);
@@ -528,11 +543,11 @@ export default function RegisterPage() {
                       required: false,
                     })}
                     {renderField({
-                      label: "Badge ID",
-                      name: "badge_id",
-                      type: "select",
+                      label: "Agent ID",
+                      name: "agent_id",
+                      type: "text",
                       placeholder: "Agent ID",
-                      required: false,
+                      required: true,
                     })}
                   </div>
                 </div>
