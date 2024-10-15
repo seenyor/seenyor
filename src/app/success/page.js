@@ -14,6 +14,7 @@ function Page() {
   }
 
   const handleOrder = async (orderData) => {
+    const agent_id = localStorage.getItem("agent_id");
     const order = {
       total: orderData.amount_total,
       grand_total: orderData.amount_total, // Adjust if you have discounts or shipping
@@ -21,7 +22,7 @@ function Page() {
       payment_status: orderData.payment_status,
       payment_method: "Credit Card", // Assuming credit card for now
       transaction_id: orderData.payment_intent, // Use the payment intent ID
-      agent_unique_id: "000001", // Replace with actual agent ID if available
+      agent_unique_id: agent_id, // Replace with actual agent ID if available
       products: orderData.line_items.map((item) => ({
         id: item.productId, // Assuming this is the product ID
         name: item.productName,
