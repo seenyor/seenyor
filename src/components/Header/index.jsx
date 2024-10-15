@@ -5,14 +5,14 @@ export default function Header({ ...props }) {
   return (
     <header
       {...props}
-      className={`${props.className} flex w-full sm:flex-col justify-between items-center gap-[1.25rem]  py-4 px-6`}
+      className={`${props.className} flex w-full md:hidden sm:flex-col justify-between items-center gap-[1.25rem] px-6`}
     >
       <Img
         src="img_group_1.svg"
         width={440}
         height={32}
         alt="Frame 1000008413"
-        className="h-[2.00rem] w-[38%] flex object-contain md:w-full hover:opacity-80 transition-opacity duration-300"
+        className="h-[2.00rem] w-[11%] flex object-contain md:w-full hover:opacity-80 transition-opacity duration-300"
       />
       <div className="mx-auto flex w-full max-w-[63.13rem] items-center justify-center md:flex-col md:px-[1.25rem]">
         <ul className="relative !ml-[-8.13rem] flex flex-wrap gap-[2.13rem] md:ml-0">

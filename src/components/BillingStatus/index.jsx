@@ -107,7 +107,7 @@ export default function BillingStatus() {
   }, []);
 
   return (
-    <div className="mb-[13.75rem] flex flex-1 flex-col gap-[2.50rem] md:self-stretch">
+    <div className="mb-[13.75rem] w-[34.37rem]  flex flex-col gap-[2.50rem] md:self-stretch md:w-full">
       <ReactTable
         size="xs"
         bodyProps={{ className: "" }}

@@ -1,6 +1,7 @@
 import { AuthProvider } from "@/context/AuthContext";
 import "@/styles/index.css";
 import "@/styles/tailwind.css";
+
 // import { Poppins } from "next/font/google";
 
 export const metadata = {

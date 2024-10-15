@@ -9,104 +9,117 @@ function Page() {
   const data = [
     {
       id: 1,
-      SettingsIcon: "img_settings.svg",
-      cardDescription: "visa ending in 1234",
+      settingsIcon: "Visa.svg",
+      cardDescription: "Visa Ending in 1234",
+      cardExpire: "12/25",
+      isDefault: true,
+    },
+    {
+      id: 1,
+      SettingsIcon: "MasterCard.svg",
+      cardDescription: "MasterCard ending in 1234",
       cardExpire: "12/25",
       isDefault: true,
     },
     {
       id: 1,
       SettingsIcon: "img_settings.svg",
-      cardDescription: "visa ending in 1234",
+      cardDescription: "Visa ending in 1234",
       cardExpire: "12/25",
-      isDefault: true,
-    },
-    {
-      id: 1,
-      SettingsIcon: "img_settings.svg",
-      cardDescription: "visa ending in 1234",
-      cardExpire: "12/25",
-      isDefault: true,
+      isDefault: false,
     },
     {
       id: 1,
       settingsIcon: "img_settings.svg",
-      cardDescription: "visa ending in 1234",
+      cardDescription: "Stripe Visa ending in 1234",
       cardExpire: "12/25",
-      isDefault: true,
+      isDefault: false,
     },
   ];
   return (
-    <div className="w-full flex">
+    <div className="w-full">
       {/* Edit Profile Card */}
       <Tabs
         className="flex flex-1 flex-col gap-[2.50rem] self-center md:self-stretch cursor-pointer"
         selectedTabClassName="!text-text bg-gray-100 rounded-[18px]"
         selectedTabPanelClassName="!relative tab-panel--selected"
       >
-        <div className="flex flex-col gap-2 self-stretch border-b border-border pb-4">
+        <div className="flex flex-col gap-2 self-stretch border-b border-border pb-4 md:items-center ">
           <Heading
             size="text3xl"
             as="h6"
-            className="text-2xl font-medium text-text md:text-2xl sm:text-xl"
+            className="text-[1.8rem] font-medium text-[#1d293f] md:text-[1.55rem]"
           >
             Billing Information
           </Heading>
-          <Text as="p" className="text-lg font-normal leading-6 text-body">
+          <Text
+            as="p"
+            className="text-lg font-normal leading-6 text-[#6c7482] md:text-center"
+          >
             Update your email and manage your account
           </Text>
         </div>
         {/* Tabs List */}
-        <TabList className="flex flex-wrap justify-center gap-[0.06rem]">
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal text-body">
+        {/* Tabs List */}
+        {/* Tabs List */}
+        <TabList className="flex sm:grid sm:grid-cols-2 sm:justify-between gap-4 text-[#6c7482] max-w-[34.37rem] sm:text-[0.8rem]">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal text-[#6c7482] md:place-self-end">
             Overview
           </Tab>
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal text-body">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-norma sm:place-self-start">
             History
           </Tab>
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal text-body">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal sm:place-self-end ">
             Billing Emails
           </Tab>
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal text-body">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal sm:place-self-start">
             Payment Methods
           </Tab>
         </TabList>
 
         {/* Tab Panels */}
-        <TabPanel className="absolute items-center">
+        <TabPanel className="absolute items-center md:text-cente md:justify-center md:items-center ">
           <div className="w-full">
             <div className="flex flex-col gap-4 pb-10">
               {/* Billing Overview */}
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1 md:items-center">
                 <Heading
                   as="p"
                   className="text-[1.50rem] font-medium text-text md:text-[1.38rem]"
                 >
                   Seenyor <span className="text-primary">Pro</span>
                 </Heading>
-                <Text as="p" className="text-[1.13rem] font-normal text-body">
+                <Text
+                  as="p"
+                  className="text-[1.13rem] font-normal text-[#6c7482]"
+                >
                   Subscription Status:{" "}
                   <span className="font-medium text-primary">Active</span>
                 </Text>
-                <Text as="p" className="text-[1.13rem] font-normal text-body">
+                <Text
+                  as="p"
+                  className="text-[1.13rem] font-normal text-[#6c7482]"
+                >
                   Billing Amount:{" "}
-                  <span className="font-medium text-text">$40</span>/Monthly
+                  <span className="font-medium text-[#1d293f]">
+                    $40 /Monthly
+                  </span>
                 </Text>
               </div>
 
               {/* Cancel Subscription */}
-              <div className="flex items-center justify-between gap-[1.25rem] rounded-[14px] bg-orange-50 px-[1.13rem] py-[0.88rem] sm:flex-col">
-                <div className="flex w-[60%] flex-col items-start sm:w-full">
+              <div className="flex items-center justify-between gap-[1.25rem] rounded-[14px] bg-orange-50 px-[1.13rem] py-[0.88rem] md:flex-col ">
+                <div className="flex w-full flex-col items-start md:w-full md:items-center md:text-center">
                   <Heading
                     size="headingmd"
                     as="h6"
-                    className="text-[1.19rem] font-semibold text-amber-a700"
+                    className="text-[1.19rem] font-semibold text-[#f6ac00]"
                   >
                     Cancel Subscription
                   </Heading>
                   <Text
                     as="p"
-                    className="w-full text-[0.88rem] font-normal leading-[1.31rem] text-gray-900_99"
+                    className="w-full text-[0.88rem] font-normal leading-[1.31rem] text-[#6c7482]"
                   >
                     Once you cancel a subscription, you can renew it anytime
                     later.
@@ -124,30 +137,34 @@ function Page() {
               {/* Billing Date */}
               <Text
                 as="p"
-                className="text-[1.13rem] font-normal leading-[1.69rem] text-body"
+                className="text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] md:text-center "
               >
                 Your service will renew on{" "}
-                <span className="font-medium text-text">May 8, 2024</span> for
-                <span className="font-medium text-text">$800</span>. Renewal
-                price includes applicable taxes.
+                <span className="font-medium text-[#1d293f]">May 8, 2024</span>{" "}
+                for
+                <span className="font-medium text-[#1d293f]"> $800</span>.
+                Renewal price includes applicable taxes.
               </Text>
             </div>
-            <div className="flex flex-col items-start gap-[0.63rem] pb-10">
+            <div className="flex flex-col items-start gap-[0.63rem] pb-10 md:items-center">
               <Heading
                 size="text2xl"
                 as="p"
-                className="text-[1.50rem] font-medium text-text md:text-[1.38]"
+                className="text-[1.50rem] font-medium text-[#1d293f] md:text-[1.38]"
               >
                 Billing Information
               </Heading>
               <div className="flex flex-col items-start gap-[0.38rem] self-stretch">
-                <Text as="p" className="text-[1.13rem} font-normal text-body">
+                <Text
+                  as="p"
+                  className="text-[1.13rem} font-normal text-[#1d293f]  md:text-center "
+                >
                   Your upcoming charges will be billed to the card
                 </Text>
               </div>
             </div>
             {/* Billing Emails */}
-            <div className="flex flex-col gap-[0.63rem]">
+            {/* <div className="flex flex-col gap-[0.63rem]">
               <Heading
                 as="p"
                 className="text-[1.50rem] font-medium text-text md:text-[1.38rem]"
@@ -180,17 +197,17 @@ function Page() {
               >
                 Manage Emails
               </Heading>
-            </div>
+            </div> */}
           </div>
         </TabPanel>
         <TabPanel className="absolute items-center">
           <BillingStatus />
         </TabPanel>
 
-        <TabPanel className="absolute items-center">
-          <div className="w-full">
+        <TabPanel className="absolute items-center w-[34.37rem] md:w-full">
+          {/* <div className="w-full">
             <div className="flex flex-col gap-4 pb-10">
-              {/* Billing Emails Content */}
+            
               <Heading
                 as="h3"
                 className="text-[1.50rem] font-medium text-text md:text-[1.38rem]"
@@ -210,10 +227,10 @@ function Page() {
                 settings.
               </Text>
             </div>
-          </div>
+          </div> */}
         </TabPanel>
 
-        <TabPanel className="absolute items-center">
+        <TabPanel className="absolute items-center w-[34.37rem] md:w-full">
           <div className="w-full">
             <div className="flex flex-col gap-[1.25rem]">
               <div className="flex items-center justify-between gap-[1.25rem]">
@@ -226,18 +243,18 @@ function Page() {
                 </Heading>
 
                 <Button
-                  color="bg-gray_100_02"
                   shape="round"
+                  variant="fill"
                   leftIcon={
                     <Img
-                      src="img_frame_primary.svg"
+                      src="plus.svg"
                       width={24}
                       height={24}
                       alt="Frame"
                       className="h-[1.50rem] w-[1.50rem]"
                     />
                   }
-                  className="min-w-[14.63rem] gap-[1.00rem] rounded-[14px] px-[1.75rem] font-semibold sm:px-[1.25rem] bg-gray_100_02"
+                  className="min-w-[14.63rem] gap-[1.00rem] rounded-[14px] px-[1.75rem] font-semibold sm:px-[1.25rem] bg-[#f1f8f5] text-primary"
                 >
                   Add New Method
                 </Button>
@@ -248,6 +265,7 @@ function Page() {
                   {data.map((d, index) => (
                     <PaymentMethodCard
                       {...d}
+                      settingsIcon
                       key={`checkboxgroup${index}`}
                       className="border-green-200 bg-gray-100_02"
                     />

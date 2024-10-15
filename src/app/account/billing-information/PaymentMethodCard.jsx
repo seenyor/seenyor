@@ -2,7 +2,7 @@ import { Heading, Img } from "@/components";
 
 // PaymentMethodCard Component
 export default function PaymentMethodCard({
-  settingsIcon = "img_settings.svg", // Default icon for settings
+  settingsIcon = "Visa.svg", // Default icon for settings
   cardDescription = "Visa ending in 1234", // Default card description
   cardExpiry = "Expiry 06/2024", // Default card expiry date
   defaultMethodText = "Default Method", // Default text for the default method
@@ -15,7 +15,7 @@ export default function PaymentMethodCard({
       className={`${props.className} flex sm:flex-col justify-center items-start gap-[0.75rem] p-[1.00rem] border border-solid flex-1 rounded-lg`}
     >
       {/* Icon container */}
-      <div className="flex rounded-md border border-solid border-gray-100_01 bg-white-a700 px-[0.38rem] py-[0.63rem]">
+      <div className="flex rounded-md border border-solid border-gray-100_01 bg-[#ffffff] px-[0.38rem] py-[0.63rem]">
         {/* Settings Icon */}
         <Img
           src={settingsIcon}
@@ -33,7 +33,7 @@ export default function PaymentMethodCard({
           <Heading
             size="textmd"
             as="p"
-            className="font-inter text-[0.88rem] font-medium text-blue_gray-800"
+            className="font-inter text-[0.88rem] font-medium text-[2f4d3f]"
           >
             {cardDescription}
           </Heading>

@@ -179,6 +179,9 @@
   .container-xs {
     @apply w-full mx-auto max-w-[82.50rem];
   }
+  .container-xss {
+    @apply w-full mx-auto max-w-[90rem];
+  }
 
   /*-------------------------------------  Form Inputs --------------------------------------*/
   [type="text"],
