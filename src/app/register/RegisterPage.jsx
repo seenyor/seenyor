@@ -371,7 +371,7 @@ export default function RegisterPage() {
                       label: "Phone Number",
                       name: "customer_contact_number",
                       type: "tel",
-                      placeholder: "+353",
+                      placeholder: "Enter Phone Number",
                     })}
                   </div>
 
