@@ -16,8 +16,36 @@ const getCookieDomain = () => {
 
 export const useUserService = () => {
   const { post, get, patch } = useApi();
+  const validateUserData = (userData) => {
+    const requiredFields = [
+      "name",
+      "email",
+      "password",
+      "contact_number",
+      "address",
+      "country_id",
+      "city",
+      "agent_id",
+    ];
+
+    for (const field of requiredFields) {
+      if (!userData[field]) {
+        return `${field.replace(/_/g, " ")} is required.`; // Return a user-friendly error message
+      }
+    }
+
+    // if (userData.password !== userData.confirmPassword) {
+    //   return "Passwords do not match."; // Check for password match
+    // }
+
+    return ""; // No errors
+  };
 
   const registerUser = async (userData) => {
+    const validationError = validateUserData(userData);
+    if (validationError) {
+      throw new Error(validationError); // Throw an error if validation fails
+    }
     try {
       // Register user
       const userResponse = await post("/users/end-users", userData);
@@ -151,8 +179,8 @@ export const useUserService = () => {
       throw error;
     }
   };
-   
-   const updateUserName = async (nameData) => {
+
+  const updateUserName = async (nameData) => {
     try {
       const response = await patch("/auth/update-name", nameData);
       return response; // Return the response if needed
@@ -163,14 +191,16 @@ export const useUserService = () => {
   };
   const getUserDetailsById = async (id) => {
     try {
-      const response = await get(`/users/${id}?role=end_user&soft_deleted=false`);
+      const response = await get(
+        `/users/${id}?role=end_user&soft_deleted=false`
+      );
       return response; // Return the user details
     } catch (error) {
       console.error("Error fetching user details:", error);
       throw error;
     }
   };
-   
+
   // Update Password Function
   const updatePassword = async (passwordData) => {
     try {
@@ -180,7 +210,7 @@ export const useUserService = () => {
       console.error("Error updating password:", error);
       throw error;
     }
-  }
+  };
   return {
     registerUser,
     verifyOtp,
@@ -195,8 +225,8 @@ export const useUserService = () => {
     getAgents,
     getSessionDetails,
     createOrder,
-    updateUserName, 
+    updateUserName,
     getUserDetailsById,
-    updatePassword
+    updatePassword,
   };
 };

@@ -136,10 +136,31 @@ export default function RegisterPage() {
       }
     }
   };
+
+  
+  const validateForm = () => {
+    if (!formData.name) return "Name is required.";
+    if (!formData.email) return "Email is required.";
+    if (!formData.password) return "Password is required.";
+    if (formData.password !== formData.confirmPassword) return "Passwords do not match.";
+    if (!formData.contact_number) return "Contact number is required.";
+    if (!formData.address) return "Address is required.";
+    if (!formData.country_id) return "Country is required.";
+    if (!formData.city) return "City is required.";
+    if (!formData.agent_id) return "Agent ID is required.";
+    return ""; // No errors
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
   
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return; // Prevent submission if there are validation errors
+    }
+
     const currentFormData = Object.keys(formRefs).reduce((acc, key) => {
       if (formRefs[key].current) {
         acc[key] = formRefs[key].current.value;
