@@ -12,7 +12,7 @@ on:
       - 'next.config.js'
       - 'public/**'
       - 'styles/**'
-      - '.next/**'  # Include .next directory for caching
+      - '.next/**'  
 
 jobs:
   Deploy-Remotely:
