@@ -9,13 +9,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Use Node.js 20.x to Build
-      uses: actions/setup-node@v2
-      with:
-        node-version: 20.x
-
-    - run: npm install
-
     - name: Transfer Build Folder on EC2 Instance
       uses: easingthemes/ssh-deploy@v2.1.4
       env:
