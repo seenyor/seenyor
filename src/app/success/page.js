@@ -16,7 +16,9 @@ function Page() {
 
   const handleOrder = async (orderData) => {
     const agent_id = localStorage.getItem("agent_id");
+    const user_info = localStorage.getItem("user_address");
     const user_credentials = localStorage.getItem("user_credentials");
+    const addressPharsed = JSON.parse(user_info);
     const order = {
       total: orderData.amount_total / 100,
       grand_total: orderData.amount_total / 100, // Adjust if you have discounts or shipping
@@ -49,12 +51,12 @@ function Page() {
         amount_tax: orderData.total_details.amount_tax,
       },
       address: {
-        city: orderData.customer_details.address?.city || "",
-        country: orderData.customer_details.address?.country || "",
-        line1: orderData.customer_details.address?.line1 || "",
-        line2: orderData.customer_details.address?.line2 || "",
-        postal_code: orderData.customer_details.address?.postal_code || "",
-        state: orderData.customer_details.address?.state || "",
+        city: addressPharsed?.city || "",
+        country: orderData?.customer_details?.address?.country || "",
+        line1: addressPharsed?.address || "",
+        line2: addressPharsed?.address2 || "",
+        postal_code: addressPharsed?.postal_code || "",
+        state: addressPharsed?.state || "",
       },
     };
     try {
@@ -63,7 +65,7 @@ function Page() {
       // Clear the orderDetails from localStorage
       localStorage.removeItem("orderDetails");
       // Optionally, redirect to an order confirmation page
-      router.push("/");
+      // router.push("/");
     } catch (error) {
       console.error("Error creating order:", error);
       // Handle error (e.g., show error message to user)
@@ -169,10 +171,11 @@ function Page() {
         </div>
         <div className="container-xs flex flex-col items-center px-[3.50rem] md:px-[1.25rem]">
           <div className="flex items-center gap-[0.63rem]">
-            <Text as="p" className="text-[1.13rem] font-medium text-text cursor-pointer">
-            <Link href="/login" >
-              Sign in
-              </Link>
+            <Text
+              as="p"
+              className="text-[1.13rem] font-medium text-text cursor-pointer"
+            >
+              <Link href="/login">Sign in</Link>
             </Text>
             <Img
               src="img_arrowleft_text.svg"

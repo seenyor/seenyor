@@ -167,7 +167,17 @@ export default function RegisterPage() {
       },
     };
     localStorage.setItem("agent_id", JSON.stringify(data.agent_id));
-
+    localStorage.setItem(
+      "user_address",
+      JSON.stringify({
+        address: formattedData.address,
+        address2: formattedData.address2,
+        city: formattedData.city,
+        country: formattedData.country_id,
+        postal_code: formattedData.post_Code,
+        state: formattedData.state,
+      })
+    );
     try {
       setError("");
       const response = await registerUser(formattedData);
