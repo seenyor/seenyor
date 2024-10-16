@@ -31,7 +31,6 @@ export default function HomePage() {
   const { getProducts, getStripeCustomerId, createStripeSession } =
     useUserService();
   const { accessToken } = useAuth();
-  console.log("i am access token", accessToken);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -144,64 +143,43 @@ export default function HomePage() {
     }
 
     if (accessToken) {
-      const lineItems = [];
-      const kitProduct = products.find((p) => p.name === "Seenoyr Kit");
-      if (kitProduct) {
-        lineItems.push({
-          price: kitProduct.priceId,
-          quantity: 1,
-          adjustable_quantity: { enabled: false },
-        });
-      } else {
-        throw new Error("Seenyor Kit product not found");
-      }
-
-      if (quantity > 0) {
-        const addonProduct = products.find(
-          (p) => p.name === "Additional device"
-        );
-        if (addonProduct) {
-          lineItems.push({
-            price: addonProduct.priceId,
-            quantity: quantity,
-            adjustable_quantity: { enabled: true, minimum: 0, maximum: 10 },
-          });
-        } else {
-          throw new Error("Additional Device product not found");
-        }
-      }
-
-      if (selecteInstallation === 1) {
-        const installationProduct = products.find(
-          (p) => p.name === "Installation"
-        );
-        if (installationProduct) {
-          lineItems.push({
-            price: installationProduct.priceId,
-            quantity: 1,
-            adjustable_quantity: { enabled: false },
-          });
-        } else {
-          throw new Error("Installation product not found");
-        }
-      }
-      // Add AI Monitoring
-      const aiMonitoringProduct = products.find(
-        (p) => p.name === "AI Monitoring"
-      );
-      if (aiMonitoringProduct) {
-        lineItems.push({
-          price: aiMonitoringProduct.priceId,
-          quantity: 1,
-          adjustable_quantity: { enabled: false },
-        });
-      } else {
-        throw new Error("AI Monitoring product not found");
-      }
-
-      if (lineItems.length === 0) {
-        throw new Error("No products selected for checkout");
-      }
+      const lineItems = products
+        .filter((p) => !p.isRecurring)
+        .map((p) => ({
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: p.name,
+              description: p.description || `Description for ${p.name}`,
+              metadata: {
+                category: p.category || "uncategorized",
+              },
+            },
+            unit_amount: p.price * 100, // Convert to cents
+          },
+          quantity:
+            p.name === "AI Monitoring"
+              ? 1
+              : p.name === "All in One AI Sensor"
+              ? quantity
+              : p.name === "Required with your system"
+              ? 1
+              : p.name === "Installation" && selecteInstallation === 1
+              ? 1
+              : 0,
+          adjustable_quantity:
+            p.name === "All in One AI Sensor"
+              ? {
+                  enabled: true,
+                  minimum: 1,
+                  maximum: 10,
+                }
+              : {
+                  enabled: false,
+                },
+        }))
+        .filter((item) => item.quantity > 0);
+      console.log(lineItems);
 
       const session = await createStripeSession({
         customer: stripeCustomerId,
