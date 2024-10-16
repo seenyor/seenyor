@@ -1,7 +1,7 @@
 "use client";
 import AddressModal from "@/modals/AddressModal";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Heading, Input, Text } from "..";
 
 const AccountSetting = () => {
@@ -10,11 +10,7 @@ const AccountSetting = () => {
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen); 
   };
-    // Scroll to top and open the modal when the component mounts
-    useEffect(() => {
-      window.scrollTo(0, 0); 
-      handleAddressModalToggle(true);
-    }, []); 
+
   
   return (
     <div className="">
