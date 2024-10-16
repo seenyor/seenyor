@@ -2,7 +2,7 @@ name: Deploy Remotely
 on:
   push:
     branches: [ main ]
-
+ 
 jobs:
   Deploy-Remotely:
     runs-on: ubuntu-latest
@@ -18,14 +18,14 @@ jobs:
 
     - run: CI=false npm run build
 
-    - name: Transfer Necessary Files to EC2 Instance
+    - name: Transfer Build Folder on EC2 Instance
       uses: easingthemes/ssh-deploy@v2.1.4
       env:
         SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
         REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
         REMOTE_USER: ${{ secrets.DEPLOY_USER }}
         REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
-        SOURCE: "public/. next.config.js package.json package-lock.json .next"  # Transfer necessary files and folders
+        SOURCE: "."  # Transfer everything in the current directory
         TARGET: ${{ secrets.DEPLOY_TARGET }}
 
     - name: Restart PM2 Service on EC2 Instance
