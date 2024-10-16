@@ -1,4 +1,6 @@
 "use client";
+import Header from "@/components/Header";
+import LoadingSpinner from "@/components/LoadingSpinner";
 import { useAuth } from "@/context/AuthContext";
 import { useUserService } from "@/services/userService";
 import {
@@ -9,6 +11,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button, Img } from "../../components";
+import ProductHero from "./ProductHero";
 import RadioButtonGroup from "./RadioGroupFInstallation";
 import TermsCheckbox from "./TermsCheckbox ";
 import "./style.css";
@@ -22,13 +25,13 @@ export default function HomePage() {
   let [aimonitoring, setAimonitoring] = useState(40);
   let [total, setTotal] = useState(0);
   let [quantity, setQuantity] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [selecteInstallation, setselecteInstallation] = useState(1);
   const [isChecked, setIsChecked] = useState(false);
   const { getProducts, getStripeCustomerId, createStripeSession } =
     useUserService();
   const { accessToken } = useAuth();
-  console.log("i am accesstoken", accessToken);
-
+  console.log("i am access token", accessToken);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -213,18 +216,27 @@ export default function HomePage() {
 
   return (
     <div className="flex w-full flex-col gap-10 bg-white p-5">
-      <div
-        id="PageHeader"
-        className=" w-full p-4 flex items-center justify-center"
-      >
-        <Img
-          src="img_group_1.svg"
-          width={156}
-          height={32}
-          alt="Group 1"
-          className="h-[2.00rem] w-[12%] md:w-[30%] object-contain"
-        />
-      </div>
+      {isLoading ? ( // Show spinner while loading
+        <LoadingSpinner />
+      ) : accessToken ? (
+        <>
+          <Header />
+          <ProductHero />
+        </>
+      ) : (
+        <div
+          id="PageHeader"
+          className=" w-full p-4 flex items-center justify-center"
+        >
+          <Img
+            src="img_group_1.svg"
+            width={156}
+            height={32}
+            alt="Group 1"
+            className="h-[2.00rem] w-[12%] md:w-[30%] object-contain"
+          />
+        </div>
+      )}
 
       <div
         id="Required_Products_Section"
@@ -442,23 +454,25 @@ export default function HomePage() {
                 </span>
               </li>
             </ul>
-            <div
-              id="AI_Monitoring_Addon"
-              className="flex items-center justify-between p-3 border border-gray-400 border-opacity-50 rounded-xl mt-5"
-            >
-              <div className="flex flex-col items-start">
-                <h2 className="font-semibold text-xl md:md">AI Monitoring</h2>
-                <p className="font-normal text-md md:text-sm text-[#000]/80">
-                  24 Months Contract
-                </p>
+            {!accessToken && (
+              <div
+                id="AI_Monitoring_Addon"
+                className="flex items-center justify-between p-3 border border-gray-400 border-opacity-50 rounded-xl mt-5"
+              >
+                <div className="flex flex-col items-start">
+                  <h2 className="font-semibold text-xl md:md">AI Monitoring</h2>
+                  <p className="font-normal text-md md:text-sm text-[#000]/80">
+                    24 Months Contract
+                  </p>
+                </div>
+                <div className="flex flex-col items-end">
+                  <h2 className="font-semibold text-xl md:text-md">$40</h2>
+                  <p className="font-normal text-md md:text-sm text-[#000]/80">
+                    a Month
+                  </p>
+                </div>
               </div>
-              <div className="flex flex-col items-end">
-                <h2 className="font-semibold text-xl md:text-md">$40</h2>
-                <p className="font-normal text-md  md:text-sm text-[#000]/80">
-                  a Month
-                </p>
-              </div>
-            </div>
+            )}
 
             <div id="Terms_and_Checkout" className="flex flex-col gap-4 mt-4">
               <em className="text-gray-600 inline-block md:text-sm ">

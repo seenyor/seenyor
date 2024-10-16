@@ -1,11 +1,7 @@
-import AccountSetting from "@/components/AccountSetting";
-
-function page() {
-  return (
-    <>
-      <AccountSetting />
-    </>
-  );
+import Page from "./"
+export default  function page() {
+ 
+  return <><Page /></>
 }
 
-export default page;
+

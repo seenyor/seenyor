@@ -62,17 +62,17 @@ function Page() {
         {/* Tabs List */}
         {/* Tabs List */}
         {/* Tabs List */}
-        <TabList className="flex sm:grid sm:grid-cols-2 sm:justify-between gap-4 text-[#6c7482] max-w-[34.37rem] sm:text-[0.8rem]">
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal text-[#6c7482] md:place-self-end">
+        <TabList className="flex  gap-4 md:gap-1 text-[#6c7482] w-[34.37rem] md:w-full sm:text-[0.8rem] md:items-center md:justify-center">
+          <Tab className="px-[0.88rem] py-[0.38rem]  text-[1.00rem] font-normal text-[#6c7482">
             Overview
           </Tab>
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-norma sm:place-self-start">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-norma ">
             History
           </Tab>
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal sm:place-self-end ">
+          {/* <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal sm:place-self-end ">
             Billing Emails
-          </Tab>
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal sm:place-self-start">
+          </Tab> */}
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal">
             Payment Methods
           </Tab>
         </TabList>
@@ -113,7 +113,7 @@ function Page() {
                   <Heading
                     size="headingmd"
                     as="h6"
-                    className="text-[1.19rem] font-semibold text-[#f6ac00]"
+                    className="text-[1.19rem] font-semibold !text-[#f6ac00]"
                   >
                     Cancel Subscription
                   </Heading>
@@ -202,32 +202,6 @@ function Page() {
         </TabPanel>
         <TabPanel className="absolute items-center">
           <BillingStatus />
-        </TabPanel>
-
-        <TabPanel className="absolute items-center w-[34.37rem] md:w-full">
-          {/* <div className="w-full">
-            <div className="flex flex-col gap-4 pb-10">
-            
-              <Heading
-                as="h3"
-                className="text-[1.50rem] font-medium text-text md:text-[1.38rem]"
-              >
-                Billing Emails
-              </Heading>
-              <Text as="p" className="text-[1.13rem] font-normal text-body">
-                Billing emails are sent to the following addresses:
-              </Text>
-              <ul className="list-disc pl-5">
-                <li>example1@gmail.com</li>
-                <li>example2@gmail.com</li>
-                <li>example3@gmail.com</li>
-              </ul>
-              <Text as="p" className="text-[1.13rem] font-normal text-body">
-                You can manage your billing email preferences in your account
-                settings.
-              </Text>
-            </div>
-          </div> */}
         </TabPanel>
 
         <TabPanel className="absolute items-center w-[34.37rem] md:w-full">

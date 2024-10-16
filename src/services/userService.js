@@ -151,7 +151,7 @@ export const useUserService = () => {
       throw error;
     }
   };
-   // New PATCH request to update user name
+   
    const updateUserName = async (nameData) => {
     try {
       const response = await patch("/auth/update-name", nameData);
@@ -170,8 +170,17 @@ export const useUserService = () => {
       throw error;
     }
   };
-
-
+   
+  // Update Password Function
+  const updatePassword = async (passwordData) => {
+    try {
+      const response = await patch("/auth/update-password", passwordData);
+      return response; // Return the response if needed
+    } catch (error) {
+      console.error("Error updating password:", error);
+      throw error;
+    }
+  }
   return {
     registerUser,
     verifyOtp,
@@ -187,6 +196,7 @@ export const useUserService = () => {
     getSessionDetails,
     createOrder,
     updateUserName, 
-    getUserDetailsById
+    getUserDetailsById,
+    updatePassword
   };
 };

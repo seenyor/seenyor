@@ -1,7 +1,9 @@
 "use client";
-import { Button, Heading, Img, Input, Text } from "@/components";
+import { Button, Heading, Input, Text } from "@/components";
 import { useUserService } from "@/services/userService";
+import * as Avatar from "@radix-ui/react-avatar";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function AccountInfo() {
   const { updateUserName, getUserDetailsById } = useUserService(); // Get the updateUserName and getUserDetailsById functions
@@ -32,8 +34,10 @@ export default function AccountInfo() {
       const response = await updateUserName({ name: displayName });
       localStorage.setItem("user_id", response._id);
       setShowName(response.name);
+      toast.success("User name updated successfully!");
       console.log("User name updated successfully:", response);
     } catch (error) {
+      toast.error("Failed to update user name");
       console.error("Failed to update user name:", error);
     }
   };
@@ -65,23 +69,21 @@ export default function AccountInfo() {
           >
             Change Your Profile Image
           </Heading>
-          <Img
-            src="img_ellipse_71.png"
-            width={44}
-            height={44}
-            alt="Ellipse 71"
-            className="h-[3rem] w-[3rem] rounded-[22px] object-cover border-2 border-transparent group-hover:border-blue-300 transition-all duration-300"
-          />
+          <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
+            <Avatar.Fallback className="leading-1 flex size-full items-center justify-center bg-blue-200 text-[15px] font-medium text-violet11">
+              A
+            </Avatar.Fallback>
+          </Avatar.Root>
         </div>
 
         {/* Display Name Input */}
-        <div className="flex flex-col gap-1 ">
+        <div className="flex flex-col gap-1">
           <Heading
             size="headings"
             as="h6"
-            className="text-lg font-semibold capitalize text-[#1d293f]"
+            className="text-lg font-semibold capitalize text-[#1d293f] text-start"
           >
-            {showName}
+           Displayname
           </Heading>
           <Input
             shape="round"

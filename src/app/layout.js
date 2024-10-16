@@ -1,6 +1,8 @@
 import { AuthProvider } from "@/context/AuthContext";
 import "@/styles/index.css";
 import "@/styles/tailwind.css";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 // import { Poppins } from "next/font/google";
 
@@ -22,7 +24,10 @@ export default function RootLayout({ children }) {
   return (
     <AuthProvider>
       <html lang="en">
-        <body>{children}</body>
+        <body>{children}
+        <ToastContainer /> 
+        
+        </body>
       </html>
     </AuthProvider>
   );
