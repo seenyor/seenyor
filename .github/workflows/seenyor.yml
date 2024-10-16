@@ -2,26 +2,63 @@ name: Deploy Remotely
 on:
   push:
     branches: [ main ]
- 
+    paths:
+      - '**.js'
+      - '**.jsx'
+      - '**.ts'
+      - '**.tsx'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'next.config.js'
+      - 'public/**'
+      - 'styles/**'
+      - '.next/**'  # Include .next directory for caching
+
 jobs:
   Deploy-Remotely:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
-    - name: Transfer Build Folder on EC2 Instance
+    - name: Cache Node modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Use Node.js 20.x to Build
+      uses: actions/setup-node@v2
+      with:
+        node-version: 20.x
+
+    - run: npm install
+
+    - name: Build Next.js App
+      run: CI=false npm run build  # Ensure this is the correct build command
+
+    - name: Cache .next Directory
+      uses: actions/cache@v3
+      with:
+        path: .next
+        key: ${{ runner.os }}-next-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-next-
+
+    - name: Transfer Build Folder to EC2 Instance
       uses: easingthemes/ssh-deploy@v2.1.4
       env:
         SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
         REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
         REMOTE_USER: ${{ secrets.DEPLOY_USER }}
         REMOTE_PORT: ${{ secrets.DEPLOY_PORT }}
-        SOURCE: "."  # Transfer everything in the current directory
+        SOURCE: ".next"  # Transfer only the Next.js build directory
         TARGET: ${{ secrets.DEPLOY_TARGET }}
 
-    - name: Restart PM2 Service on EC2 Instance
+    - name: Reload PM2 Service on EC2 Instance
       run: |
-        echo "${{ secrets.DEPLOY_KEY }}" > deploy_key.pem  # Create a temporary key file
-        chmod 400 deploy_key.pem                           # Set permissions for the key file
-        ssh -o StrictHostKeyChecking=no -i "deploy_key.pem" -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "pm2 restart next-app"
-        rm deploy_key.pem                                   # Clean up the key file after use
+        echo "${{ secrets.DEPLOY_KEY }}" > deploy_key.pem
+        chmod 400 deploy_key.pem
+        ssh -o StrictHostKeyChecking=no -i "deploy_key.pem" -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "pm2 reload next-app"
+        rm deploy_key.pem
