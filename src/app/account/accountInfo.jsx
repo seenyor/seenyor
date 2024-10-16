@@ -2,38 +2,16 @@
 import { Button, Heading, Input, Text } from "@/components";
 import { useUserService } from "@/services/userService";
 import * as Avatar from "@radix-ui/react-avatar";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 
 export default function AccountInfo() {
-  const { updateUserName, getUserDetailsById } = useUserService(); // Get the updateUserName and getUserDetailsById functions
+  const { updateUserName, getUserDetailsById } = useUserService(); // Get the updateUserName and
   const [displayName, setDisplayName] = useState("");
-  const [showName, setShowName] = useState("");
-  const [userId, setUserId] = useState("");
-
-  useEffect(() => {
-    const storedUserId = localStorage.getItem("user_id");
-    if (storedUserId) {
-      setUserId(storedUserId);
-      fetchUserDetails(storedUserId);
-    }
-  }, []);
-
-  const fetchUserDetails = async (id) => {
-    try {
-      const userDetails = await getUserDetailsById(id);
-      setShowName(userDetails.data.name);
-    } catch (error) {
-      console.error("Failed to fetch user details:", error);
-    }
-  };
-
-  // Function to handle updating the user's name
   const handleUpdateName = async () => {
     try {
       const response = await updateUserName({ name: displayName });
-      localStorage.setItem("user_id", response._id);
-      setShowName(response.name);
+      console.log(response);
       toast.success("User name updated successfully!");
       console.log("User name updated successfully:", response);
     } catch (error) {
@@ -83,7 +61,7 @@ export default function AccountInfo() {
             as="h6"
             className="text-lg font-semibold capitalize text-[#1d293f] text-start"
           >
-           Displayname
+            Displayname
           </Heading>
           <Input
             shape="round"
