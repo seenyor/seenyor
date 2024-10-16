@@ -14,17 +14,17 @@ export default function ProfileNav() {
   const handleLogout = () => {
     removeStripeCustomerId();
     logout();
-    router.push("/login");
+    window.location.href = "seenyor.com";
   };
 
   return (
     <div className="flex w-[18.125rem] flex-col gap-[1.50rem] md:w-full bg-white rounded-lg">
       <div className="flex items-center gap-[1.25rem] md:flex-col md:text-center">
-      <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
-			<Avatar.Fallback className="leading-1 flex size-full items-center justify-center bg-blue-200 text-[15px] font-medium text-violet11">
-				A
-			</Avatar.Fallback>
-		</Avatar.Root>
+        <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
+          <Avatar.Fallback className="leading-1 flex size-full items-center justify-center bg-blue-200 text-[15px] font-medium text-violet11">
+            A
+          </Avatar.Fallback>
+        </Avatar.Root>
         <div className="flex flex-1 flex-col items-start md:items-center">
           <Heading
             size="heading3xl"
@@ -43,13 +43,13 @@ export default function ProfileNav() {
       </div>
       <div className="flex flex-col md:flex-row items-start md:justify-center md:items-center gap-6 md:gap-4 md:border-b">
         <Link href="/account">
-          <div
-            className={`flex self-stretch transition-colors duration-200 `}
-          >
+          <div className={`flex self-stretch transition-colors duration-200 `}>
             <Heading
               as="h2"
               className={`text-[1rem] md:text-[1rem] font-medium text-[#6c7482] ${
-                pathname === "/account" ? "!text-[#1d293f] md:border-b border-b-[#002248]  " : ""
+                pathname === "/account"
+                  ? "!text-[#1d293f] md:border-b border-b-[#002248]  "
+                  : ""
               }`}
             >
               Edit Profile

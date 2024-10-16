@@ -221,7 +221,20 @@ export default function HomePage() {
       ) : accessToken ? (
         <>
           <Header />
-          <ProductHero />
+          {/* 
+          <ProductHero /> */}
+          <div
+            id="PageHeader"
+            className=" w-full p-4 flex items-center justify-center"
+          >
+            <Img
+              src="img_group_1.svg"
+              width={156}
+              height={32}
+              alt="Group 1"
+              className="h-[2.00rem] w-[12%] md:w-[30%] object-contain"
+            />
+          </div>
         </>
       ) : (
         <div
@@ -252,7 +265,7 @@ export default function HomePage() {
           </p>
         </div>
         <div id="Price" className="price absolute right-16 md:text-center">
-          <h1 className="font-semibold text-3xl">+${kitPrice}</h1>
+          <h1 className="font-semibold text-3xl">${kitPrice}</h1>
           <span className="font-normal text-md text-[#000]/80">
             One Time Payment
           </span>
@@ -342,7 +355,7 @@ export default function HomePage() {
           </div>
           <div id="Price" className="md:text-center">
             <h1 className="font-semibold text-3xl">
-              +${addonDevicePrice * quantity}
+              ${addonDevicePrice * quantity}
             </h1>
             <span className="font-normal text-md text-[#000]/80 text-nowrap">
               One Time Payment
@@ -358,7 +371,7 @@ export default function HomePage() {
         <div id="Section_Header" className="flex flex-col items-start gap-2">
           <h2 className="font-semibold text-3xl">Installation</h2>
           <p className="font-normal text-md text-[#000]/80">
-            Do you want expert to do instalation?
+            Do you want an expert to handle your installation
           </p>
         </div>
         <div id="YN_and_Price" className="flex gap-24 md:flex-col md:gap-10">
@@ -368,7 +381,7 @@ export default function HomePage() {
           />
           <div id="Price" className="md:text-center">
             <h1 className="font-semibold text-3xl">
-              +${selecteInstallation === 1 ? installationPrice : 0}
+              ${selecteInstallation === 1 ? installationPrice : 0}
             </h1>
             <span className="font-normal text-md text-[#000]/80">
               One Time Payment

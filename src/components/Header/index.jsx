@@ -47,7 +47,7 @@ export default function Header({ ...props }) {
           ))}
         </ul>
       </div>
-      <Link href="#" className="relative group">
+      <Link href="/account" className="relative group">
         <Img
           src="img_ellipse_71.png"
           width={44}
