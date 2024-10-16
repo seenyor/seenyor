@@ -15,7 +15,7 @@ const getCookieDomain = () => {
 };
 
 export const useUserService = () => {
-  const { post, get } = useApi();
+  const { post, get, patch } = useApi();
 
   const registerUser = async (userData) => {
     try {
@@ -151,6 +151,26 @@ export const useUserService = () => {
       throw error;
     }
   };
+   // New PATCH request to update user name
+   const updateUserName = async (nameData) => {
+    try {
+      const response = await patch("/auth/update-name", nameData);
+      return response; // Return the response if needed
+    } catch (error) {
+      console.error("Error updating user name:", error);
+      throw error;
+    }
+  };
+  const getUserDetailsById = async (id) => {
+    try {
+      const response = await get(`/users/${id}?role=end_user&soft_deleted=false`);
+      return response; // Return the user details
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      throw error;
+    }
+  };
+
 
   return {
     registerUser,
@@ -166,5 +186,7 @@ export const useUserService = () => {
     getAgents,
     getSessionDetails,
     createOrder,
+    updateUserName, 
+    getUserDetailsById
   };
 };

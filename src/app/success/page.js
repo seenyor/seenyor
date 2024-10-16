@@ -1,6 +1,7 @@
 "use client";
 import { Heading, Img, Text } from "@/components";
 import { useUserService } from "@/services/userService";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -168,8 +169,10 @@ function Page() {
         </div>
         <div className="container-xs flex flex-col items-center px-[3.50rem] md:px-[1.25rem]">
           <div className="flex items-center gap-[0.63rem]">
-            <Text as="p" className="text-[1.13rem] font-medium text-text">
+            <Text as="p" className="text-[1.13rem] font-medium text-text cursor-pointer">
+            <Link href="/login" >
               Sign in
+              </Link>
             </Text>
             <Img
               src="img_arrowleft_text.svg"

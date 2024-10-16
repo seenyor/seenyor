@@ -31,8 +31,8 @@ export default function PaymentMsg() {
         </div>
         <div className="container-xs flex flex-col items-center px-[3.50rem] md:px-[1.25rem]">
           <div className="flex items-center gap-[0.63rem]">
-            <Text as="p" className="text-[1.13rem] font-medium text-text">
-              <Link href="/" >
+            <Text as="p" className="text-[1.13rem] font-medium text-text cursor-pointer">
+              <Link href="/payment" >
               Try Again
               </Link>
             

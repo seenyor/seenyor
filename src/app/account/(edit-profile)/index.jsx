@@ -1,8 +1,46 @@
+"use client"
 import { Button, Heading, Img, Input, Text } from "@/components";
+import { useUserService } from "@/services/userService";
+import { useEffect, useState } from "react";
 
 export default function EditPage() {
+  const { updateUserName, getUserDetailsById } = useUserService(); // Get the updateUserName and getUserDetailsById functions
+  const [displayName, setDisplayName] = useState("");
+  const [showName, setShowName] = useState(""); 
+  const [userId, setUserId] = useState(""); 
+
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("user_id"); 
+    if (storedUserId) {
+      setUserId(storedUserId); 
+      fetchUserDetails(storedUserId); 
+    }
+  }, []);
+
+
+  const fetchUserDetails = async (id) => {
+    try {
+      const userDetails = await getUserDetailsById(id); 
+      setShowName(userDetails.data.name); 
+    } catch (error) {
+      console.error("Failed to fetch user details:", error);
+    }
+  };
+
+  // Function to handle updating the user's name
+  const handleUpdateName = async () => {
+    try {
+      const response = await updateUserName({ name: displayName });
+      localStorage.setItem("user_id", response._id);
+      setShowName(response.name); 
+      console.log("User name updated successfully:", response);
+    } catch (error) {
+      console.error("Failed to update user name:", error);
+    }
+  };
   return (
-    <div className="w-full">
+    <div className="">
       <div className="flex flex-col items-start border-b border-solid border-border pb-4 md:items-center md:text-center">
         <Heading
           size="text4xl"
@@ -45,12 +83,14 @@ export default function EditPage() {
             as="h6"
             className="text-lg font-semibold capitalize text-[#1d293f]"
           >
-            Display Name
+           {showName}
           </Heading>
           <Input
             shape="round"
             name="Label"
-            placeholder="Kasem Mia"
+            placeholder="Name"
+            value={displayName} // Bind the input value to state
+            onChange={(e) => setDisplayName(e.target.value)} // Update state on input change
             className="self-stretch rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
           />
         </div>
@@ -61,6 +101,7 @@ export default function EditPage() {
         color="green_200_green_400_01"
         shape="round"
         className="md:w-full  w-[10.63rem] rounded-[14px] px-[1.75rem] font-semibold sm:px-[1.25rem]"
+        onClick={handleUpdateName} 
       >
         Save Changes
       </Button>

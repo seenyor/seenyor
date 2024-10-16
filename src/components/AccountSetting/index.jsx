@@ -1,14 +1,21 @@
 "use client";
-import AddressChangeModal from "@/modals/AddressChangeModal";
+import AddressModal from "@/modals/AddressModal";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Heading, Input, Text } from "..";
 
 const AccountSetting = () => {
-  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false); 
 
-  const openAddressModal = () => setIsAddressModalOpen(true);
-  const closeAddressModal = () => setIsAddressModalOpen(false);
+  const handleAddressModalToggle = (isOpen) => {
+    setIsAddressModalOpen(isOpen); 
+  };
+    // Scroll to top and open the modal when the component mounts
+    useEffect(() => {
+      window.scrollTo(0, 0); 
+      handleAddressModalToggle(true);
+    }, []); 
+  
   return (
     <div className="">
       <div className="flex flex-col items-start border-b border-solid border-border pb-4 md:items-center md:text-center">
@@ -26,11 +33,8 @@ const AccountSetting = () => {
           Update your email or change your password
         </Text>
       </div>
-      {/* Address Change Modal */}
-      <AddressChangeModal
-        isOpen={isAddressModalOpen}
-        onClose={closeAddressModal}
-      />
+       {/* Address Modal */}
+      <AddressModal onChange={handleAddressModalToggle} isOpen={isAddressModalOpen} /> <AddressModal />
       {/* Email Section */}
       <div className="bg-white rounded-lg  md:text-center my-6">
         <Heading
@@ -167,7 +171,7 @@ const AccountSetting = () => {
           color="green_200_green_400_01"
           shape="round"
           className="min-w-[12.63rem] md:w-full rounded-[14px] px-[1.75rem] font-semibold sm:px-[1.25rem]"
-          onClick={openAddressModal}
+          onClick={() => handleAddressModalToggle(true)} // Open the modal
         >
           Change Address
         </Button>

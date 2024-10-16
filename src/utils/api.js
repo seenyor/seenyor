@@ -39,6 +39,17 @@ export const useApi = () => {
         : new Error("An error occurred");
     }
   };
+    // New PATCH method
+    const patch = async (url, data) => {
+      try {
+        const response = await api.patch(url, data);
+        return response.data;
+      } catch (error) {
+        throw error.response
+          ? error.response.data
+          : new Error("An error occurred");
+      }
+    };
 
-  return { post, get };
+  return { post, get, patch };
 };

@@ -44,14 +44,14 @@ export default function ProfileNav() {
         </div>
       </div>
       <div className="flex flex-col items-start md:items-center gap-6 md:gap-4">
-        <Link href="/account/edit-profile">
+        <Link href="/account">
           <div
             className={`flex self-stretch transition-colors duration-200 hover:text-blue-400`}
           >
             <Heading
               as="h2"
               className={`text-[1rem] md:text-[1.15rem] font-medium text-[#6c7482] ${
-                pathname === "/account/edit-profile" ? "!text-[#1d293f] " : ""
+                pathname === "/account" ? "!text-[#1d293f] " : ""
               }`}
             >
               Edit Profile
@@ -76,7 +76,7 @@ export default function ProfileNav() {
           <div className={`flex self-stretch  transition-colors duration-200`}>
             <Heading
               as="h4"
-              className={`text-[1.00rem] md:text-[1.15rem] font-normal text-[#6c7482] md:ml-0 hover:text-blue-600 transition-colors duration-200 ${
+              className={`text-[1.00rem] md:text-[1.15rem] font-normal text-[#6c7482] md:ml-0 transition-colors duration-200 ${
                 pathname === "/account/billing-information"
                   ? "!text-[#1d293f] font-medium"
                   : ""
@@ -89,7 +89,7 @@ export default function ProfileNav() {
         <button onClick={handleLogout}>
           <Heading
             as="h5"
-            className="text-[1.00rem] md:text-[1.15rem] font-normal text-red-800 text-red-600 transition-colors duration-200"
+            className="text-[1.00rem] md:text-[1.15rem] font-normal !text-red-600 transition-colors duration-200"
           >
             Sign Out
           </Heading>
