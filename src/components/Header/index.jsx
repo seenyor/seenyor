@@ -1,3 +1,4 @@
+import * as Avatar from "@radix-ui/react-avatar";
 import Link from "next/link";
 import { Heading, Img } from "./..";
 
@@ -48,13 +49,11 @@ export default function Header({ ...props }) {
         </ul>
       </div>
       <Link href="/account" className="relative group">
-        <Img
-          src="img_ellipse_71.png"
-          width={44}
-          height={44}
-          alt="Ellipse 71"
-          className="h-[2.75rem] w-[2.75rem] rounded-[22px] object-cover md:w-full border-2 border-transparent group-hover:border-blue-300 transition-all duration-300"
-        />
+        <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
+          <Avatar.Fallback className="leading-1 flex size-full items-center justify-center bg-blue-200 text-[15px] font-medium text-violet11">
+            A
+          </Avatar.Fallback>
+        </Avatar.Root>
         <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       </Link>
     </header>

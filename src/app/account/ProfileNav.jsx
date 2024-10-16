@@ -5,11 +5,15 @@ import { useUserService } from "@/services/userService";
 import * as Avatar from "@radix-ui/react-avatar";
 import Link from "next/link"; // Import Link from next/link
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 export default function ProfileNav() {
   const router = useRouter();
-  const { removeStripeCustomerId } = useUserService();
+  const { removeStripeCustomerId, getUserDetailsById } = useUserService();
   const { accessToken, logout } = useAuth();
   const pathname = usePathname(); // Get the current pathname
+  const [showName, setShowName] = useState("");
+  const [mail, setMail] = useState("");
+  const [userId, setUserId] = useState("");
 
   const handleLogout = () => {
     removeStripeCustomerId();
@@ -17,11 +21,29 @@ export default function ProfileNav() {
     window.location.href = "seenyor.com";
   };
 
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("user_id");
+    if (storedUserId) {
+      setUserId(storedUserId);
+      fetchUserDetails(storedUserId);
+    }
+  }, []);
+
+  const fetchUserDetails = async (id) => {
+    try {
+      const userDetails = await getUserDetailsById(id);
+      setShowName(userDetails.data.name);
+      setMail(userDetails.data.email);
+    } catch (error) {
+      console.error("Failed to fetch user details:", error);
+    }
+  };
+
   return (
     <div className="flex w-[18.125rem] flex-col gap-[1.50rem] md:w-full bg-white rounded-lg">
       <div className="flex items-center gap-[1.25rem] md:flex-col md:text-center">
-        <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
-          <Avatar.Fallback className="leading-1 flex size-full items-center justify-center bg-blue-200 text-[15px] font-medium text-violet11">
+        <Avatar.Root className="inline-flex size-[40px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
+          <Avatar.Fallback className="leading-1 flex size-full items-center justify-center bg-blue-200 text-[20px] font-medium text-violet11">
             A
           </Avatar.Fallback>
         </Avatar.Root>
@@ -31,13 +53,13 @@ export default function ProfileNav() {
             as="h1"
             className="text-[#1d293f] md:items-center"
           >
-            Kasem Mia
+            {showName}
           </Heading>
           <Text
             as="p"
             className="text-[1.13rem] font-normal lowercase text-[#6c7482]"
           >
-            example@gmail.com
+            {mail}
           </Text>
         </div>
       </div>
