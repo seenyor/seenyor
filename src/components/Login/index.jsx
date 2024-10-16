@@ -13,8 +13,6 @@ const RightSection = () => {
   const router = useRouter();
   const { login } = useUserService();
 
-
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -22,7 +20,7 @@ const RightSection = () => {
     try {
       const response = await login({ email, password });
       console.log("Login response:", response); // Debug log
-
+      localStorage.setItem("user_id", response.data._id);
       if (response && response.data && response.data.access_token) {
         // Set cookie to expire in 2 days
         router.push("/account");
