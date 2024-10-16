@@ -12,14 +12,14 @@ function Page() {
       settingsIcon: "Visa.svg",
       cardDescription: "Visa Ending in 1234",
       cardExpire: "12/25",
-      isDefault: true,
+      isDefault: false,
     },
     {
       id: 1,
       SettingsIcon: "MasterCard.svg",
       cardDescription: "MasterCard ending in 1234",
       cardExpire: "12/25",
-      isDefault: true,
+      isDefault: false,
     },
     {
       id: 1,
