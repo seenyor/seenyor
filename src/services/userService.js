@@ -46,15 +46,26 @@ export const useUserService = () => {
     if (validationError) {
       throw new Error(validationError); // Throw an error if validation fails
     }
+
     try {
       // Register user
       const userResponse = await post("/users/end-users", userData);
+
+      // Check if user registration was successful
+      if (!userResponse || !userResponse.status) {
+        throw new Error(userResponse.message || "User registration failed.");
+      }
 
       // Create Stripe customer
       const stripeCustomerResponse = await createStripeCustomer({
         email: userData.email,
         name: userData.name,
       });
+
+      // Check if Stripe customer creation was successful
+      if (!stripeCustomerResponse || !stripeCustomerResponse.id) {
+        throw new Error("Failed to create Stripe customer.");
+      }
 
       // Combine user data with Stripe customer ID
       const combinedUserData = {
