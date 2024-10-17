@@ -9,13 +9,16 @@ export default function Header({ ...props }) {
       className={`${props.className} flex w-full md:hidden sm:flex-col justify-between items-center gap-[1.25rem] pt-2 px-6`}
     >
       <div className="mx-auto flex w-full items-center justify-center md:flex-col md:px-[1.25rem]">
-        <Img
-          src="img_group_1.svg"
-          width={158}
-          height={32}
-          alt="Frame 1000008413"
-          className="flex object-contain md:w-full hover:opacity-80 transition-opacity duration-300"
-        />
+        {/* Wrap Img with Link to make it clickable */}
+        <Link href="https://seenyor.com">
+          <Img
+            src="img_group_1.svg"
+            width={158}
+            height={32}
+            alt="Frame 1000008413"
+            className="flex object-contain md:w-full hover:opacity-80 transition-opacity duration-300"
+          />
+        </Link>
         <ul className="relative flex flex-wrap gap-[2.13rem] md:ml-0 px-[12rem]">
           <li>
             <Link href="/">

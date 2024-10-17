@@ -4,22 +4,29 @@ import OtpModal from "@/modals/OtpModal";
 import { useUserService } from "@/services/userService";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { toast } from 'react-toastify'; // Import toast
+import { toast } from "react-toastify"; // Import toast
 import { Button, Heading, Input, Text } from "../../../components";
 
 const AccountSetting = () => {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [oldPassword, setOldPassword] = useState(""); 
-  const [newPassword, setNewPassword] = useState(""); 
-  const [AddressInfo, setAddressInfo] = useState('');
-  const [email, setMail] = useState(""); 
-  const [tempEmail, setTempmail] = useState(""); 
-  const [password, setPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [AddressInfo, setAddressInfo] = useState("");
+  const [email, setMail] = useState("");
+  const [tempEmail, setTempmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
   const [error, setError] = useState("");
   const [otp, setOtp] = useState(""); // State for OTP input
-
-  const { updateUserName, updatePassword, getUserDetailsById, updateEmail, verifyOtp } = useUserService();
+  const [countries, setCountries] = useState([]);
+  const {
+    updateUserName,
+    updatePassword,
+    getUserDetailsById,
+    updateEmail,
+    verifyOtp,
+    getCountries,
+  } = useUserService();
 
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
@@ -30,6 +37,7 @@ const AccountSetting = () => {
     if (storedUserId) {
       fetchUserDetails(storedUserId);
     }
+    fetchCountries();
   }, []);
 
   const fetchUserDetails = async (id) => {
@@ -39,6 +47,22 @@ const AccountSetting = () => {
       setMail(userDetails.data.email);
     } catch (error) {
       console.error("Failed to fetch user details:", error);
+    }
+  };
+
+  const fetchCountries = async () => {
+    try {
+      const response = await getCountries();
+      if (response && response.data) {
+        setCountries(
+          response.data.map((country) => ({
+            label: `${country.country_name}`, // Display country name with code
+            value: country._id,
+          }))
+        );
+      }
+    } catch (error) {
+      console.error("Failed to fetch countries:", error);
     }
   };
 
@@ -78,14 +102,23 @@ const AccountSetting = () => {
         setIsOtpModalOpen(false); // Close OTP modal
         // Proceed with any additional actions after successful verification
       } else {
-        setError(response.message || "OTP verification failed. Please try again.");
+        setError(
+          response.message || "OTP verification failed. Please try again."
+        );
       }
     } catch (err) {
       setError(err.message || "An error occurred during OTP verification");
     }
   };
 
-  console.log(AddressInfo)
+  const handleAddressSave = (updatedAddress) => {
+    // Here you can handle the updated address, e.g., send it to the server or update the state
+    console.log("Updated Address:", updatedAddress);
+    // Optionally, you can close the modal after saving
+    setIsAddressModalOpen(false);
+  };
+
+  console.log(AddressInfo);
   return (
     <div className="">
       {/* OTP Modal */}
@@ -100,6 +133,15 @@ const AccountSetting = () => {
           setOtp={setOtp} // Pass the OTP state and setter
         />
       )}
+      {/* Address Modal */}
+      <AddressModal
+        isOpen={isAddressModalOpen}
+        onChange={handleAddressModalToggle}
+        countries={countries}
+        address={AddressInfo?.data}
+        onSave={handleAddressSave}
+      />
+
       <div className="flex flex-col items-start border-b border-solid border-border pb-4 md:items-center md:text-center">
         <Heading
           size="text4xl"
@@ -115,9 +157,6 @@ const AccountSetting = () => {
           Update your email or change your password
         </Text>
       </div>
-
-      {/* Address Modal */}
-      <AddressModal onChange={handleAddressModalToggle} isOpen={isAddressModalOpen} />
 
       {/* Email Section */}
       <div className="bg-white rounded-lg md:text-center my-6">
@@ -306,7 +345,7 @@ const AccountSetting = () => {
                 as="p"
                 className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
               >
-                 {AddressInfo?.data?.address2}
+                {AddressInfo?.data?.address2}
               </Text>
             </div>
             <div className="flex flex-col md:justify-start">

@@ -221,6 +221,18 @@ export const useUserService = () => {
         throw error;
       }
     };
+       // Update Password Function
+       const updateUserInfo = async (id, userData) => {
+        try {
+          const response = await patch(
+            `/users/${id}`, userData
+          );
+          return response; 
+        } catch (error) {
+          console.error("Error updating password:", error);
+          throw error;
+        }
+      };
   return {
     registerUser,
     verifyOtp,
@@ -238,6 +250,7 @@ export const useUserService = () => {
     updateUserName,
     getUserDetailsById,
     updatePassword,
-    updateEmail
+    updateEmail,
+    updateUserInfo
   };
 };
