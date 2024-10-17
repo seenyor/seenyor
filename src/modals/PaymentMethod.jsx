@@ -83,14 +83,14 @@ const AddressModal = ({ isOpen, onChange }) => {
                       <Input
                         type="text"
                         placeholder="MM / YY"
-                        className="w-full px-3 py-2 !border-solid rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="w-full px-3 py-2 !border-solid rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 sm:text-[1rem]"
                       />
                     </div>
-                    <div className="w-1/2 ml-2">
+                    <div className="w-1/2 ml-2 ">
                       <Input
                         type="text"
                         placeholder="CVC"
-                        className="w-full px-3 py-2  !border-solid  rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="w-full px-3 py-2 sm:py-1  !border-solid  rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 md:placeholder:text-[7rem] "
                       />
                     </div>
                   </div>

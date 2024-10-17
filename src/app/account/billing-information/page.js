@@ -7,36 +7,39 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import PaymentMethodCard from "./PaymentMethodCard";
 
 function Page() {
-
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const handleAddressModalToggle = (isOpen) => {
-      setIsAddressModalOpen(isOpen);
-    };
-    
+    setIsAddressModalOpen(isOpen);
+  };
+  const [isUnsubscribed, setIsUnsubscribed] = useState(false); // State to track subscription status
+
+  const handleUnsubscribe = () => {
+    setIsUnsubscribed((prev) => !prev); // Toggle the subscription status
+  };
   const data = [
     {
       id: 1,
       settingsIcon: "Visa.svg",
       cardDescription: "Visa Ending in 1234",
       cardExpire: "12/25",
-      isDefault: false,
+      isDefault: true, // Set to true for the default card
     },
     {
-      id: 1,
-      SettingsIcon: "MasterCard.svg",
+      id: 2, // Changed id to be unique
+      settingsIcon: "MasterCard.svg",
       cardDescription: "MasterCard ending in 1234",
       cardExpire: "12/25",
       isDefault: false,
     },
     {
-      id: 1,
-      SettingsIcon: "img_settings.svg",
+      id: 3, // Changed id to be unique
+      settingsIcon: "img_settings.svg",
       cardDescription: "Visa ending in 1234",
       cardExpire: "12/25",
       isDefault: false,
     },
     {
-      id: 1,
+      id: 4, // Changed id to be unique
       settingsIcon: "img_settings.svg",
       cardDescription: "Stripe Visa ending in 1234",
       cardExpire: "12/25",
@@ -45,9 +48,9 @@ function Page() {
   ];
   return (
     <div className="w-full">
-      <PaymentMethod 
-       isOpen={isAddressModalOpen}
-       onChange={handleAddressModalToggle}
+      <PaymentMethod
+        isOpen={isAddressModalOpen}
+        onChange={handleAddressModalToggle}
       />
       {/* Edit Profile Card */}
       <Tabs
@@ -74,16 +77,16 @@ function Page() {
         {/* Tabs List */}
         {/* Tabs List */}
         <TabList className="flex  gap-4 md:gap-1 text-[#6c7482] w-[34.37rem] md:w-full sm:text-[0.8rem] md:items-center md:justify-center">
-          <Tab className="px-[0.88rem] py-[0.38rem]  text-[1.00rem] sm:text-[0.9rem] font-normal text-[#6c7482">
+          <Tab className="px-[0.88rem] py-[0.38rem]  text-[1.00rem] sm:text-[0.8rem] font-normal text-[#6c7482">
             Overview
           </Tab>
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem]sm:text-[0.9rem]  font-norma ">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] sm:text-[0.8rem]  font-norma ">
             History
           </Tab>
           {/* <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal sm:place-self-end ">
             Billing Emails
           </Tab> */}
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] sm:text-[0.9rem]  font-normal">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] sm:text-[0.8rem]  font-normal">
             Payment Methods
           </Tab>
         </TabList>
@@ -105,7 +108,13 @@ function Page() {
                   className="text-[1.13rem] font-normal text-[#6c7482]"
                 >
                   Subscription Status:{" "}
-                  <span className="font-medium text-primary">Active</span>
+                  <span
+                    className={`font-medium ${
+                      !isUnsubscribed ? "text-primary" : "text-[#FF0000]"
+                    }`}
+                  >
+                    {!isUnsubscribed ? "Active" : "Inactive"}
+                  </span>
                 </Text>
                 <Text
                   as="p"
@@ -119,32 +128,62 @@ function Page() {
               </div>
 
               {/* Cancel Subscription */}
-              <div className="flex items-center justify-between gap-[1.25rem] rounded-[14px] bg-orange-50 px-[1.13rem] py-[0.88rem] md:flex-col ">
-                <div className="flex w-full flex-col items-start md:w-full md:items-center md:text-center">
-                  <Heading
-                    size="headingmd"
-                    as="h6"
-                    className="text-[1.19rem] font-semibold !text-[#f6ac00]"
-                  >
-                    Cancel Subscription
-                  </Heading>
-                  <Text
-                    as="p"
-                    className="w-full text-[0.88rem] font-normal leading-[1.31rem] text-[#6c7482]"
-                  >
-                    Once you cancel a subscription, you can renew it anytime
-                    later.
-                  </Text>
-                </div>
-                <Button
-                  variant="fill"
-                  shape="round"
-                  className="min-w-[9.88rem] rounded-[14px] px-[1.75rem] text-white font-semibold sm:px-[1.25rem] bg-amber-a700"
-                >
-                  Unsubscribe
-                </Button>
-              </div>
 
+              {!isUnsubscribed ? (
+                <div className="flex items-center justify-between gap-[1.25rem] rounded-[14px] bg-orange-50 px-[1.13rem] py-[0.88rem] md:flex-col ">
+                  <div className="flex w-full flex-col items-start md:w-full md:items-center md:text-center">
+                    <Heading
+                      size="headingmd"
+                      as="h6"
+                      className="text-[1.19rem] font-semibold !text-[#f6ac00]"
+                    >
+                      Cancel Subscription
+                    </Heading>
+                    <Text
+                      as="p"
+                      className="w-full text-[0.88rem] font-normal leading-[1.31rem] text-[#6c7482]"
+                    >
+                      Once you cancel a subscription, you can renew it anytime
+                      later.
+                    </Text>
+                  </div>
+                  <Button
+                    variant="fill"
+                    shape="round"
+                    onClick={handleUnsubscribe}
+                    className="min-w-[9.88rem] rounded-[14px] px-[1.75rem] text-white font-semibold sm:px-[1.25rem] bg-amber-a700"
+                  >
+                    Unsubscribe
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between gap-[1.25rem] rounded-[14px] bg-red-50 px-[1.13rem] py-[0.88rem] md:flex-col">
+                  <div className="flex w-full flex-col items-start md:w-full md:items-center md:text-center">
+                    <Heading
+                      size="headingmd"
+                      as="h6"
+                      className="text-[1.19rem] font-semibold !text-[#FF0000]" // Changed text color to red
+                    >
+                      Renew Subscription
+                    </Heading>
+                    <Text
+                      as="p"
+                      className="w-full text-[0.88rem] font-normal leading-[1.31rem] text-[#6c7482]"
+                    >
+                      Your subscription has expired. Renew it now to avoid any
+                      service interruptions.
+                    </Text>
+                  </div>
+                  <Button
+                    variant="fill"
+                    shape="round"
+                    onClick={handleUnsubscribe}
+                    className="min-w-[6.88rem] rounded-[14px] px-[1.75rem] text-white font-semibold sm:px-[1.25rem] bg-[#FF0000]" // Changed button color to red
+                  >
+                    Renew
+                  </Button>
+                </div>
+              )}
               {/* Billing Date */}
               <Text
                 as="p"
@@ -217,7 +256,6 @@ function Page() {
 
         <TabPanel className="absolute items-center w-[34.37rem] md:w-full">
           <div className="w-full">
-          
             <div className="flex flex-col gap-[1.25rem]">
               <div className="flex items-center md:flex-col justify-between gap-[1.25rem]">
                 <Heading
@@ -249,12 +287,18 @@ function Page() {
 
               <div className="flex flex-col gap-[0.75rem]">
                 <Suspense fallback={<div>Loading feed...</div>}>
-                  {data.map((d, index) => (
+                  {data.map((card) => (
                     <PaymentMethodCard
-                      {...d}
-                      settingsIcon
-                      key={`checkboxgroup${index}`}
-                      className="border-green-200 bg-gray-100_02"
+                      key={card.id}
+                      settingsIcon={card.settingsIcon}
+                      cardDescription={card.cardDescription}
+                      cardExpiry={card.cardExpire}
+                      defaultMethodText={
+                        card.isDefault ? "Default Method" : "Set As Default"
+                      }
+                      className={`${
+                        card.isDefault ? "!bg-[#f1f8f5]" : "bg-white"
+                      }`}
                     />
                   ))}
                 </Suspense>
