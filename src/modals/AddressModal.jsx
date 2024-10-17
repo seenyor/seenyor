@@ -86,6 +86,22 @@ const Address = ({ isOpen, onChange }) => {
                     className="self-stretch rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
                   />
                 </div>
+                <div className="flex flex-col items-start gap-[0.38rem] mb-4">
+                  <Heading
+                    size="headingmd"
+                    as="h6"
+                    className="text-[1.13rem] font-semibold capitalize text-text"
+                  >
+                   Phone Number
+                  </Heading>
+                  <Input
+                    size="xl"
+                    shape="round"
+                    type="text"
+                    name="country"
+                    className="self-stretch rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
+                  />
+                </div>
               </div>
               <div className="flex justify-end gap-4 mt-6">
                 <Button

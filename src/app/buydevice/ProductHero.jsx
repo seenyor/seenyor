@@ -3,7 +3,7 @@ import { Button, Heading, Img, Text } from "../../components";
 
 export default function ProductHero() {
   return (
-    <div className="container-xs md:w-[90%] flex flex-col gap-[5.00rem] md:gap-[3.75rem] md:px-[1.25rem] sm:gap-[2.50rem]">
+    <div className="container-xss md:w-[90%] flex flex-col gap-[5.00rem] md:gap-[3.75rem] md:px-[1.25rem] sm:gap-[2.50rem]">
       <div className="flex items-start gap-[2.50rem] md:flex-col md:text-center">
         <div className="flex w-full flex-col items-start gap-[0.88rem] md:items-center">
           <Button

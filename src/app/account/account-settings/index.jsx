@@ -1,5 +1,6 @@
 "use client";
 import AddressModal from "@/modals/AddressModal";
+import OtpModal from "@/modals/OtpModal";
 import { useUserService } from "@/services/userService";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -8,10 +9,18 @@ import { Button, Heading, Input, Text } from "../../../components";
 
 const AccountSetting = () => {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [oldPassword, setOldPassword] = useState(""); // State for old password
-  const [newPassword, setNewPassword] = useState(""); // State for new password
-  const [AddressInfo, setAddressInfo] = useState('')
-  const { updateUserName, updatePassword, getUserDetailsById } = useUserService();
+  const [oldPassword, setOldPassword] = useState(""); 
+  const [newPassword, setNewPassword] = useState(""); 
+  const [AddressInfo, setAddressInfo] = useState('');
+  const [email, setMail] = useState(""); 
+  const [tempEmail, setTempmail] = useState(""); 
+  const [password, setPassword] = useState('');
+  const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
+  const [error, setError] = useState("");
+  const [otp, setOtp] = useState(""); // State for OTP input
+
+  const { updateUserName, updatePassword, getUserDetailsById, updateEmail, verifyOtp } = useUserService();
+
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
   };
@@ -22,20 +31,22 @@ const AccountSetting = () => {
       fetchUserDetails(storedUserId);
     }
   }, []);
+
   const fetchUserDetails = async (id) => {
     try {
       const userDetails = await getUserDetailsById(id);
       setAddressInfo(userDetails);
+      setMail(userDetails.data.email);
     } catch (error) {
       console.error("Failed to fetch user details:", error);
     }
   };
+
   const handleChangePassword = async () => {
     try {
       const response = await updatePassword({ oldPassword, newPassword });
       console.log("Password updated successfully:", response);
       toast.success("Password updated successfully!"); // Show success toast
-      // Optionally reset the password fields
       setOldPassword("");
       setNewPassword("");
     } catch (error) {
@@ -44,10 +55,51 @@ const AccountSetting = () => {
     }
   };
 
+  const handleChangeEmail = async () => {
+    try {
+      const response = await updateEmail({ email, tempEmail, password });
+      console.log("Mail updated successfully:", response);
+      toast.success("OTP has been sent to your new email!"); // Notify user
+      setIsOtpModalOpen(true); // Open OTP modal
+    } catch (error) {
+      console.error("Failed to update email:", error);
+      toast.error("An error occurred while updating the email."); // Show error toast
+    }
+  };
 
-  console.log("i am adressInfo", AddressInfo)
+  const handleOtpVerification = async (otp) => {
+    try {
+      const response = await verifyOtp({
+        email: tempEmail,
+        otp: otp,
+      });
+      if (response.success) {
+        toast.success("OTP verified successfully!"); // Notify user
+        setIsOtpModalOpen(false); // Close OTP modal
+        // Proceed with any additional actions after successful verification
+      } else {
+        setError(response.message || "OTP verification failed. Please try again.");
+      }
+    } catch (err) {
+      setError(err.message || "An error occurred during OTP verification");
+    }
+  };
+
+  console.log(AddressInfo)
   return (
     <div className="">
+      {/* OTP Modal */}
+      {isOtpModalOpen && (
+        <OtpModal
+          isOpen={isOtpModalOpen}
+          onChange={setIsOtpModalOpen}
+          onVerify={handleOtpVerification}
+          error={error}
+          email={tempEmail}
+          setError={setError}
+          setOtp={setOtp} // Pass the OTP state and setter
+        />
+      )}
       <div className="flex flex-col items-start border-b border-solid border-border pb-4 md:items-center md:text-center">
         <Heading
           size="text4xl"
@@ -92,6 +144,8 @@ const AccountSetting = () => {
             type="email"
             name="email"
             placeholder={`example@gmail.com`}
+            value={tempEmail}
+            onChange={(e) => setTempmail(e.target.value)}
             className="self-stretch rounded-[12px] !border px-[1.63rem] lowercase sm:px-[1.25rem]"
           />
         </div>
@@ -118,6 +172,8 @@ const AccountSetting = () => {
             shape="round"
             type="password"
             name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             className="rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
           />
         </div>
@@ -125,6 +181,7 @@ const AccountSetting = () => {
           color="green_200_green_400_01"
           shape="round"
           className="min-w-[10.63rem] md:w-full rounded-[14px] px-[1.75rem] font-semibold sm:px-[1.25rem]"
+          onClick={handleChangeEmail}
         >
           Change Email
         </Button>
@@ -160,8 +217,8 @@ const AccountSetting = () => {
               shape="round"
               type="password"
               name="oldPassword"
-              value={oldPassword} // Bind the old password input
-              onChange={(e) => setOldPassword(e.target.value)} // Update state on input change
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
               className="rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
             />
           </div>
@@ -178,18 +235,17 @@ const AccountSetting = () => {
               shape="round"
               type="password"
               name="newPassword"
-              value={newPassword} // Bind the new password input
-              onChange={(e) => setNewPassword(e.target.value)} // Update state on input change
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
               className="self-stretch rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
             />
           </div>
-       
         </div>
         <Button
           color="green_200_green_400_01"
           shape="round"
           className="min-w-[12.63rem] md:w-full rounded-[14px] px-[1.75rem] font-semibold sm:px-[1.25rem]"
-          onClick={handleChangePassword} // Call the function to change the password
+          onClick={handleChangePassword}
         >
           Change Password
         </Button>
@@ -208,69 +264,67 @@ const AccountSetting = () => {
           as="p"
           className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
         >
-        Manage Your Address and Change It Anytime.
+          Manage Your Address and Change It Anytime.
         </Text>
         <div id="addressection" className="">
-        <Heading
-          size="text3xl"
-          as="p"
-          className="text-[1.13rem] font-semibold text-[#1d293f] md:text-[1.38rem] mb-2"
-        >
-          Address1
-        </Heading>
-        <Text
-          as="p"
-          className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
-        >
-       {AddressInfo?.data?.address
-       }
-        </Text>
-        <Heading
-          size="text3xl"
-          as="p"
-          className="text-[1.13rem] font-semibold text-[#1d293f] md:text-[1.38rem] mb-2"
-        >
-          Address2
-        </Heading>
-        <Text
-          as="p"
-          className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
-        >
-       {AddressInfo?.data?.address2}
-        </Text>
-        <div className="city wrap flex justify-between md:justify-normal md:flex-col">
-        <div className="flex flex-col md:justify-start">
-        <Heading
-          size="text3xl"
-          as="p"
-          className="text-[1.13rem] font-semibold text-[#1d293f] md:text-[1.38rem] mb-2"
-        >
-          Country
-        </Heading>
-        <Text
-          as="p"
-          className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
-        >
-         England
-        </Text>
-        </div>
-       
-        <div className="flex flex-col md:justify-start">
-        <Heading
-          size="text3xl"
-          as="p"
-          className="text-[1.13rem] font-semibold text-[#1d293f] md:text-[1.38rem] mb-2"
-        >
-          City
-        </Heading>
-        <Text
-          as="p"
-          className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
-        >
-         {AddressInfo?.data?.city}
-        </Text>
-        </div>
-        </div>
+          <Heading
+            size="text3xl"
+            as="p"
+            className="text-[1.13rem] font-semibold text-[#1d293f] md:text-[1.38rem] mb-2"
+          >
+            Address1
+          </Heading>
+          <Text
+            as="p"
+            className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
+          >
+            {AddressInfo?.data?.address}
+          </Text>
+          <Heading
+            size="text3xl"
+            as="p"
+            className="text-[1.13rem] font-semibold text-[#1d293f] md:text-[1.38rem] mb-2"
+          >
+            Address2
+          </Heading>
+          <Text
+            as="p"
+            className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
+          >
+            {AddressInfo?.data?.address2}
+          </Text>
+          <div className="city wrap flex justify-between md:justify-normal md:flex-col">
+            <div className="flex flex-col md:justify-start">
+              <Heading
+                size="text3xl"
+                as="p"
+                className="text-[1.13rem] font-semibold text-[#1d293f] md:text-[1.38rem] mb-2"
+              >
+                Country
+              </Heading>
+              <Text
+                as="p"
+                className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
+              >
+                 {AddressInfo?.data?.address2}
+              </Text>
+            </div>
+            <div className="flex flex-col md:justify-start">
+              <Heading
+                size="text3xl"
+                as="p"
+                className="text-[1.13rem] font-semibold text-[#1d293f] md:text-[1.38rem] mb-2"
+              >
+                City
+              </Heading>
+              <Text
+                as="p"
+                className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
+              >
+                {AddressInfo?.data?.city}
+              </Text>
+            </div>
+          </div>
         </div>
         <Heading
           size="text3xl"
@@ -283,20 +337,18 @@ const AccountSetting = () => {
           as="p"
           className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
         >
-         {AddressInfo?.data?.contact_number}
+          {AddressInfo?.data?.contact_number}
         </Text>
-        
-        </div>
-        <Button
-          color="green_200_green_400_01"
-          shape="round"
-          className="min-w-[12.63rem] md:w-full rounded-[14px] px-[1.75rem] font-semibold sm:px-[1.25rem]"
-          onClick={() => handleAddressModalToggle(true)} // Open the modal
-        >
-          Change Address
-        </Button>
       </div>
-   
+      <Button
+        color="green_200_green_400_01"
+        shape="round"
+        className="min-w-[12.63rem] md:w-full rounded-[14px] px-[1.75rem] font-semibold sm:px-[1.25rem]"
+        onClick={() => handleAddressModalToggle(true)} // Open the modal
+      >
+        Change Address
+      </Button>
+    </div>
   );
 };
 

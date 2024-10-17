@@ -211,6 +211,16 @@ export const useUserService = () => {
       throw error;
     }
   };
+    // Update Password Function
+    const updateEmail = async (emailData) => {
+      try {
+        const response = await patch("/auth/update-email", emailData);
+        return response; // Return the response if needed
+      } catch (error) {
+        console.error("Error updating password:", error);
+        throw error;
+      }
+    };
   return {
     registerUser,
     verifyOtp,
@@ -228,5 +238,6 @@ export const useUserService = () => {
     updateUserName,
     getUserDetailsById,
     updatePassword,
+    updateEmail
   };
 };

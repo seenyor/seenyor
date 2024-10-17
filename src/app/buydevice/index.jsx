@@ -1,19 +1,20 @@
 "use client";
+import { Button, Img } from "@/components";
 import Header from "@/components/Header";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import { useAuth } from "@/context/AuthContext";
+
 import { useUserService } from "@/services/userService";
 import {
-    MinusCircledIcon,
-    PlusCircledIcon,
-    StarIcon,
+  MinusCircledIcon,
+  PlusCircledIcon,
+  StarIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button, Img } from "../../components";
-import RadioButtonGroup from "./RadioGroupFInstallation";
-import TermsCheckbox from "./TermsCheckbox ";
-import "./style.css";
+import RadioButtonGroup from "../(product)/RadioGroupFInstallation";
+import "../(product)/style.css";
+import TermsCheckbox from "../(product)/TermsCheckbox ";
+import ProductHero from "./ProductHero";
 
 export default function HomePage() {
   const router = useRouter();
@@ -215,40 +216,21 @@ export default function HomePage() {
 
   return (
     <div className="flex w-full flex-col gap-10 bg-white p-5">
-      {isLoading ? ( // Show spinner while loading
-        <LoadingSpinner />
-      ) : accessToken ? (
-        <>
-          <Header />
-          {/* 
-          <ProductHero /> */}
-          <div
-            id="PageHeader"
-            className=" w-full p-4 flex items-center justify-center"
-          >
-            <Img
-              src="img_group_1.svg"
-              width={156}
-              height={32}
-              alt="Group 1"
-              className="h-[2.00rem] w-[12%] md:w-[30%] object-contain"
-            />
-          </div>
-        </>
-      ) : (
-        <div
-          id="PageHeader"
-          className=" w-full p-4 flex items-center justify-center"
-        >
-          <Img
-            src="img_group_1.svg"
-            width={156}
-            height={32}
-            alt="Group 1"
-            className="h-[2.00rem] w-[12%] md:w-[30%] object-contain"
-          />
-        </div>
-      )}
+      <Header />
+      <ProductHero />
+{/* 
+      <div
+        id="PageHeader"
+        className=" w-full p-4 flex items-center justify-center"
+      >
+        <Img
+          src="img_group_1.svg"
+          width={156}
+          height={32}
+          alt="Group 1"
+          className="h-[2.00rem] w-[12%] md:w-[30%] object-contain"
+        />
+      </div> */}
 
       <div
         id="Required_Products_Section"
@@ -426,9 +408,9 @@ export default function HomePage() {
           </div>
           <div
             id="Summary"
-            className="w-[75%] bg-white p-8 py-10 rounded-xl md:w-full md:p-4"
+            className="w-[75%] py-10 rounded-xl md:w-full md:p-4"
           >
-            <ul className="flex flex-col gap-5">
+            <ul className="flex flex-col gap-5 bg-white p-8 rounded-md">
               <li className="flex items-center text-nowrap gap-5">
                 <p className="font-semibold text-lg md:text-base">
                   1 Seenyor Kit
@@ -466,25 +448,6 @@ export default function HomePage() {
                 </span>
               </li>
             </ul>
-            {!accessToken && (
-              <div
-                id="AI_Monitoring_Addon"
-                className="flex items-center justify-between p-3 border border-gray-400 border-opacity-50 rounded-xl mt-5"
-              >
-                <div className="flex flex-col items-start">
-                  <h2 className="font-semibold text-xl md:md">AI Monitoring</h2>
-                  <p className="font-normal text-md md:text-sm text-[#000]/80">
-                    24 Months Contract
-                  </p>
-                </div>
-                <div className="flex flex-col items-end">
-                  <h2 className="font-semibold text-xl md:text-md">$40</h2>
-                  <p className="font-normal text-md md:text-sm text-[#000]/80">
-                    a Month
-                  </p>
-                </div>
-              </div>
-            )}
 
             <div id="Terms_and_Checkout" className="flex flex-col gap-4 mt-4">
               <em className="text-gray-600 inline-block md:text-sm ">
@@ -534,8 +497,7 @@ export default function HomePage() {
                 onClick={handleCheckout}
                 type="submit"
                 shape="round"
-                color="green_200_green_400_01"
-                className="w-[70%] my-0 mx-auto rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] sm:m-auto"
+                className="w-[50%] bg-[#A9A9A9] my-0 ml-auto rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] sm:m-auto text-white"
               >
                 Check Out
               </Button>

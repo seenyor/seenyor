@@ -48,6 +48,11 @@ export default function AccountInfo() {
             Change Your Profile Image
           </Heading>
           <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
+            <Avatar.Image
+              className="size-full rounded-[inherit] object-cover"
+              src="images/avater.png"
+              alt="avatar"
+            />
             <Avatar.Fallback className="leading-1 flex size-full items-center justify-center bg-blue-200 text-[15px] font-medium text-violet11">
               A
             </Avatar.Fallback>

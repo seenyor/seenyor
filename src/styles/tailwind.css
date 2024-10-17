@@ -180,7 +180,7 @@
     @apply w-full mx-auto max-w-[82.50rem];
   }
   .container-xss {
-    @apply w-full mx-auto max-w-[90rem];
+    @apply w-full mx-auto max-w-[80rem];
   }
 
   /*-------------------------------------  Form Inputs --------------------------------------*/
