@@ -24,7 +24,7 @@ export default function Header({ ...props }) {
             <Link href="/">
               <Heading
                 as="p"
-                className="text-[1rem] font-medium !text-[#1d293f] hover:text-blue-600 transition-colors duration-200"
+                className="text-[1rem] font-medium  hover:text-blue-600 transition-colors duration-200"
               >
                 Home
               </Heading>

@@ -345,13 +345,13 @@ export default function RegisterPage() {
                     className="flex gap-4 w-full sm:flex-col sm:gap-1"
                   >
                     {renderField({
-                      label: "Last Name",
+                      label: "First Name",
                       name: "customer_first_name",
                       type: "text",
                       placeholder: "First name",
                     })}
                     {renderField({
-                      label: "First Name",
+                      label: "Last Name",
                       name: "customer_last_name",
                       type: "text",
                       placeholder: "Last name",
@@ -557,7 +557,7 @@ export default function RegisterPage() {
                       name: "agent_name",
                       type: "text",
                       placeholder: "Agent Name",
-                      required: false,
+                      // required: false,
                     })}
                     {renderField({
                       label: "Agent ID",
@@ -594,9 +594,9 @@ export default function RegisterPage() {
                   {renderField({
                     label: "Source of Lead",
                     name: "source_lead",
-                    type: "select",
-                    placeholder: "Select",
-                    options: SourceofLeads,
+                    type: "text",
+                    placeholder: "Type of Lead",
+                    // options: SourceofLeads,
                     required: false,
                   })}
                 </div>

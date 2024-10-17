@@ -1,11 +1,18 @@
 "use client";
 import { Button, Heading, Img, Text } from "@/components";
 import BillingStatus from "@/components/BillingStatus";
-import { Suspense } from "react";
+import PaymentMethod from "@/modals/PaymentMethod";
+import { Suspense, useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import PaymentMethodCard from "./PaymentMethodCard";
 
 function Page() {
+
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const handleAddressModalToggle = (isOpen) => {
+      setIsAddressModalOpen(isOpen);
+    };
+    
   const data = [
     {
       id: 1,
@@ -38,6 +45,10 @@ function Page() {
   ];
   return (
     <div className="w-full">
+      <PaymentMethod 
+       isOpen={isAddressModalOpen}
+       onChange={handleAddressModalToggle}
+      />
       {/* Edit Profile Card */}
       <Tabs
         className="flex flex-1 flex-col gap-[2.50rem] self-center md:self-stretch cursor-pointer"
@@ -63,22 +74,22 @@ function Page() {
         {/* Tabs List */}
         {/* Tabs List */}
         <TabList className="flex  gap-4 md:gap-1 text-[#6c7482] w-[34.37rem] md:w-full sm:text-[0.8rem] md:items-center md:justify-center">
-          <Tab className="px-[0.88rem] py-[0.38rem]  text-[1.00rem] font-normal text-[#6c7482">
+          <Tab className="px-[0.88rem] py-[0.38rem]  text-[1.00rem] sm:text-[0.9rem] font-normal text-[#6c7482">
             Overview
           </Tab>
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-norma ">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem]sm:text-[0.9rem]  font-norma ">
             History
           </Tab>
           {/* <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal sm:place-self-end ">
             Billing Emails
           </Tab> */}
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] sm:text-[0.9rem]  font-normal">
             Payment Methods
           </Tab>
         </TabList>
 
         {/* Tab Panels */}
-        <TabPanel className="absolute items-center md:text-cente md:justify-center md:items-center ">
+        <TabPanel className="absolute items-center  md:justify-center md:items-center ">
           <div className="w-full">
             <div className="flex flex-col gap-4 pb-10">
               {/* Billing Overview */}
@@ -206,8 +217,9 @@ function Page() {
 
         <TabPanel className="absolute items-center w-[34.37rem] md:w-full">
           <div className="w-full">
+          
             <div className="flex flex-col gap-[1.25rem]">
-              <div className="flex items-center justify-between gap-[1.25rem]">
+              <div className="flex items-center md:flex-col justify-between gap-[1.25rem]">
                 <Heading
                   size="text2xl"
                   as="p"
@@ -219,6 +231,7 @@ function Page() {
                 <Button
                   shape="round"
                   variant="fill"
+                  onClick={() => handleAddressModalToggle(true)}
                   leftIcon={
                     <Img
                       src="plus.svg"
