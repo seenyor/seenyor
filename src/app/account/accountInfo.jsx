@@ -6,6 +6,15 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 export default function AccountInfo() {
+  const [imageUrl, setImageUrl] = useState(null)
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const url = URL.createObjectURL(file)
+      setImageUrl(url)
+    }
+  }
   const { updateUserName, getUserDetailsById } = useUserService(); // Get the updateUserName and
   const [displayName, setDisplayName] = useState("");
   const handleUpdateName = async () => {
@@ -47,6 +56,9 @@ export default function AccountInfo() {
           >
             Change Your Profile Image
           </Heading>
+          
+        
+          
           <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
             <Avatar.Image
               className="size-full rounded-[inherit] object-cover"
@@ -66,7 +78,7 @@ export default function AccountInfo() {
             as="h6"
             className="text-lg font-semibold capitalize text-[#1d293f] text-start"
           >
-            Displayname
+            Display Name
           </Heading>
           <Input
             shape="round"

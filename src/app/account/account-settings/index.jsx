@@ -1,5 +1,6 @@
 "use client";
 import AddressModal from "@/modals/AddressModal";
+import ForgotPass from "@/modals/ForgotPass";
 import OtpModal from "@/modals/OtpModal";
 import { useUserService } from "@/services/userService";
 import { Eye, EyeOff } from "lucide-react";
@@ -9,6 +10,7 @@ import { toast } from "react-toastify"; // Import toast
 import { Button, Heading, Input, Text } from "../../../components";
 const AccountSetting = () => {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [isForgotModalOpen, setIsForgotModalOpen] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [AddressInfo, setAddressInfo] = useState("");
@@ -34,7 +36,9 @@ const AccountSetting = () => {
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
   };
-
+  const handleForgotModalToggle = (isOpen) => {
+    setIsForgotModalOpen(isOpen);
+  };
   useEffect(() => {
     const storedUserId = localStorage.getItem("user_id");
     if (storedUserId) {
@@ -152,6 +156,7 @@ const AccountSetting = () => {
         address={AddressInfo?.data}
         onSave={handleAddressSave}
       />
+    
 
       <div className="flex flex-col items-start border-b border-solid border-border pb-4 md:items-center md:text-center">
         <Heading
@@ -168,7 +173,10 @@ const AccountSetting = () => {
           Update your email or change your password
         </Text>
       </div>
-
+      <ForgotPass
+        isOpen={isForgotModalOpen}
+        onChange={handleForgotModalToggle}
+      />
       {/* Email Section */}
       {/* Email Section */}
       <div className="bg-white rounded-lg md:text-center my-6">
@@ -212,7 +220,9 @@ const AccountSetting = () => {
             <Link href="#">
               <Text
                 as="p"
-                className="text-[1.13rem] font-medium capitalize text-primary"
+                onClick={() => handleForgotModalToggle(true)}
+              
+                className="text-[1.13rem] font-medium cursor-pointer capitalize text-primary"
               >
                 Forgot Password?
               </Text>
