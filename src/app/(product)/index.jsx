@@ -20,9 +20,9 @@ export default function HomePage() {
   const router = useRouter();
   const [products, setProducts] = useState([]);
   let [kitPrice, setKitPrice] = useState(1100);
-  let [installationPrice, setInstallationPrice] = useState(300);
+  let [installationPrice, setInstallationPrice] = useState(250);
   let [addonDevicePrice, setAddonDevicePrice] = useState(400);
-  let [aimonitoring, setAimonitoring] = useState(40);
+  let [aimonitoring, setAimonitoring] = useState(0);
   let [total, setTotal] = useState(0);
   let [quantity, setQuantity] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,9 +48,14 @@ export default function HomePage() {
         const installation = fetchedProducts.find(
           (p) => p.name === "Installation"
         );
+        const aimonitoring = fetchedProducts.find(
+          (p) => p.name === "AI Monitoring" && !p.isRecurring
+        );
+        console.log(aimonitoring);
         if (kit) setKitPrice(kit.price);
         if (addon) setAddonDevicePrice(addon.price);
         if (installation) setInstallationPrice(installation.price);
+        if (aimonitoring) setAimonitoring(aimonitoring.price);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -129,6 +134,7 @@ export default function HomePage() {
 
   const handleCheckout = async () => {
     const stripeCustomerId = await getStripeCustomerId();
+    console.log(stripeCustomerId, accessToken);
     if (!stripeCustomerId) {
       // User is not logged in, redirect to registration page
       router.push("/register");
@@ -457,7 +463,9 @@ export default function HomePage() {
                   </p>
                 </div>
                 <div className="flex flex-col items-end">
-                  <h2 className="font-semibold text-xl md:text-md">$40</h2>
+                  <h2 className="font-semibold text-xl md:text-md">
+                    ${aimonitoring}
+                  </h2>
                   <p className="font-normal text-md md:text-sm text-[#000]/80">
                     a Month
                   </p>

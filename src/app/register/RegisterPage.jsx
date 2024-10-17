@@ -201,6 +201,8 @@ export default function RegisterPage() {
   };
 
   const handleOtpVerification = async (otp) => {
+    console.log("first OTP");
+
     try {
       const response = await verifyOtp({
         email,
@@ -220,6 +222,7 @@ export default function RegisterPage() {
   };
 
   const handleResendOtp = async () => {
+    console.log("resend OTP");
     try {
       const response = await resendOtp({
         email,

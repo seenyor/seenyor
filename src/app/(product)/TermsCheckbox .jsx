@@ -70,8 +70,7 @@ const TermsCheckbox = ({ onMainCheckboxChange }) => {
     },
     {
       title: "Non-Refundable Installation Fee",
-      description:
-        "The 199 AUD installation fee is non-refundable once completed.",
+      description: "The installation fee is non-refundable once completed.",
     },
     {
       title: "No Refunds After Cooling-Off Period",
