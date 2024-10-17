@@ -77,7 +77,6 @@ export default function HomePage() {
 
   const updateOrderDetails = () => {
     const orderDetails = {
-      kitPrice,
       installationPrice: selecteInstallation === 1 ? installationPrice : 0,
       addonDevicePrice,
       addonQuantity: quantity,
@@ -118,7 +117,6 @@ export default function HomePage() {
   useEffect(() => {
     updateOrderDetails();
   }, [
-    kitPrice,
     installationPrice,
     addonDevicePrice,
     quantity,
@@ -145,20 +143,9 @@ export default function HomePage() {
 
     if (accessToken) {
       const lineItems = [];
-      const kitProduct = products.find((p) => p.name === "Seenoyr Kit");
-      if (kitProduct) {
-        lineItems.push({
-          price: kitProduct.priceId,
-          quantity: 1,
-          adjustable_quantity: { enabled: false },
-        });
-      } else {
-        throw new Error("Seenyor Kit product not found");
-      }
-
       if (quantity > 0) {
         const addonProduct = products.find(
-          (p) => p.name === "Additional device"
+          (p) => p.name === "All in One AI Sensor"
         );
         if (addonProduct) {
           lineItems.push({
@@ -187,7 +174,7 @@ export default function HomePage() {
       }
       // Add AI Monitoring
       const aiMonitoringProduct = products.find(
-        (p) => p.name === "AI Monitoring"
+        (p) => p.name === "Required with your system"
       );
       if (aiMonitoringProduct) {
         lineItems.push({
@@ -196,7 +183,7 @@ export default function HomePage() {
           adjustable_quantity: { enabled: false },
         });
       } else {
-        throw new Error("AI Monitoring product not found");
+        throw new Error("Required with your system");
       }
 
       if (lineItems.length === 0) {
@@ -411,7 +398,7 @@ export default function HomePage() {
             className="w-[75%] py-10 rounded-xl md:w-full md:p-4"
           >
             <ul className="flex flex-col gap-5 bg-white p-8 rounded-md">
-              <li className="flex items-center text-nowrap gap-5">
+              {/* <li className="flex items-center text-nowrap gap-5">
                 <p className="font-semibold text-lg md:text-base">
                   1 Seenyor Kit
                 </p>
@@ -419,7 +406,7 @@ export default function HomePage() {
                 <span className="text-nowrap text-lg font-normal">
                   ${kitPrice}
                 </span>
-              </li>
+              </li> */}
               <li className="flex items-center text-nowrap gap-5">
                 <p className="font-semibold text-lg md:text-base">
                   {quantity} Additional Device
