@@ -181,10 +181,10 @@ export default function RegisterPage() {
     try {
       setError("");
       const response = await registerUser(formattedData);
-        // Check if user registration was successful
-        if (!response || !response.status) {
-          throw new Error(userResponse.message || "User registration failed.");
-        }
+      // Check if user registration was successful
+      if (!response || !response.status) {
+        throw new Error(userResponse.message || "User registration failed.");
+      }
       if (response.status) {
         setEmail(formattedData.email);
         localStorage.setItem(
@@ -205,11 +205,11 @@ export default function RegisterPage() {
   };
 
   const handleOtpVerification = async (otp) => {
-      // Only proceed with OTP verification if there are no errors
-  if (error) {
-    console.error("Cannot verify OTP due to previous errors:", error);
-    return; // Prevent OTP verification if there are errors
-  }
+    // Only proceed with OTP verification if there are no errors
+    if (error) {
+      console.error("Cannot verify OTP due to previous errors:", error);
+      return; // Prevent OTP verification if there are errors
+    }
     try {
       const response = await verifyOtp({
         email,
@@ -575,7 +575,6 @@ export default function RegisterPage() {
                       placeholder: "Agent ID",
                       required: true,
                     })}
-                
                   </div>
                 </div>
               </div>

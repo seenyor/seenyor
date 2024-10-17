@@ -68,7 +68,6 @@ const AccountSetting = () => {
       console.error("Failed to fetch countries:", error);
     }
   };
-
   const handleChangePassword = async () => {
     try {
       const response = await updatePassword({ oldPassword, newPassword });
@@ -79,21 +78,14 @@ const AccountSetting = () => {
       setError(""); // Clear any previous error messages
     } catch (error) {
       console.error("Failed to update password:", error);
-
-      // Check if the error has a response and status code
-      if (error.response) {
-        // Log the entire error response for debugging
-        console.error("Error response:", error.response);
-
-        if (error.response.statusCode === 400) {
-          // Set the error message from the response
-          setError(error.response.message || "Old password is incorrect"); // Use the message from the error response
-        } else {
-          setError("Old password is incorrect"); // General error message for other status codes
-        }
+      // Check for specific status codes and messages
+      if (error.statusCode === 400) {
+        // If the error message is structured differently, adjust accordingly
+        const errorMessage = error.message;
+        console.log("i am message", errorMessage);
+        setError(errorMessage); // Set the error message from the response
       } else {
-        // Handle cases where error.response is not available
-        setError("Old password is incorrect"); // Fallback error message
+        setError("An error occurred. Please try again."); // General error message for other status codes
       }
     }
   };
