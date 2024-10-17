@@ -575,6 +575,7 @@ export default function RegisterPage() {
                       placeholder: "Agent ID",
                       required: true,
                     })}
+                
                   </div>
                 </div>
               </div>

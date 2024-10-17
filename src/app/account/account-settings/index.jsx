@@ -2,11 +2,11 @@
 import AddressModal from "@/modals/AddressModal";
 import OtpModal from "@/modals/OtpModal";
 import { useUserService } from "@/services/userService";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify"; // Import toast
 import { Button, Heading, Input, Text } from "../../../components";
-
 const AccountSetting = () => {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
@@ -19,6 +19,9 @@ const AccountSetting = () => {
   const [error, setError] = useState("");
   const [otp, setOtp] = useState(""); // State for OTP input
   const [countries, setCountries] = useState([]);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
   const {
     updateUserName,
     updatePassword,
@@ -73,9 +76,25 @@ const AccountSetting = () => {
       toast.success("Password updated successfully!"); // Show success toast
       setOldPassword("");
       setNewPassword("");
+      setError(""); // Clear any previous error messages
     } catch (error) {
       console.error("Failed to update password:", error);
-      toast.error("Failed to update password. Please try again."); // Show error toast
+
+      // Check if the error has a response and status code
+      if (error.response) {
+        // Log the entire error response for debugging
+        console.error("Error response:", error.response);
+
+        if (error.response.statusCode === 400) {
+          // Set the error message from the response
+          setError(error.response.message || "Old password is incorrect"); // Use the message from the error response
+        } else {
+          setError("Old password is incorrect"); // General error message for other status codes
+        }
+      } else {
+        // Handle cases where error.response is not available
+        setError("Old password is incorrect"); // Fallback error message
+      }
     }
   };
 
@@ -159,6 +178,7 @@ const AccountSetting = () => {
       </div>
 
       {/* Email Section */}
+      {/* Email Section */}
       <div className="bg-white rounded-lg md:text-center my-6">
         <Heading
           size="text3xl"
@@ -206,7 +226,7 @@ const AccountSetting = () => {
               </Text>
             </Link>
           </div>
-          <Input
+          {/* <Input
             size="xl"
             shape="round"
             type="password"
@@ -214,7 +234,27 @@ const AccountSetting = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
-          />
+          /> */}
+          <div className="relative w-full">
+            <Input
+              type={showNewPassword ? "text" : "password"}
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
+            />
+            <button
+              type="button"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              {showNewPassword ? (
+                <EyeOff className="h-5 w-5 text-gray-400" />
+              ) : (
+                <Eye className="h-5 w-5 text-gray-400" />
+              )}
+            </button>
+          </div>
         </div>
         <Button
           color="green_200_green_400_01"
@@ -251,15 +291,26 @@ const AccountSetting = () => {
             >
               Old Password
             </Heading>
-            <Input
-              size="xl"
-              shape="round"
-              type="password"
-              name="oldPassword"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              className="rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
-            />
+            <div className="relative">
+              <Input
+                type={showOldPassword ? "text" : "password"}
+                name="oldPassword"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
+              />
+              <button
+                type="button"
+                onClick={() => setShowOldPassword(!showOldPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                {showOldPassword ? (
+                  <EyeOff className="h-5 w-5 text-gray-400" />
+                ) : (
+                  <Eye className="h-5 w-5 text-gray-400" />
+                )}
+              </button>
+            </div>
           </div>
           <div className="flex flex-col items-start gap-[0.38rem] mb-4">
             <Heading
@@ -269,15 +320,28 @@ const AccountSetting = () => {
             >
               New Password
             </Heading>
-            <Input
-              size="xl"
-              shape="round"
-              type="password"
-              name="newPassword"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="self-stretch rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
-            />
+            <div className="relative w-full">
+              <Input
+                type={showNewPassword ? "text" : "password"}
+                name="newPassword"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                {showNewPassword ? (
+                  <EyeOff className="h-5 w-5 text-gray-400" />
+                ) : (
+                  <Eye className="h-5 w-5 text-gray-400" />
+                )}
+              </button>
+            </div>
+            {error && <p className="text-red-500 text-md pt-1">{error}</p>}
           </div>
         </div>
         <Button
