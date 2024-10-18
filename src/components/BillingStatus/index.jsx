@@ -6,6 +6,8 @@ import { Heading } from "../../components";
 import { ReactTable } from "../../components/ReactTable";
 
 export default function BillingStatus({ transactionDetails }) {
+
+  console.log("i am billing info", transactionDetails)
   // Check if transactionDetails is provided and has data
   const tableData = transactionDetails?.data?.map(charge => ({
     chargeId: charge.payment_method_details.card.last4, // Last four digits of the card

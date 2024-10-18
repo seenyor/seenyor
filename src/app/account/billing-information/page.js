@@ -15,10 +15,12 @@ function Page() {
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
   };
+  
 
   const fetchTransactionDetails = async () => {
     try {
-      const customerId = getStripeCustomerId // Replace with the actual customer ID
+      const stripeCustomerId = await getStripeCustomerId();
+      const customerId = stripeCustomerId // Replace with the actual customer ID
       const details = await getTransactionDetails(customerId);
       setTransactionDetails(details); // Store the fetched transaction details
       console.log(details);
