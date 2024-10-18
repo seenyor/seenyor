@@ -10,7 +10,7 @@ import PaymentMethodCard from "./PaymentMethodCard";
 function Page() {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [transactionDetails, setTransactionDetails] = useState(null); // State to hold transaction details
-  const { getTransactionDetails } = useUserService();
+  const { getTransactionDetails, getStripeCustomerId } = useUserService();
 
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
@@ -18,7 +18,7 @@ function Page() {
 
   const fetchTransactionDetails = async () => {
     try {
-      const customerId = 'cus_R3JjtlL7vYXFhe'; // Replace with the actual customer ID
+      const customerId = getStripeCustomerId // Replace with the actual customer ID
       const details = await getTransactionDetails(customerId);
       setTransactionDetails(details); // Store the fetched transaction details
       console.log(details);

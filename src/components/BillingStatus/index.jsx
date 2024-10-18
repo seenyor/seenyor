@@ -65,7 +65,7 @@ export default function BillingStatus({ transactionDetails }) {
             <Heading
               as="p"
               className={`text-[1.00rem] font-normal ${
-                info.getValue() === "Paid" ? "text-green-600" : "text-red-600"
+                info.getValue() === "Paid" ? "!text-green-600" : "!text-red-600"
               }`}
             >
               {info.getValue()}
