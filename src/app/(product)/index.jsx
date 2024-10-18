@@ -4,9 +4,9 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import { useAuth } from "@/context/AuthContext";
 import { useUserService } from "@/services/userService";
 import {
-    MinusCircledIcon,
-    PlusCircledIcon,
-    StarIcon,
+  MinusCircledIcon,
+  PlusCircledIcon,
+  StarIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -250,7 +250,9 @@ export default function HomePage() {
         <div id="Price" className="price absolute right-16 md:text-center">
           <h1 className="font-semibold text-3xl">${kitPrice}</h1>
           <span className="font-normal text-md text-[#000]/80">
-            One Time Payment
+            GST is Included in
+            <br />
+            The Price
           </span>
         </div>
         <div
@@ -458,7 +460,7 @@ export default function HomePage() {
                 <div className="flex flex-col items-start">
                   <h2 className="font-semibold text-xl md:md">AI Monitoring</h2>
                   <p className="font-normal text-md md:text-sm text-[#000]/80">
-                    24 Months Contract
+                    1,176 Total Value Over 24 Months
                   </p>
                 </div>
                 <div className="flex flex-col items-end">

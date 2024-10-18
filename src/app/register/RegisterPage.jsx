@@ -456,7 +456,7 @@ export default function RegisterPage() {
                   </Text>
                 </div>
                 <div id="Fields" className="flex flex-col gap-4">
-                  <div
+                  {/* <div
                     id="Field_Group"
                     className="flex gap-4 w-full sm:flex-col sm:gap-1"
                   >
@@ -472,7 +472,7 @@ export default function RegisterPage() {
                       type: "text",
                       placeholder: "Last name",
                     })}
-                  </div>
+                  </div> */}
                   <div
                     id="Field_Group"
                     className="flex gap-4 w-full sm:flex-col sm:gap-1"
@@ -571,7 +571,6 @@ export default function RegisterPage() {
                       type: "text",
                       placeholder: "Agent Name",
                       required: true,
-
                     })}
                     {renderField({
                       label: "Agent ID",
