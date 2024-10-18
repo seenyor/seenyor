@@ -104,9 +104,7 @@ export const useUserService = () => {
   const resendOtp = async (emailData) => {
     return post("/auth/send-otp", emailData);
   };
-  const resetPassword = async ({ otp, email, password }) => {
-    return post("/auth/reset-password", { otp, email, password });
-  };
+
   const login = async (credentials) => {
     try {
       const response = await post("/auth/login", credentials);
@@ -243,6 +241,15 @@ export const useUserService = () => {
         throw error; // Rethrow the error for handling in the component
       }
     };
+    
+    const resetPassword = async ({ otp, email, password }) => {
+      // Make a PATCH request to the reset-password endpoint
+      const response = await patch("/auth/reset-password", { otp, email, password });
+      
+      // Return the response for further handling in the component
+      return response;
+    };
+  
        // Update Password Function
        const updateUserInfo = async (id, userData) => {
         try {

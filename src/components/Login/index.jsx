@@ -99,7 +99,7 @@ const PasswordInput = ({ password, setPassword }) => (
       <Heading size="headingmd" as="h3" className="capitalize text-text">
         Password
       </Heading>
-      <Link href="#" className="">
+      <Link href="/login/forgot-password" className="">
         <Text as="p" className="capitalize text-primary">
           Forgot Password?
         </Text>

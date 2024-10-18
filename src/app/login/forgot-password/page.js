@@ -20,9 +20,9 @@ const ForgotPassword = () => {
     try {
       const response = await resendOtp({ email });
 
-      if (response && response.success) {
+      if (response && response.status) {
         setSuccessMessage("OTP has been sent to your email. Please check your inbox.");
-        // Redirect to OTP verification page
+        console.log("Navigating to:", `/login/otp-verification?email=${encodeURIComponent(email)}`);
         router.push(`/login/otp-verification?email=${encodeURIComponent(email)}`);
       } else {
         setError("Failed to send OTP. Please try again.");
@@ -34,16 +34,9 @@ const ForgotPassword = () => {
 
   return (
     <div className="flex flex-col gap-[1.88rem] h-screen w-full justify-center items-center">
-      <form onSubmit={handleResendOtp} className="flex flex-col items-start  sm:w-[90%] md:items-center ">
+      <form onSubmit={handleResendOtp} className="flex flex-col items-start gap-[0.75rem] sm:w-[90%] md:items-center">
         <Heading size="heading7xl" as="h1" className="font-bold text-text">Forgot Password</Heading>
-        <Text as="p" className="text-[1.13rem] font-medium capitalize pb-[2.5rem]">Enter Your e-mail and we will send you a verification code to reset your password.</Text>
-        <Heading
-      size="headingmd"
-      as="h2"
-      className="text-[1.13rem] font-semibold capitalize text-text "
-    >
-      Customer&apos;s E-mail
-    </Heading>
+        <Text as="p" className="text-[1.13rem] font-medium capitalize ">Enter your email to receive an OTP for password reset.</Text>
         <Input
           shape="round"
           type="email"
