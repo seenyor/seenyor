@@ -1,8 +1,11 @@
+"use client"
 import * as Avatar from "@radix-ui/react-avatar";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Heading, Img } from "./..";
 
 export default function Header({ ...props }) {
+  const pathname = usePathname(); 
   return (
     <header
       {...props}
@@ -82,12 +85,17 @@ export default function Header({ ...props }) {
           </li>
           <li>
             <Link href="/buydevice">
+
               <Heading
-                as="p"
-                className="text-[1rem] font-bold !text-[#6c7482] hover:text-blue-600 transition-colors duration-200"
-              >
-                Buy Device
-              </Heading>
+              as="p"
+              className={`text-[1rem] font-bold !text-[#6c7482] transition-colors duration-200 ${
+                pathname === "/buydevice"
+                  ? "!text-[rgb(29,41,63)]"
+                  : ""
+              }`}
+            >
+               Buy Device
+            </Heading>
             </Link>
           </li>
         </ul>

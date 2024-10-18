@@ -1,11 +1,12 @@
 "use client";
 import { Button, Heading, Input, Text } from "@/components";
+import { useAuth } from "@/context/AuthContext";
 import { useUserService } from "@/services/userService";
 import * as Avatar from "@radix-ui/react-avatar";
 import { useState } from "react";
 import { toast } from "react-toastify";
-
 export default function AccountInfo() {
+  const { setUserName, userName } = useAuth();
   const [imageUrl, setImageUrl] = useState(null)
 
   const handleImageUpload = (event) => {
@@ -22,6 +23,8 @@ export default function AccountInfo() {
       const response = await updateUserName({ name: displayName });
       console.log(response);
       toast.success("User name updated successfully!");
+      setUserName(displayName)
+      setDisplayName("");
       console.log("User name updated successfully:", response);
     } catch (error) {
       toast.error("Failed to update user name");
@@ -83,7 +86,7 @@ export default function AccountInfo() {
           <Input
             shape="round"
             name="Label"
-            placeholder="Name"
+            placeholder={userName}
             value={displayName} // Bind the input value to state
             onChange={(e) => setDisplayName(e.target.value)} // Update state on input change
             className="self-stretch rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"

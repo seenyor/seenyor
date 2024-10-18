@@ -1,65 +1,55 @@
 "use client";
 
 import { createColumnHelper } from "@tanstack/react-table";
+import axios from "axios";
+import { Download } from "lucide-react"; // Import the Download icon from Lucide React
 import React from "react";
 import { Heading } from "../../components";
 import { ReactTable } from "../../components/ReactTable";
 
-const tableData = [
-  {
-    group355: "#12345432",
-    may2024: "1 May, 2023",
-    group356: "$500",
-    group357: "Paid",
-  },
-  {
-    group355: "#12345432",
-    may2024: "3 Feb, 2024",
-    group356: "$500",
-    group357: "Failed",
-  },
-  {
-    group355: "#12345432",
-    may2024: "4 May, 2024",
-    group356: "$500",
-    group357: "Paid",
-  },
-];
+export default function BillingStatus({ transactionDetails }) {
 
-export default function BillingStatus() {
+  console.log("i am billing info", transactionDetails);
+  // Check if transactionDetails is provided and has data
+  const tableData = transactionDetails?.data?.map(charge => ({
+    // chargeId: charge.payment_method_details.card.last4, // Last four digits of the card
+    date: new Date(charge.created * 1000).toLocaleDateString(), // Convert timestamp to date
+    totalAmount: `${(charge.amount / 100).toFixed(2)} ${charge.currency.toUpperCase()}`, // Amount formatted as currency
+    status: charge.paid ? "Paid" : "Failed", // Indicate if paid or failed
+    receiptUrl: charge.receipt_url // Use the receipt_url from the charge object
+  })) || []; // Default to an empty array if no data
+
   const tableColumnHelper = createColumnHelper();
 
   const tableColumns = React.useMemo(() => {
     return [
-      tableColumnHelper.accessor("group355", {
+      tableColumnHelper.accessor("chargeId", {
         cell: (info) => (
           <div className="flex flex-col items-start">
-            <Heading
+            {/* <Heading
               size="headingxs"
               as="p"
               className="text-[0.88rem] font-semibold text-text"
             >
-              {info.getValue()}
-            </Heading>
+              **** **** **** {info.getValue()} 
+            </Heading> */}
             <Heading as="p" className="text-[1.00rem] font-normal text-text">
-              {info.row.original.may2024}
+              {info.row.original.date}
             </Heading>
           </div>
         ),
         header: (info) => (
           <div className="flex py-[0.50rem] items-center">
-            {/* <Img src="/icons/calendar.svg" alt="Calendar" width={""} className="w-4 h-4 mr-2" /> */}
             <Heading as="p" className="text-[1.00rem] font-medium text-body">
-              # Date
+              Date
             </Heading>
           </div>
         ),
         meta: { width: "11.00rem" },
       }),
-      tableColumnHelper.accessor("group356", {
+      tableColumnHelper.accessor("totalAmount", {
         cell: (info) => (
           <div className="flex items-center">
-            {/* <Img src="/icons/dollar.svg" alt="Dollar" className="w-4 h-4 mr-2" /> */}
             <Heading as="p" className="text-[1.00rem] font-normal text-text">
               {info.getValue()}
             </Heading>
@@ -67,26 +57,20 @@ export default function BillingStatus() {
         ),
         header: (info) => (
           <div className="flex py-[0.50rem] items-center">
-            {/* <Img src="/icons/service.svg" alt="Service" className="w-4 h-4 mr-2" /> */}
             <Heading as="p" className="text-[1.00rem] font-medium text-body">
-              Service Fee
+              Total
             </Heading>
           </div>
         ),
         meta: { width: "11.00rem" },
       }),
-      tableColumnHelper.accessor("group357", {
+      tableColumnHelper.accessor("status", {
         cell: (info) => (
           <div className="flex items-center">
-            <div
-              className={`w-2 h-2 rounded-full mr-2 ${
-                info.getValue() === "Paid" ? "bg-green-500" : "bg-red-500"
-              }`}
-            ></div>
             <Heading
               as="p"
               className={`text-[1.00rem] font-normal ${
-                info.getValue() === "Paid" ? "text-green-800" : "text-red-800"
+                info.getValue() === "Paid" ? "!text-green-600" : "!text-red-600"
               }`}
             >
               {info.getValue()}
@@ -95,19 +79,53 @@ export default function BillingStatus() {
         ),
         header: (info) => (
           <div className="flex py-[0.50rem] items-center">
-            {/* <Img src="/icons/status.svg" alt="Status" className="w-4 h-4 mr-2" /> */}
             <Heading as="p" className="text-[1.00rem] font-medium text-body">
               Status
             </Heading>
           </div>
         ),
-        meta: { width: "11.50rem" },
+        meta: { width: "8.00rem" },
+      }),
+      tableColumnHelper.accessor("receiptUrl", {
+        cell: (info) => (
+          <div className="flex items-center">
+           <button 
+              onClick={async () => {
+                try {
+                  const response = await axios.get(info.getValue(), {
+                    responseType: 'blob', // Important: Set response type to blob
+                  });
+                  const url = window.URL.createObjectURL(new Blob([response.data]));
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.setAttribute('download', 'receipt.pdf'); // Set the filename
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                  window.URL.revokeObjectURL(url); // Clean up the URL object
+                } catch (error) {
+                  console.error("Error downloading the receipt:", error);
+                }
+              }}
+            >
+              <Download className="w-5 h-5 text-blue-500 cursor-pointer" />
+            </button>
+          </div>
+        ),
+        header: (info) => (
+          <div className="flex py-[0.50rem] items-center">
+            <Heading as="p" className="text-[1.00rem] font-medium text-body">
+               Receipt
+            </Heading>
+          </div>
+        ),
+        meta: { width: "8.00rem" },
       }),
     ];
   }, []);
 
   return (
-    <div className="mb-[13.75rem] w-[34.37rem]  flex flex-col gap-[2.50rem] md:self-stretch md:w-full">
+    <div className="mb-[13.75rem] w-[34.37rem] flex flex-col gap-[2.50rem] md:self-stretch md:w-full">
       <ReactTable
         size="xs"
         bodyProps={{ className: "" }}

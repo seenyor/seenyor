@@ -11,9 +11,9 @@ export default function PaymentPage() {
     redirect("/");
   }
 
-  if (!stripeCustomerId) {
-    redirect("/");
-  }
+  // if (!stripeCustomerId) {
+  //   redirect("/");
+  // }
 
   return <Page />;
 }

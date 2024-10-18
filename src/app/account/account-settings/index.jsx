@@ -242,6 +242,7 @@ const AccountSetting = () => {
               type={showNewPassword ? "text" : "password"}
               name="password"
               value={password}
+              placeholder="Enter Your Password"
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
             />
@@ -251,9 +252,10 @@ const AccountSetting = () => {
               className="absolute right-3 top-1/2 -translate-y-1/2"
             >
               {showNewPassword ? (
-                <EyeOff className="h-5 w-5 text-gray-400" />
-              ) : (
                 <Eye className="h-5 w-5 text-gray-400" />
+                
+              ) : (
+                <EyeOff className="h-5 w-5 text-gray-400" />
               )}
             </button>
           </div>
@@ -298,6 +300,7 @@ const AccountSetting = () => {
                 type={showOldPassword ? "text" : "password"}
                 name="oldPassword"
                 value={oldPassword}
+                  placeholder="Enter Your Old Password"
                 onChange={(e) => setOldPassword(e.target.value)}
                 className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
               />
@@ -307,9 +310,10 @@ const AccountSetting = () => {
                 className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 {showOldPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-400" />
+                    <Eye className="h-5 w-5 text-gray-400" />
+                 
                 ) : (
-                  <Eye className="h-5 w-5 text-gray-400" />
+                  <EyeOff className="h-5 w-5 text-gray-400" />
                 )}
               </button>
             </div>
@@ -327,6 +331,7 @@ const AccountSetting = () => {
                 type={showNewPassword ? "text" : "password"}
                 name="newPassword"
                 value={newPassword}
+                  placeholder="Enter Your New Password"
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
               />
@@ -337,9 +342,10 @@ const AccountSetting = () => {
                 className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 {showNewPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-400" />
+                    <Eye className="h-5 w-5 text-gray-400" />
+                
                 ) : (
-                  <Eye className="h-5 w-5 text-gray-400" />
+                  <EyeOff className="h-5 w-5 text-gray-400" />
                 )}
               </button>
             </div>
@@ -411,7 +417,7 @@ const AccountSetting = () => {
                 as="p"
                 className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
               >
-                {AddressInfo?.data?.address2}
+                {AddressInfo?.data?.country}
               </Text>
             </div>
             <div className="flex flex-col md:justify-start">

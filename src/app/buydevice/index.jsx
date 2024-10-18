@@ -19,10 +19,9 @@ import ProductHero from "./ProductHero";
 export default function HomePage() {
   const router = useRouter();
   const [products, setProducts] = useState([]);
-  let [kitPrice, setKitPrice] = useState(1100);
   let [installationPrice, setInstallationPrice] = useState(300);
   let [addonDevicePrice, setAddonDevicePrice] = useState(400);
-  let [aimonitoring, setAimonitoring] = useState(40);
+
   let [total, setTotal] = useState(0);
   let [quantity, setQuantity] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,25 +30,20 @@ export default function HomePage() {
   const { getProducts, getStripeCustomerId, createStripeSession } =
     useUserService();
   const { accessToken } = useAuth();
-  console.log("i am access token", accessToken);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const fetchedProducts = await getProducts();
         setProducts(fetchedProducts);
         console.log(fetchedProducts);
-
-        // Set prices based on fetched products
-        const kit = fetchedProducts.find(
-          (p) => p.name === "Required with your system"
-        );
+      
         const addon = fetchedProducts.find(
           (p) => p.name === "All in One AI Sensor"
         );
         const installation = fetchedProducts.find(
           (p) => p.name === "Installation"
         );
-        if (kit) setKitPrice(kit.price);
         if (addon) setAddonDevicePrice(addon.price);
         if (installation) setInstallationPrice(installation.price);
       } catch (error) {
@@ -63,12 +57,10 @@ export default function HomePage() {
   // Total Price calculation
   useEffect(() => {
     const calculatedTotal =
-      kitPrice +
       (selecteInstallation === 1 ? installationPrice : 0) +
       addonDevicePrice * quantity;
     setTotal(calculatedTotal);
   }, [
-    kitPrice,
     installationPrice,
     selecteInstallation,
     addonDevicePrice,
@@ -80,8 +72,7 @@ export default function HomePage() {
       installationPrice: selecteInstallation === 1 ? installationPrice : 0,
       addonDevicePrice,
       addonQuantity: quantity,
-      aiMonitoringPrice: aimonitoring,
-      total: total + aimonitoring, // Include AI monitoring in the total
+      total: total,
       products: products
         .filter((p) => !p.isRecurring)
         .map((p) => ({
@@ -106,8 +97,6 @@ export default function HomePage() {
               ? true
               : p.name === "Installation" && selecteInstallation === 1
               ? false
-              : p.name === "Required with your system"
-              ? false
               : false,
         })),
     };
@@ -123,14 +112,13 @@ export default function HomePage() {
     selecteInstallation,
     total,
     products,
-    aimonitoring,
   ]);
 
   const handleCheckout = async () => {
     const stripeCustomerId = await getStripeCustomerId();
-    if (!stripeCustomerId) {
+    if (!accessToken) {
       // User is not logged in, redirect to registration page
-      router.push("/register");
+      router.push("/login");
     }
 
     // Ensure order details are up to date in localStorage
@@ -172,19 +160,7 @@ export default function HomePage() {
           throw new Error("Installation product not found");
         }
       }
-      // Add AI Monitoring
-      const aiMonitoringProduct = products.find(
-        (p) => p.name === "Required with your system"
-      );
-      if (aiMonitoringProduct) {
-        lineItems.push({
-          price: aiMonitoringProduct.priceId,
-          quantity: 1,
-          adjustable_quantity: { enabled: false },
-        });
-      } else {
-        throw new Error("Required with your system");
-      }
+  
 
       if (lineItems.length === 0) {
         throw new Error("No products selected for checkout");
@@ -218,51 +194,6 @@ export default function HomePage() {
           className="h-[2.00rem] w-[12%] md:w-[30%] object-contain"
         />
       </div> */}
-
-      <div
-        id="Required_Products_Section"
-        className="relative flex flex-col gap-2 md:gap-6 items-center justify-center bg-[#F1F1F2] max-w-7xl my-0 mx-auto w-full p-10 rounded-xl px-16 md:p-5"
-      >
-        <div id="Section_Header" className="flex flex-col items-center gap-2 ">
-          <h2 className="font-semibold text-3xl text-center">
-            Required with your system
-          </h2>
-          <p className="font-normal text-md text-[#000]/80 text-center">
-            3X All in One AI Sensor Pack for entire house. Fall Detection and
-            Sleep Monitoring Solution
-          </p>
-        </div>
-        <div id="Price" className="price absolute right-16 md:text-center">
-          <h1 className="font-semibold text-3xl">${kitPrice}</h1>
-          <span className="font-normal text-md text-[#000]/80">
-            One Time Payment
-          </span>
-        </div>
-        <div
-          id="Products_Showcase"
-          className="flex items-center md:grid md:grid-cols-2 gap-2"
-        >
-          {["Bedroom", "Livingroom", "Bathroom"].map((item, ind) => {
-            return (
-              <div
-                id="Product"
-                key={ind}
-                className={`flex flex-col items-center justify-center ${
-                  ind === 2 ? "md:col-span-2 text-center" : ""
-                }`} // Use col-span-2 for the third item
-              >
-                <Img
-                  src="Product-1.png"
-                  width={250}
-                  height={180}
-                  alt="Product"
-                />
-                <h4 className="font-medium text-lg">{item}</h4>
-              </div>
-            );
-          })}
-        </div>
-      </div>
 
       <div
         id="More_Device_Section"
@@ -484,7 +415,8 @@ export default function HomePage() {
                 onClick={handleCheckout}
                 type="submit"
                 shape="round"
-                className="w-[50%] bg-[#A9A9A9] my-0 ml-auto rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] sm:m-auto text-white"
+                color="green_200_green_400_01"
+                className="w-[50%] my-0 ml-auto rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] sm:m-auto text-white"
               >
                 Check Out
               </Button>

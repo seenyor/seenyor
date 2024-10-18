@@ -104,7 +104,9 @@ export const useUserService = () => {
   const resendOtp = async (emailData) => {
     return post("/auth/send-otp", emailData);
   };
-
+  const resetPassword = async ({ otp, email, password }) => {
+    return post("/auth/reset-password", { otp, email, password });
+  };
   const login = async (credentials) => {
     try {
       const response = await post("/auth/login", credentials);
@@ -232,6 +234,15 @@ export const useUserService = () => {
         throw error;
       }
     };
+    const getTransactionDetails = async (customerId) => {
+      try {
+        const response = await get(`/orders/transaction-details/${customerId}`);
+        return response; // Return the transaction details
+      } catch (error) {
+        console.error("Error fetching transaction details:", error);
+        throw error; // Rethrow the error for handling in the component
+      }
+    };
        // Update Password Function
        const updateUserInfo = async (id, userData) => {
         try {
@@ -262,6 +273,8 @@ export const useUserService = () => {
     getUserDetailsById,
     updatePassword,
     updateEmail,
-    updateUserInfo
+    updateUserInfo,
+    getTransactionDetails,
+    resetPassword
   };
 };
