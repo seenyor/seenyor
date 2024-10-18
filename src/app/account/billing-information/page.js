@@ -2,20 +2,41 @@
 import { Button, Heading, Img, Text } from "@/components";
 import BillingStatus from "@/components/BillingStatus";
 import PaymentMethod from "@/modals/PaymentMethod";
-import { Suspense, useState } from "react";
+import { useUserService } from "@/services/userService"; // Import the user service
+import { Suspense, useEffect, useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import PaymentMethodCard from "./PaymentMethodCard";
 
 function Page() {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [transactionDetails, setTransactionDetails] = useState(null); // State to hold transaction details
+  const { getTransactionDetails } = useUserService();
+
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
   };
+
+  const fetchTransactionDetails = async () => {
+    try {
+      const customerId = 'cus_R3JjtlL7vYXFhe'; // Replace with the actual customer ID
+      const details = await getTransactionDetails(customerId);
+      setTransactionDetails(details); // Store the fetched transaction details
+      console.log(details);
+    } catch (error) {
+      console.error("Failed to fetch transaction details:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactionDetails(); // Fetch transaction details when the component mounts
+  }, []);
+
   const [isUnsubscribed, setIsUnsubscribed] = useState(false); // State to track subscription status
 
   const handleUnsubscribe = () => {
     setIsUnsubscribed((prev) => !prev); // Toggle the subscription status
   };
+
   const data = [
     {
       id: 1,
@@ -46,6 +67,7 @@ function Page() {
       isDefault: false,
     },
   ];
+
   return (
     <div className="w-full">
       <PaymentMethod
@@ -74,25 +96,20 @@ function Page() {
           </Text>
         </div>
         {/* Tabs List */}
-        {/* Tabs List */}
-        {/* Tabs List */}
-        <TabList className="flex  gap-4 md:gap-1 text-[#6c7482] w-[34.37rem] md:w-full sm:text-[0.8rem] md:items-center md:justify-center">
-          <Tab className="px-[0.88rem] py-[0.38rem]  text-[1.00rem] sm:text-[0.8rem] font-normal text-[#6c7482">
+        <TabList className="flex gap-4 md:gap-1 text-[#6c7482] w-[34.37rem] md:w-full sm:text-[0.8rem] md:items-center md:justify-center">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] sm:text-[0.8rem] font-normal text-[#6c7482]">
             Overview
           </Tab>
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] sm:text-[0.8rem]  font-norma ">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] sm:text-[0.8rem] font-normal">
             History
           </Tab>
-          {/* <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] font-normal sm:place-self-end ">
-            Billing Emails
-          </Tab> */}
-          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] sm:text-[0.8rem]  font-normal">
+          <Tab className="px-[0.88rem] py-[0.38rem] text-[1.00rem] sm:text-[0.8rem] font-normal">
             Payment Methods
           </Tab>
         </TabList>
 
         {/* Tab Panels */}
-        <TabPanel className="absolute items-center  md:justify-center md:items-center ">
+        <TabPanel className="absolute items-center md:justify-center md:items-center ">
           <div className="w-full">
             <div className="flex flex-col gap-4 pb-10">
               {/* Billing Overview */}
@@ -128,7 +145,6 @@ function Page() {
               </div>
 
               {/* Cancel Subscription */}
-
               {!isUnsubscribed ? (
                 <div className="flex items-center justify-between gap-[1.25rem] rounded-[14px] bg-orange-50 px-[1.13rem] py-[0.88rem] md:flex-col ">
                   <div className="flex w-full flex-col items-start md:w-full md:items-center md:text-center">
@@ -207,51 +223,16 @@ function Page() {
               <div className="flex flex-col items-start gap-[0.38rem] self-stretch">
                 <Text
                   as="p"
-                  className="text-[1.13rem} font-normal text-[#1d293f]  md:text-center "
+                  className="text-[1.13rem] font-normal text-[#1d293f]  md:text-center "
                 >
                   Your upcoming charges will be billed to the card
                 </Text>
               </div>
             </div>
-            {/* Billing Emails */}
-            {/* <div className="flex flex-col gap-[0.63rem]">
-              <Heading
-                as="p"
-                className="text-[1.50rem] font-medium text-text md:text-[1.38rem]"
-              >
-                Billing Emails
-              </Heading>
-              <Text as="p" className="text-[1.13rem] font-normal text-body">
-                Billing emails are sent to:
-              </Text>
-              <div className="flex flex-wrap gap-[0.63rem]">
-                <Text as="p" className="text-[1.13rem] font-medium text-text">
-                  example1@gmail.com
-                </Text>
-                <Text as="p" className="text-[1.13rem] font-medium text-text">
-                  ,
-                </Text>
-                <Text as="p" className="text-[1.13rem] font-medium text-text">
-                  example2@gmail.com
-                </Text>
-                <Text as="p" className="text-[1.13rem] font-medium text-text">
-                  ,
-                </Text>
-                <Text as="p" className="text-[1.13rem] font-medium text-text">
-                  example3@gmail.com
-                </Text>
-              </div>
-              <Heading
-                as="p"
-                className="text-[0.88rem] font-medium text-primary underline"
-              >
-                Manage Emails
-              </Heading>
-            </div> */}
           </div>
         </TabPanel>
         <TabPanel className="absolute items-center">
-          <BillingStatus />
+          <BillingStatus transactionDetails={transactionDetails} /> {/* Pass transaction details */}
         </TabPanel>
 
         <TabPanel className="absolute items-center w-[34.37rem] md:w-full">

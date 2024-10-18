@@ -242,6 +242,7 @@ const AccountSetting = () => {
               type={showNewPassword ? "text" : "password"}
               name="password"
               value={password}
+              placeholder="Enter Your Password"
               onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
             />
@@ -299,6 +300,7 @@ const AccountSetting = () => {
                 type={showOldPassword ? "text" : "password"}
                 name="oldPassword"
                 value={oldPassword}
+                  placeholder="Enter Your Old Password"
                 onChange={(e) => setOldPassword(e.target.value)}
                 className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
               />
@@ -329,6 +331,7 @@ const AccountSetting = () => {
                 type={showNewPassword ? "text" : "password"}
                 name="newPassword"
                 value={newPassword}
+                  placeholder="Enter Your New Password"
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
               />

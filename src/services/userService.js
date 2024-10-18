@@ -232,6 +232,15 @@ export const useUserService = () => {
         throw error;
       }
     };
+    const getTransactionDetails = async (customerId) => {
+      try {
+        const response = await get(`/orders/transaction-details/${customerId}`);
+        return response; // Return the transaction details
+      } catch (error) {
+        console.error("Error fetching transaction details:", error);
+        throw error; // Rethrow the error for handling in the component
+      }
+    };
        // Update Password Function
        const updateUserInfo = async (id, userData) => {
         try {
@@ -262,6 +271,7 @@ export const useUserService = () => {
     getUserDetailsById,
     updatePassword,
     updateEmail,
-    updateUserInfo
+    updateUserInfo,
+    getTransactionDetails
   };
 };
