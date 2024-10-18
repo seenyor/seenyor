@@ -154,6 +154,11 @@ export default function RegisterPage() {
     //   });
     //   return; // Stop submission if there are validation errors
     // }
+        // Check if password is at least 6 characters long
+        if (data.password.length < 6) {
+          setError("Password must be at least 6 characters long.");
+          return; // Stop submission if the password is invalid
+        }
     const formattedData = {
       agent_id: data.agent_id,
       email: data.endUser_email,
@@ -646,6 +651,7 @@ export default function RegisterPage() {
                   })}
                       <Text className={`text-sm ${passwordStrength === "Strong" ? "text-green-600" : passwordStrength === "Weak" ? "text-red-600" : "text-yellow-600"}`}>
                     {passwordStrength}
+                    {error}
                   </Text>
                 </div>
               </div>
