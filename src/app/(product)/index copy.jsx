@@ -9,7 +9,7 @@ const ProductDetails = dynamic(() => import("./ProductDetails"), {
   loading: () => <LoadingSpinner />,
   ssr: false 
 });
-const ProductHero = dynamic(() => import("./ProductHero"), { 
+const ProductHero = dynamic(() => import("../buydevice/ProductHero"), { 
   loading: () => <LoadingSpinner />,
   ssr: false 
 });

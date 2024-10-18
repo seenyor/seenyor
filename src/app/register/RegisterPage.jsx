@@ -181,6 +181,10 @@ export default function RegisterPage() {
     try {
       setError("");
       const response = await registerUser(formattedData);
+      // Check if user registration was successful
+      if (!response || !response.status) {
+        throw new Error(userResponse.message || "User registration failed.");
+      }
       if (response.status) {
         setEmail(formattedData.email);
         localStorage.setItem(
@@ -203,7 +207,11 @@ export default function RegisterPage() {
   };
 
   const handleOtpVerification = async (otp) => {
-    console.log("first OTP");
+    // Only proceed with OTP verification if there are no errors
+    if (error) {
+      console.error("Cannot verify OTP due to previous errors:", error);
+      return; // Prevent OTP verification if there are errors
+    }
 
     try {
       const response = await verifyOtp({
@@ -563,6 +571,7 @@ export default function RegisterPage() {
                       type: "text",
                       placeholder: "Agent Name",
                       required: true,
+
                     })}
                     {renderField({
                       label: "Agent ID",

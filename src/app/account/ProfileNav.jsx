@@ -40,9 +40,14 @@ export default function ProfileNav() {
   };
 
   return (
-    <div className="flex w-[18.125rem] flex-col gap-[1.50rem] md:w-full bg-white rounded-lg">
+    <div className="flex flex-col gap-[1.50rem] min-w-[20rem] md:w-full bg-white rounded-lg ">
       <div className="flex items-center gap-[1.25rem] md:flex-col md:text-center">
-        <Avatar.Root className="inline-flex size-[40px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
+        <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
+        <Avatar.Image
+				className="size-full rounded-[inherit] object-cover"
+				src="images/avater.png"
+				alt="avatar"
+			/>
           <Avatar.Fallback className="leading-1 flex size-full items-center justify-center bg-blue-200 text-[20px] font-medium text-violet11">
             A
           </Avatar.Fallback>

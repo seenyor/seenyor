@@ -46,15 +46,26 @@ export const useUserService = () => {
     if (validationError) {
       throw new Error(validationError); // Throw an error if validation fails
     }
+
     try {
       // Register user
       const userResponse = await post("/users/end-users", userData);
+
+      // Check if user registration was successful
+      if (!userResponse || !userResponse.status) {
+        throw new Error(userResponse.message || "User registration failed.");
+      }
 
       // Create Stripe customer
       const stripeCustomerResponse = await createStripeCustomer({
         email: userData.email,
         name: userData.name,
       });
+
+      // Check if Stripe customer creation was successful
+      if (!stripeCustomerResponse || !stripeCustomerResponse.id) {
+        throw new Error("Failed to create Stripe customer.");
+      }
 
       // Combine user data with Stripe customer ID
       const combinedUserData = {
@@ -211,6 +222,28 @@ export const useUserService = () => {
       throw error;
     }
   };
+    // Update Password Function
+    const updateEmail = async (emailData) => {
+      try {
+        const response = await patch("/auth/update-email", emailData);
+        return response; // Return the response if needed
+      } catch (error) {
+        console.error("Error updating password:", error);
+        throw error;
+      }
+    };
+       // Update Password Function
+       const updateUserInfo = async (id, userData) => {
+        try {
+          const response = await patch(
+            `/users/${id}`, userData
+          );
+          return response; 
+        } catch (error) {
+          console.error("Error updating password:", error);
+          throw error;
+        }
+      };
   return {
     registerUser,
     verifyOtp,
@@ -228,5 +261,7 @@ export const useUserService = () => {
     updateUserName,
     getUserDetailsById,
     updatePassword,
+    updateEmail,
+    updateUserInfo
   };
 };
