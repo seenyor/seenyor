@@ -251,9 +251,10 @@ const AccountSetting = () => {
               className="absolute right-3 top-1/2 -translate-y-1/2"
             >
               {showNewPassword ? (
-                <EyeOff className="h-5 w-5 text-gray-400" />
-              ) : (
                 <Eye className="h-5 w-5 text-gray-400" />
+                
+              ) : (
+                <EyeOff className="h-5 w-5 text-gray-400" />
               )}
             </button>
           </div>
@@ -307,9 +308,10 @@ const AccountSetting = () => {
                 className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 {showOldPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-400" />
+                    <Eye className="h-5 w-5 text-gray-400" />
+                 
                 ) : (
-                  <Eye className="h-5 w-5 text-gray-400" />
+                  <EyeOff className="h-5 w-5 text-gray-400" />
                 )}
               </button>
             </div>
@@ -337,9 +339,10 @@ const AccountSetting = () => {
                 className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 {showNewPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-400" />
+                    <Eye className="h-5 w-5 text-gray-400" />
+                
                 ) : (
-                  <Eye className="h-5 w-5 text-gray-400" />
+                  <EyeOff className="h-5 w-5 text-gray-400" />
                 )}
               </button>
             </div>
@@ -411,7 +414,7 @@ const AccountSetting = () => {
                 as="p"
                 className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
               >
-                {AddressInfo?.data?.address2}
+                {AddressInfo?.data?.country}
               </Text>
             </div>
             <div className="flex flex-col md:justify-start">

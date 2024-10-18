@@ -205,11 +205,6 @@ export default function RegisterPage() {
   };
 
   const handleOtpVerification = async (otp) => {
-    // Only proceed with OTP verification if there are no errors
-    if (error) {
-      console.error("Cannot verify OTP due to previous errors:", error);
-      return; // Prevent OTP verification if there are errors
-    }
     try {
       const response = await verifyOtp({
         email,

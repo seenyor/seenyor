@@ -4,9 +4,9 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import { useAuth } from "@/context/AuthContext";
 import { useUserService } from "@/services/userService";
 import {
-    MinusCircledIcon,
-    PlusCircledIcon,
-    StarIcon,
+  MinusCircledIcon,
+  PlusCircledIcon,
+  StarIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ export default function HomePage() {
   const { getProducts, getStripeCustomerId, createStripeSession } =
     useUserService();
   const { accessToken } = useAuth();
-  console.log("i am access token", accessToken);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
