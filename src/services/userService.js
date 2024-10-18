@@ -104,7 +104,9 @@ export const useUserService = () => {
   const resendOtp = async (emailData) => {
     return post("/auth/send-otp", emailData);
   };
-
+  const resetPassword = async ({ otp, email, password }) => {
+    return post("/auth/reset-password", { otp, email, password });
+  };
   const login = async (credentials) => {
     try {
       const response = await post("/auth/login", credentials);
@@ -272,6 +274,7 @@ export const useUserService = () => {
     updatePassword,
     updateEmail,
     updateUserInfo,
-    getTransactionDetails
+    getTransactionDetails,
+    resetPassword
   };
 };

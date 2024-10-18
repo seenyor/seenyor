@@ -7,7 +7,7 @@ export default function PaymentPage() {
   const stripeCustomerId = cookieStore.get("stripeCustomerId");
   const accessToken = cookieStore.get("access_token");
 
-  if (!accessToken) {
+  if (accessToken) {
     redirect("/");
   }
 
