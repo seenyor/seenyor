@@ -62,7 +62,7 @@ export default function RegisterPage() {
   const [cityOptions, setCityOptions] = useState([]);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
-
+  const [passwordStrength, setPasswordStrength] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -121,6 +121,25 @@ export default function RegisterPage() {
 
     fetchData();
   }, []);
+
+  const checkPasswordStrength = (password) => {
+    if (password.length < 6) {
+      setPasswordStrength("Weak (minimum 6 characters)");
+    } else if (password.length < 10) {
+      setPasswordStrength("Medium");
+    } else {
+      setPasswordStrength("Strong");
+    }
+  };
+
+  const mypassword = watch("password");
+  // Update password strength on password change
+  useEffect(() => {
+    const subscription = watch((value) => {
+      checkPasswordStrength(value.password);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
   const onSubmit = async (data) => {
     // // Perform client-side validation
@@ -625,6 +644,9 @@ export default function RegisterPage() {
                     validate: (value) =>
                       value === password || "Passwords do not match",
                   })}
+                      <Text className={`text-sm ${passwordStrength === "Strong" ? "text-green-600" : passwordStrength === "Weak" ? "text-red-600" : "text-yellow-600"}`}>
+                    {passwordStrength}
+                  </Text>
                 </div>
               </div>
               <div className="w-full flex flex-col items-center">
