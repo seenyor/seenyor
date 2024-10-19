@@ -43,8 +43,8 @@ const AccountSetting = () => {
     const storedUserId = localStorage.getItem("user_id");
     if (storedUserId) {
       fetchUserDetails(storedUserId);
+      fetchCountries();
     }
-    fetchCountries();
   }, []);
 
   const fetchUserDetails = async (id) => {
@@ -52,6 +52,7 @@ const AccountSetting = () => {
       const userDetails = await getUserDetailsById(id);
       setAddressInfo(userDetails);
       setMail(userDetails.data.email);
+      console.log(userDetails);
     } catch (error) {
       console.error("Failed to fetch user details:", error);
     }
@@ -61,6 +62,7 @@ const AccountSetting = () => {
     try {
       const response = await getCountries();
       if (response && response.data) {
+        console.log(response.data);
         setCountries(
           response.data.map((country) => ({
             label: `${country.country_name}`, // Display country name with code
@@ -156,7 +158,6 @@ const AccountSetting = () => {
         address={AddressInfo?.data}
         onSave={handleAddressSave}
       />
-    
 
       <div className="flex flex-col items-start border-b border-solid border-border pb-4 md:items-center md:text-center">
         <Heading
@@ -221,7 +222,7 @@ const AccountSetting = () => {
               <Text
                 as="p"
                 // onClick={() => handleForgotModalToggle(true)}
-              
+
                 className="text-[1.13rem] font-medium cursor-pointer capitalize text-primary"
               >
                 Forgot Password?
@@ -253,7 +254,6 @@ const AccountSetting = () => {
             >
               {showNewPassword ? (
                 <Eye className="h-5 w-5 text-gray-400" />
-                
               ) : (
                 <EyeOff className="h-5 w-5 text-gray-400" />
               )}
@@ -300,7 +300,7 @@ const AccountSetting = () => {
                 type={showOldPassword ? "text" : "password"}
                 name="oldPassword"
                 value={oldPassword}
-                  placeholder="Enter Your Old Password"
+                placeholder="Enter Your Old Password"
                 onChange={(e) => setOldPassword(e.target.value)}
                 className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
               />
@@ -310,8 +310,7 @@ const AccountSetting = () => {
                 className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 {showOldPassword ? (
-                    <Eye className="h-5 w-5 text-gray-400" />
-                 
+                  <Eye className="h-5 w-5 text-gray-400" />
                 ) : (
                   <EyeOff className="h-5 w-5 text-gray-400" />
                 )}
@@ -331,7 +330,7 @@ const AccountSetting = () => {
                 type={showNewPassword ? "text" : "password"}
                 name="newPassword"
                 value={newPassword}
-                  placeholder="Enter Your New Password"
+                placeholder="Enter Your New Password"
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full rounded-[12px] border px-[1.63rem] py-2 pr-10 sm:px-[1.25rem]"
               />
@@ -342,8 +341,7 @@ const AccountSetting = () => {
                 className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 {showNewPassword ? (
-                    <Eye className="h-5 w-5 text-gray-400" />
-                
+                  <Eye className="h-5 w-5 text-gray-400" />
                 ) : (
                   <EyeOff className="h-5 w-5 text-gray-400" />
                 )}
@@ -417,7 +415,11 @@ const AccountSetting = () => {
                 as="p"
                 className="w-full text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] mb-4 md:text-center"
               >
-                {AddressInfo?.data?.country}
+                {
+                  countries.find(
+                    (country) => country.value === AddressInfo?.data?.country_id
+                  )?.label
+                }
               </Text>
             </div>
             <div className="flex flex-col md:justify-start">
