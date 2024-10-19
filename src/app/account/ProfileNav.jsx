@@ -14,7 +14,6 @@ export default function ProfileNav() {
   const { accessToken, logout } = useAuth();
   const pathname = usePathname(); // Get the current pathname
   const [showName, setShowName] = useState("");
-  const [mail, setMail] = useState("");
   const [userId, setUserId] = useState("");
 
   const handleLogout = () => {
@@ -35,7 +34,7 @@ export default function ProfileNav() {
     try {
       const userDetails = await getUserDetailsById(id);
       setUserName(userDetails.data.name);
-      setMail(userDetails.data.email);
+      setEmail(userDetails.data.email);
       localStorage.setItem("subscription_id", userDetails.data.subscription_id);
 
     } catch (error) {

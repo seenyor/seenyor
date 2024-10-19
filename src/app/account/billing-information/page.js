@@ -14,11 +14,10 @@ function Page() {
   const [transactionDetails, setTransactionDetails] = useState(null); // State
   const { setEmail, email, user, accessToken } = useAuth();
 
-  const { getTransactionDetails, getStripeCustomerId, subscriptionDetails } =
+  const { getTransactionDetails, subscriptionDetails, getCustomerId } =
     useUserService();
   const [subscriptionDetail, setSubscriptionDetail] = useState(null);
   const [isUnsubscribed, setIsUnsubscribed] = useState(false); // State to track subscription status
-
 
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
@@ -27,7 +26,6 @@ function Page() {
   const fetchTransactionDetails = async () => {
     let stripeCustomerId;
     try {
-
       const customerData = await getCustomerId(email);
       stripeCustomerId = customerData.id;
       const details = await getTransactionDetails(stripeCustomerId);
@@ -51,9 +49,11 @@ function Page() {
   };
 
   useEffect(() => {
-    fetchTransactionDetails(); // Fetch transaction details when the component mounts
+    if (email) {
+      fetchTransactionDetails();
+    }
     fetchSubscriptionDetails();
-  }, []);
+  }, [email]); // Ensure email is loaing
 
   const handleUnsubscribe = () => {
     setIsUnsubscribed((prev) => !prev); // Toggle the subscription status
@@ -237,13 +237,13 @@ function Page() {
                 <span className="font-medium text-[#1d293f]">
                   {subscriptionDetail?.current_period_end
                     ? new Date(
-                        subscriptionDetail?.current_period_end
+                        subscriptionDetail.current_period_end * 1000
                       ).toLocaleDateString("en-US", {
                         month: "long",
                         day: "numeric",
                         year: "numeric",
                       })
-                    : "... ..."}
+                    : "N/A"}
                 </span>{" "}
                 for
                 <span className="font-medium text-[#1d293f]">
