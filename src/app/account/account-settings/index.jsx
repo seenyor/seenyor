@@ -217,10 +217,10 @@ const AccountSetting = () => {
             >
               Password
             </Heading>
-            <Link href="#">
+            <Link href="/login/forgot-password">
               <Text
                 as="p"
-                onClick={() => handleForgotModalToggle(true)}
+                // onClick={() => handleForgotModalToggle(true)}
               
                 className="text-[1.13rem] font-medium cursor-pointer capitalize text-primary"
               >

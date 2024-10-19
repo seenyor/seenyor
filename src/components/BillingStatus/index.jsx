@@ -1,7 +1,6 @@
 "use client";
 
 import { createColumnHelper } from "@tanstack/react-table";
-import axios from "axios";
 import { Download } from "lucide-react"; // Import the Download icon from Lucide React
 import React from "react";
 import { Heading } from "../../components";
@@ -14,10 +13,10 @@ export default function BillingStatus({ transactionDetails }) {
   const tableData = transactionDetails?.data?.map(charge => ({
     // chargeId: charge.payment_method_details.card.last4, // Last four digits of the card
     date: new Date(charge.created * 1000).toLocaleDateString(), // Convert timestamp to date
-    totalAmount: `${(charge.amount / 100).toFixed(2)} ${charge.currency.toUpperCase()}`, // Amount formatted as currency
-    status: charge.paid ? "Paid" : "Failed", // Indicate if paid or failed
-    receiptUrl: charge.receipt_url // Use the receipt_url from the charge object
-  })) || []; // Default to an empty array if no data
+    totalAmount: `${(charge.amount / 100).toFixed(2)} ${charge.currency.toUpperCase()}`, 
+    status: charge.paid ? "Paid" : "Failed", 
+    receiptUrl: charge.receipt_url
+  })) || []; 
 
   const tableColumnHelper = createColumnHelper();
 
@@ -89,27 +88,15 @@ export default function BillingStatus({ transactionDetails }) {
       tableColumnHelper.accessor("receiptUrl", {
         cell: (info) => (
           <div className="flex items-center">
-           <button 
-              onClick={async () => {
-                try {
-                  const response = await axios.get(info.getValue(), {
-                    responseType: 'blob', // Important: Set response type to blob
-                  });
-                  const url = window.URL.createObjectURL(new Blob([response.data]));
-                  const link = document.createElement('a');
-                  link.href = url;
-                  link.setAttribute('download', 'receipt.pdf'); // Set the filename
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                  window.URL.revokeObjectURL(url); // Clean up the URL object
-                } catch (error) {
-                  console.error("Error downloading the receipt:", error);
-                }
-              }}
+            <a
+              href={info.getValue()} // Set the href to the URL of the receipt
+              target="_blank" // Open in a new tab
+              rel="noopener noreferrer" // Security best practice
+              className="flex items-center text-blue-500 cursor-pointer"
             >
-              <Download className="w-5 h-5 text-blue-500 cursor-pointer" />
-            </button>
+              <Download className="w-5 h-5" />
+            
+            </a>
           </div>
         ),
         header: (info) => (

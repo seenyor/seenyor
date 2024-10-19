@@ -1,6 +1,7 @@
 "use client";
 import { Button, Heading, Img, Text } from "@/components";
 import BillingStatus from "@/components/BillingStatus";
+import { useAuth } from "@/context/AuthContext";
 import PaymentMethod from "@/modals/PaymentMethod";
 import { useUserService } from "@/services/userService"; // Import the user service
 import { Suspense, useEffect, useState } from "react";
@@ -9,21 +10,28 @@ import PaymentMethodCard from "./PaymentMethodCard";
 
 function Page() {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [transactionDetails, setTransactionDetails] = useState(null); // State to hold transaction details
+
+  const [transactionDetails, setTransactionDetails] = useState(null); // State
+  const { setEmail, email, user, accessToken } = useAuth();
+
   const { getTransactionDetails, getStripeCustomerId, subscriptionDetails } =
     useUserService();
   const [subscriptionDetail, setSubscriptionDetail] = useState(null);
   const [isUnsubscribed, setIsUnsubscribed] = useState(false); // State to track subscription status
+
 
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
   };
 
   const fetchTransactionDetails = async () => {
+    let stripeCustomerId;
     try {
-      const stripeCustomerId = await getStripeCustomerId();
-      const customerId = stripeCustomerId; // Replace with the actual customer ID
-      const details = await getTransactionDetails(customerId);
+
+      const customerData = await getCustomerId(email);
+      stripeCustomerId = customerData.id;
+      const details = await getTransactionDetails(stripeCustomerId);
+
       setTransactionDetails(details); // Store the fetched transaction details
       console.log(details);
     } catch (error) {
