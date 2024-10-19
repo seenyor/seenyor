@@ -14,10 +14,10 @@ export default function BillingStatus({ transactionDetails }) {
   const tableData = transactionDetails?.data?.map(charge => ({
     // chargeId: charge.payment_method_details.card.last4, // Last four digits of the card
     date: new Date(charge.created * 1000).toLocaleDateString(), // Convert timestamp to date
-    totalAmount: `${(charge.amount / 100).toFixed(2)} ${charge.currency.toUpperCase()}`, // Amount formatted as currency
-    status: charge.paid ? "Paid" : "Failed", // Indicate if paid or failed
-    receiptUrl: charge.receipt_url // Use the receipt_url from the charge object
-  })) || []; // Default to an empty array if no data
+    totalAmount: `${(charge.amount / 100).toFixed(2)} ${charge.currency.toUpperCase()}`, 
+    status: charge.paid ? "Paid" : "Failed", 
+    receiptUrl: charge.receipt_url
+  })) || []; 
 
   const tableColumnHelper = createColumnHelper();
 

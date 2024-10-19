@@ -1,6 +1,7 @@
 "use client";
 import { Button, Heading, Img, Text } from "@/components";
 import BillingStatus from "@/components/BillingStatus";
+import { useAuth } from "@/context/AuthContext";
 import PaymentMethod from "@/modals/PaymentMethod";
 import { useUserService } from "@/services/userService"; // Import the user service
 import { Suspense, useEffect, useState } from "react";
@@ -9,19 +10,22 @@ import PaymentMethodCard from "./PaymentMethodCard";
 
 function Page() {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [transactionDetails, setTransactionDetails] = useState(null); // State to hold transaction details
-  const { getTransactionDetails, getStripeCustomerId } = useUserService();
+  const [transactionDetails, setTransactionDetails] = useState(null); // State
+  const { setEmail, email, user, accessToken } = useAuth();
+
+  const { getTransactionDetails, getStripeCustomerId, getCustomerId } =
+    useUserService();
 
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
   };
-  
 
   const fetchTransactionDetails = async () => {
+    let stripeCustomerId;
     try {
-      const stripeCustomerId = await getStripeCustomerId();
-      const customerId = stripeCustomerId // Replace with the actual customer ID
-      const details = await getTransactionDetails(customerId);
+      const customerData = await getCustomerId(email);
+      stripeCustomerId = customerData.id;
+      const details = await getTransactionDetails(stripeCustomerId);
       setTransactionDetails(details); // Store the fetched transaction details
       console.log(details);
     } catch (error) {
@@ -234,7 +238,8 @@ function Page() {
           </div>
         </TabPanel>
         <TabPanel className="absolute items-center">
-          <BillingStatus transactionDetails={transactionDetails} /> {/* Pass transaction details */}
+          <BillingStatus transactionDetails={transactionDetails} />{" "}
+          {/* Pass transaction details */}
         </TabPanel>
 
         <TabPanel className="absolute items-center w-[34.37rem] md:w-full">
