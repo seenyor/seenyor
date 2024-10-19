@@ -20,7 +20,7 @@ export default function ProfileNav() {
   const handleLogout = () => {
     removeStripeCustomerId();
     logout();
-    window.location.href = "seenyor.com";
+    window.location.href = "https://seenyor.com";
   };
 
   useEffect(() => {
@@ -35,7 +35,9 @@ export default function ProfileNav() {
     try {
       const userDetails = await getUserDetailsById(id);
       setUserName(userDetails.data.name);
-      setEmail(userDetails.data.email);
+      setMail(userDetails.data.email);
+      localStorage.setItem("subscription_id", userDetails.data.subscription_id);
+
     } catch (error) {
       console.error("Failed to fetch user details:", error);
     }

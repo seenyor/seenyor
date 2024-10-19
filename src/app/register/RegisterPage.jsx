@@ -161,16 +161,16 @@ export default function RegisterPage() {
         }
     const formattedData = {
       agent_id: data.agent_id,
-      email: data.endUser_email,
-      name: data.endUser_first_name,
-      last_name: data.endUser_last_name,
-      address: data.endUser_address,
-      address2: data.endUser_address_2,
-      city: data.endUser_city,
-      country_id: data.endUser_country_id,
-      post_Code: data.endUser_zipcode,
-      state: data.endUser_state,
-      contact_number: data.endUser_contact_number,
+      email: data.customer_email,
+      name: data.customer_first_name,
+      last_name: data.customer_last_name,
+      address: data.customer_address,
+      address2: data.customer_address_2,
+      city: data.customer_city,
+      country_id: data.customer_country_id,
+      post_Code: data.customer_zipcode,
+      state: data.customer_state,
+      contact_number: data.customer_contact_number,
       password: data.password,
       customer_info: {
         country_id: data.customer_country_id,
@@ -224,11 +224,22 @@ export default function RegisterPage() {
         setError(response.message || "Registration failed. Please try again.");
       }
     } catch (err) {
-      setError(err.message || "An error occurred during registration");
+      console.log(err);
+
+      setError(err.message || "E-mail Address Already Exist!");
     }
   };
 
   const handleOtpVerification = async (otp) => {
+
+
+    // Only proceed with OTP verification if there are no errors
+//     if (error) {
+//       console.error("Cannot verify OTP due to previous errors:", error);
+//       return; // Prevent OTP verification if there are errors
+//     }
+
+
     try {
       const response = await verifyOtp({
         email,
@@ -248,6 +259,7 @@ export default function RegisterPage() {
   };
 
   const handleResendOtp = async () => {
+    console.log("resend OTP");
     try {
       const response = await resendOtp({
         email,
@@ -461,48 +473,48 @@ export default function RegisterPage() {
               >
                 <div>
                   <Heading size="heading3xl" as="h2">
-                    End-User Information
+                    Installation Information
                   </Heading>
                   <Text
                     as="p"
                     className="w-[76%] text-[1rem] font-normal capitalize leading-[1.69rem] text-body md:w-full text-slate-500"
                   >
-                    Information about the end-user and Installation address
+                    Information about The Installation and Installation address
                   </Text>
                 </div>
                 <div id="Fields" className="flex flex-col gap-4">
-                  <div
+                  {/* <div
                     id="Field_Group"
                     className="flex gap-4 w-full sm:flex-col sm:gap-1"
                   >
                     {renderField({
-                      label: "Last Name",
+                      label: "First Name",
                       name: "endUser_first_name",
                       type: "text",
                       placeholder: "First name",
                     })}
                     {renderField({
-                      label: "First Name",
+                      label: "Last Name",
                       name: "endUser_last_name",
                       type: "text",
                       placeholder: "Last name",
                     })}
-                  </div>
+                  </div> */}
                   <div
                     id="Field_Group"
                     className="flex gap-4 w-full sm:flex-col sm:gap-1"
                   >
-                    {renderField({
+                    {/* {renderField({
                       label: "E-mail",
                       name: "endUser_email",
                       type: "text",
                       placeholder: "E-Mail Address",
-                    })}
+                    })} */}
                     {renderField({
                       label: "Phone Number",
                       name: "endUser_contact_number",
                       type: "tel",
-                      placeholder: "+353",
+                      placeholder: "Enter Phone Number",
                     })}
                   </div>
 
@@ -585,7 +597,7 @@ export default function RegisterPage() {
                       name: "agent_name",
                       type: "text",
                       placeholder: "Agent Name",
-                      // required: false,
+                      required: true,
                     })}
                     {renderField({
                       label: "Agent ID",
@@ -623,8 +635,7 @@ export default function RegisterPage() {
                     label: "Source of Lead",
                     name: "source_lead",
                     type: "text",
-                    placeholder: "Type of Lead",
-                    // options: SourceofLeads,
+                    placeholder: "Write The Source of Lead",
                     required: false,
                   })}
                 </div>

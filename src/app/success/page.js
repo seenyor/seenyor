@@ -7,7 +7,12 @@ import { useEffect, useState } from "react";
 
 function Page() {
   const router = useRouter();
-  const { getSessionDetails, createOrder } = useUserService();
+  const {
+    getSessionDetails,
+    createOrder,
+    handlePaymentStatus,
+    handlePaymentSubscription,
+  } = useUserService();
   const [isProcessing, setIsProcessing] = useState(false); // State to track processing
   let sessionId;
   if (typeof window !== "undefined") {
@@ -75,17 +80,53 @@ function Page() {
   };
 
   useEffect(() => {
-    if (sessionId) {
+    let customerId;
+    let hasRun = false;
+
+    if (sessionId && !hasRun) {
+      hasRun = true;
+      setIsProcessing(true);
+
       getSessionDetails(sessionId)
         .then((session) => {
-          handleOrder(session);
+          customerId = session.customer;
+          return handleOrder(session);
+        })
+        .then(() => handlePaymentStatus(sessionId))
+        .then((response) => {
+          if (response.success) {
+            const subscriptionProducts = JSON.parse(
+              localStorage.getItem("subscriptionProducts")
+            );
+            if (subscriptionProducts && subscriptionProducts.length > 0) {
+              return handlePaymentSubscription(
+                customerId,
+                subscriptionProducts[0].priceId
+              );
+            }
+          } else {
+            console.log("Payment Status False");
+          }
+        })
+        .then((response) => {
+          if (response) console.log(response);
+          // Clear localStorage
+          // [
+          //   "subscriptionProducts",
+          //   "orderDetails",
+          //   "user_address",
+          //   "user_credentials",
+          //   "agent_id",
+          // ].forEach((item) => localStorage.removeItem(item));
         })
         .catch((error) => {
-          console.error("Error fetching session details:", error);
+          console.error("Error in payment process:", error);
+        })
+        .finally(() => {
           setIsProcessing(false);
         });
     }
-  }, []);
+  }, [sessionId]);
 
   // useEffect(() => {
   //   if (sessionId) {

@@ -181,6 +181,21 @@ export const useUserService = () => {
     return get(`/orders/session-details/${sessionId}`);
   };
 
+  //Nessesary API's For Make Subscription Stuff
+  const handlePaymentStatus = async (sessionId) => {
+    return post(`/orders/handle-payment-success`, { session_id: sessionId });
+  };
+  const handlePaymentSubscription = async (customerId, priceId) => {
+    return post(`/orders/create-subscription`, {
+      customerId: customerId,
+      priceId: priceId,
+    });
+  };
+  const subscriptionDetails = async (subscriptionId) => {
+    return get(`/orders/subscription-status/${subscriptionId}`);
+  };
+  //=====End========//
+
   const createOrder = async (orderData) => {
     try {
       const response = await post("/orders", orderData);
@@ -222,6 +237,7 @@ export const useUserService = () => {
       throw error;
     }
   };
+
     // Update Password Function
     const updateEmail = async (emailData) => {
       try {
@@ -271,6 +287,7 @@ export const useUserService = () => {
           throw error;
         }
       };
+
   return {
     registerUser,
     verifyOtp,
@@ -285,13 +302,18 @@ export const useUserService = () => {
     getAgents,
     getSessionDetails,
     createOrder,
+    handlePaymentStatus,
+    handlePaymentSubscription,
+    subscriptionDetails,
     updateUserName,
     getUserDetailsById,
     updatePassword,
     updateEmail,
     updateUserInfo,
     getTransactionDetails,
+
     resetPassword, 
     getCustomerId
+
   };
 };
