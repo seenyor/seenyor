@@ -111,13 +111,13 @@ function Page() {
         .then((response) => {
           if (response) console.log(response);
           // Clear localStorage
-          [
-            "subscriptionProducts",
-            "orderDetails",
-            "user_address",
-            "user_credentials",
-            "agent_id",
-          ].forEach((item) => localStorage.removeItem(item));
+          // [
+          //   "subscriptionProducts",
+          //   "orderDetails",
+          //   "user_address",
+          //   "user_credentials",
+          //   "agent_id",
+          // ].forEach((item) => localStorage.removeItem(item));
         })
         .catch((error) => {
           console.error("Error in payment process:", error);
