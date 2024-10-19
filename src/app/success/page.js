@@ -21,9 +21,9 @@ function Page() {
 
   const handleOrder = async (orderData) => {
     const agent_id = localStorage.getItem("agent_id");
-    const user_info = localStorage.getItem("user_address");
+    const installation_address = localStorage.getItem("installation_address");
     const user_credentials = localStorage.getItem("user_credentials");
-    const addressPharsed = JSON.parse(user_info);
+    const addressPharsed = JSON.parse(installation_address);
     const order = {
       total: orderData.amount_total / 100,
       grand_total: orderData.amount_total / 100, // Adjust if you have discounts or shipping
@@ -111,13 +111,13 @@ function Page() {
         .then((response) => {
           if (response) console.log(response);
           // Clear localStorage
-          [
-            "subscriptionProducts",
-            "orderDetails",
-            "user_address",
-            "user_credentials",
-            "agent_id",
-          ].forEach((item) => localStorage.removeItem(item));
+          // [
+          //   "subscriptionProducts",
+          //   "orderDetails",
+          //   "user_address",
+          //   "user_credentials",
+          //   "agent_id",
+          // ].forEach((item) => localStorage.removeItem(item));
         })
         .catch((error) => {
           console.error("Error in payment process:", error);

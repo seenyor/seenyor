@@ -154,11 +154,11 @@ export default function RegisterPage() {
     //   });
     //   return; // Stop submission if there are validation errors
     // }
-        // Check if password is at least 6 characters long
-        if (data.password.length < 6) {
-          setError("Password must be at least 6 characters long.");
-          return; // Stop submission if the password is invalid
-        }
+    // Check if password is at least 6 characters long
+    if (data.password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return; // Stop submission if the password is invalid
+    }
     const formattedData = {
       agent_id: data.agent_id,
       email: data.customer_email,
@@ -173,37 +173,34 @@ export default function RegisterPage() {
       contact_number: data.customer_contact_number,
       password: data.password,
       customer_info: {
-        country_id: data.customer_country_id,
-        name: data.customer_first_name,
-        last_name: data.customer_last_name,
-        contact_number: data.customer_contact_number,
-        address: data.customer_address,
-        address2: data.customer_address_2,
-        city: data.customer_city,
-        post_Code: data.customer_zipcode,
-        state: data.customer_state,
-        email: data.customer_email,
+        country_id: data.installation_country_id,
+        address: data.installation_address,
+        address2: data.installation_address_2,
+        city: data.installation_city,
+        post_Code: data.installation_zipcode,
+        state: data.installation_state,
         agent_name: data.agent_name,
         installation_date: data.installation_date,
         elderly_Count: data.live_with === "alone" ? 1 : 2, // Assuming "alone" means 1, otherwise 2
         lead: data.source_lead,
-        installer_id: data.customer_country_id, // Using customer's country_id as installer_id for now
+        // installer_id: , // Using customer's country_id as installer_id for now
       },
     };
     localStorage.setItem("agent_id", JSON.stringify(data.agent_id));
     localStorage.setItem(
-      "user_address",
+      "installation_address",
       JSON.stringify({
-        address: formattedData.address,
-        address2: formattedData.address2,
-        city: formattedData.city,
-        country: formattedData.country_id,
-        postal_code: formattedData.post_Code,
-        state: formattedData.state,
+        address: formattedData?.customer_info?.address,
+        address2: formattedData?.customer_info?.address2,
+        city: formattedData?.customer_info?.city,
+        country: formattedData?.customer_info?.country_id,
+        postal_code: formattedData?.customer_info?.post_Code,
+        state: formattedData?.customer_info?.state,
       })
     );
     try {
       setError("");
+      console.log("formattedData", formattedData);
       const response = await registerUser(formattedData);
       // Check if user registration was successful
       if (!response || !response.status) {
@@ -231,14 +228,11 @@ export default function RegisterPage() {
   };
 
   const handleOtpVerification = async (otp) => {
-
-
     // Only proceed with OTP verification if there are no errors
-//     if (error) {
-//       console.error("Cannot verify OTP due to previous errors:", error);
-//       return; // Prevent OTP verification if there are errors
-//     }
-
+    //     if (error) {
+    //       console.error("Cannot verify OTP due to previous errors:", error);
+    //       return; // Prevent OTP verification if there are errors
+    //     }
 
     try {
       const response = await verifyOtp({
@@ -466,7 +460,7 @@ export default function RegisterPage() {
                   </div>
                 </div>
               </div>
-              {/* <============= End User Information Fields - S.2 ==============> */}
+              {/* <============= Installation Addresses Fields - S.2 ==============> */}
               <div
                 id="EndUser_info"
                 className="w-full flex flex-col gap-2 p-8 bg-[#F6F7F7] rounded-3xl"
@@ -483,50 +477,15 @@ export default function RegisterPage() {
                   </Text>
                 </div>
                 <div id="Fields" className="flex flex-col gap-4">
-                  {/* <div
-                    id="Field_Group"
-                    className="flex gap-4 w-full sm:flex-col sm:gap-1"
-                  >
-                    {renderField({
-                      label: "First Name",
-                      name: "endUser_first_name",
-                      type: "text",
-                      placeholder: "First name",
-                    })}
-                    {renderField({
-                      label: "Last Name",
-                      name: "endUser_last_name",
-                      type: "text",
-                      placeholder: "Last name",
-                    })}
-                  </div> */}
-                  <div
-                    id="Field_Group"
-                    className="flex gap-4 w-full sm:flex-col sm:gap-1"
-                  >
-                    {/* {renderField({
-                      label: "E-mail",
-                      name: "endUser_email",
-                      type: "text",
-                      placeholder: "E-Mail Address",
-                    })} */}
-                    {renderField({
-                      label: "Phone Number",
-                      name: "endUser_contact_number",
-                      type: "tel",
-                      placeholder: "Enter Phone Number",
-                    })}
-                  </div>
-
                   {renderField({
                     label: "Address",
-                    name: "endUser_address",
+                    name: "installation_address",
                     type: "text",
                     placeholder: "Address  Line 1",
                   })}
                   {renderField({
                     label: "address Line 2",
-                    name: "endUser_address_2",
+                    name: "installation_address_2",
                     type: "text",
                     required: false,
                     placeholder: "Address  Line 2",
@@ -538,14 +497,14 @@ export default function RegisterPage() {
                   >
                     {renderField({
                       label: "Country",
-                      name: "endUser_country_id",
+                      name: "installation_country_id",
                       type: "select",
                       placeholder: "Select Country",
                       options: countries,
                     })}
                     {renderField({
                       label: "City",
-                      name: "endUser_city",
+                      name: "installation_city",
                       type: "text",
                       placeholder: "City",
                     })}
@@ -556,13 +515,13 @@ export default function RegisterPage() {
                   >
                     {renderField({
                       label: "Postal / Zip Code",
-                      name: "endUser_zipcode",
+                      name: "installation_zipcode",
                       type: "text",
                       placeholder: "Zip Code",
                     })}
                     {renderField({
                       label: "State / Province",
-                      name: "endUser_state",
+                      name: "installation_state",
                       type: "text",
                       placeholder: "State Name",
                     })}
@@ -660,9 +619,16 @@ export default function RegisterPage() {
                     validate: (value) =>
                       value === password || "Passwords do not match",
                   })}
-                      <Text className={`text-sm ${passwordStrength === "Strong" ? "text-green-600" : passwordStrength === "Weak" ? "text-red-600" : "text-yellow-600"}`}>
+                  <Text
+                    className={`text-sm ${
+                      passwordStrength === "Strong"
+                        ? "text-green-600"
+                        : passwordStrength === "Weak"
+                        ? "text-red-600"
+                        : "text-yellow-600"
+                    }`}
+                  >
                     {passwordStrength} <br />
-               
                   </Text>
                   {/* <Text className="text-red-600">{error}</Text> */}
                 </div>

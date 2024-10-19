@@ -7,15 +7,15 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 export default function AccountInfo() {
   const { setUserName, userName } = useAuth();
-  const [imageUrl, setImageUrl] = useState(null)
+  const [imageUrl, setImageUrl] = useState(null);
 
   const handleImageUpload = (event) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file)
-      setImageUrl(url)
+      const url = URL.createObjectURL(file);
+      setImageUrl(url);
     }
-  }
+  };
   const { updateUserName, getUserDetailsById } = useUserService(); // Get the updateUserName and
   const [displayName, setDisplayName] = useState("");
   const handleUpdateName = async () => {
@@ -23,7 +23,7 @@ export default function AccountInfo() {
       const response = await updateUserName({ name: displayName });
       console.log(response);
       toast.success("User name updated successfully!");
-      setUserName(displayName)
+      setUserName(displayName);
       setDisplayName("");
       console.log("User name updated successfully:", response);
     } catch (error) {
@@ -50,8 +50,7 @@ export default function AccountInfo() {
       </div>
       {/* Profile Image Section */}
       <div className="flex flex-col gap-4 md:text-center mb-10 pt-6">
-        {/* Change Profile Image */}
-        <div className="flex flex-col gap-2 md:items-center">
+        {/* <div className="flex flex-col gap-2 md:items-center">
           <Heading
             size="headings"
             as="h6"
@@ -59,9 +58,7 @@ export default function AccountInfo() {
           >
             Change Your Profile Image
           </Heading>
-          
-        
-          
+
           <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
             <Avatar.Image
               className="size-full rounded-[inherit] object-cover"
@@ -72,7 +69,7 @@ export default function AccountInfo() {
               A
             </Avatar.Fallback>
           </Avatar.Root>
-        </div>
+        </div> */}
 
         {/* Display Name Input */}
         <div className="flex flex-col gap-1">

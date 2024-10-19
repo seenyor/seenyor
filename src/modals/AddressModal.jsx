@@ -60,24 +60,23 @@ const AddressModal = ({ isOpen, onChange, address }) => {
   useEffect(() => {
     if (isOpen) {
       reset({
-        address1: address?.address || '',
-        address2: address?.address2 || '',
-        city: address?.city || '',
-        country: address?.country_id || '', // Assuming country_id is part of address
-        phoneNumber: address?.contact_number || '',
+        address1: address?.address || "",
+        address2: address?.address2 || "",
+        city: address?.city || "",
+        country: address?.country_id || "", // Assuming country_id is part of address
+        phoneNumber: address?.contact_number || "",
       });
     }
   }, [isOpen, address, reset]); // Depend on isOpen and address
 
   const onSubmit = async (data) => {
     try {
-      const userId = address?._id; 
+      const userId = address?._id;
       await updateUserInfo(userId, {
         address: data.address1,
-        
-        // address2: data.address2,
-        // city: data.city,
-        // country_id: data.country,
+        address2: data.address2,
+        city: data.city,
+        country_id: data.country,
         contact_number: data.phoneNumber,
       });
       toast.success("Address updated successfully!");
@@ -103,7 +102,10 @@ const AddressModal = ({ isOpen, onChange, address }) => {
                 Change Address
               </Heading>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-[0.88rem]">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col gap-[0.88rem]"
+              >
                 <div className="flex flex-col gap-[0.25rem] mb-4">
                   <Heading
                     size="headingmd"

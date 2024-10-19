@@ -28,7 +28,8 @@ export default function ProfileNav() {
       setUserId(storedUserId);
       fetchUserDetails(storedUserId);
     }
-  }, []);
+    console.log(pathname);
+  }, [pathname]);
 
   const fetchUserDetails = async (id) => {
     try {
@@ -36,7 +37,6 @@ export default function ProfileNav() {
       setUserName(userDetails.data.name);
       setEmail(userDetails.data.email);
       localStorage.setItem("subscription_id", userDetails.data.subscription_id);
-
     } catch (error) {
       console.error("Failed to fetch user details:", error);
     }
@@ -76,9 +76,9 @@ export default function ProfileNav() {
           <div className={`flex self-stretch transition-colors duration-200`}>
             <Heading
               as="h2"
-              className={`text-[1rem] md:text-[1rem] font-medium text-[rgb(108,116,130)] ${
+              className={`text-[1rem] md:text-[1rem] md:border-b md:pb-2 font-normal text-[rgb(108,116,130)] ${
                 pathname === "/account"
-                  ? "text-[rgb(29,41,63)] md:border-b border-b-[rgb(0,34,72)]"
+                  ? "!text-[rgb(29,41,63)] !md:border-b !border-b-[rgb(0,34,72)] !font-medium"
                   : ""
               }`}
             >
@@ -90,9 +90,9 @@ export default function ProfileNav() {
           <div className={`flex self-stretch transition-colors duration-200`}>
             <Heading
               as="h3"
-              className={`text-[1.00rem] font-normal text-[rgb(108,116,130)] md:ml-0 transition-colors duration-200 ${
+              className={`text-[1.00rem] font-normal md:border-b md:pb-2 text-[rgb(108,116,130)] md:ml-0 transition-colors duration-200 ${
                 pathname === "/account/account-settings"
-                  ? "text-[rgb(29,41,63)] md:border-b border-b-[rgb(0,34,72)]"
+                  ? "text-[#1d293f] !md:border-b !border-b-[#002248] !font-medium"
                   : ""
               }`}
             >
@@ -104,9 +104,9 @@ export default function ProfileNav() {
           <div className={`flex self-stretch transition-colors duration-200`}>
             <Heading
               as="h4"
-              className={`text-[1.00rem] font-normal text-[rgb(108,116,130)] md:ml-0 transition-colors duration-200 ${
-                pathname === "/account/billing-information"
-                  ? "text-[rgb(29,41,63)] md:border-b border-b-[rgb(0,34,72)]"
+              className={`text-[1.00rem] font-normal md:border-b md:pb-2 text-[rgb(108,116,130)] md:ml-0 transition-colors duration-200 ${
+                pathname == "/account/billing-information"
+                  ? "!text-[#1d293f] !md:border-b !border-b-[#002248] !font-medium"
                   : ""
               }`}
             >
