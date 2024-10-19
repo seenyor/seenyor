@@ -29,7 +29,7 @@ export default function HomePage() {
   const [isChecked, setIsChecked] = useState(false);
   const { getProducts, getStripeCustomerId, createStripeSession, getCustomerId } =
     useUserService();
-  const { setEmail, email, user, accessToken } = useAuth();
+  const { setEmail, email, user, accessToken, customerMail } = useAuth();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -184,7 +184,7 @@ export default function HomePage() {
       stripeCustomerId = await getStripeCustomerId();
       if (!stripeCustomerId) {
 
-        const customerData = await getCustomerId(email);
+        const customerData = await getCustomerId(customerMail);
         stripeCustomerId = customerData.id; 
         if (!stripeCustomerId) {
           router.push("/login");

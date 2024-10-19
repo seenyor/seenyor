@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
   const [userName, setUserName] = useState("");
+  const [customerMail, setCustomerMail] = useState("");
   // Helper function to determine the appropriate cookie domain
 const getCookieDomain = () => {
   if (typeof window !== 'undefined') {
@@ -61,7 +62,7 @@ const getCookieDomain = () => {
 
   return (
     <AuthContext.Provider
-      value={{ email, setEmail, login, logout, accessToken, user, setUser, userName, setUserName }}
+      value={{ email, setEmail, login, logout, accessToken, user, setUser, userName, setUserName, customerMail, setCustomerMail }}
     >
       {children}
     </AuthContext.Provider>
