@@ -27,9 +27,9 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [selecteInstallation, setselecteInstallation] = useState(1);
   const [isChecked, setIsChecked] = useState(false);
-  const { getProducts, getStripeCustomerId, createStripeSession } =
+  const { getProducts, getStripeCustomerId, createStripeSession, getCustomerId } =
     useUserService();
-  const { accessToken } = useAuth();
+  const { setEmail, email, user, accessToken } = useAuth();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -114,27 +114,101 @@ export default function HomePage() {
     products,
   ]);
 
-  const handleCheckout = async () => {
-    const stripeCustomerId = await getStripeCustomerId();
-    if (!accessToken) {
-      // User is not logged in, redirect to registration page
-      router.push("/login");
-    }
+  // const handleCheckout = async () => {
+  //   const stripeCustomerId = await getStripeCustomerId();
+  //   if (!accessToken) {
+  //     // User is not logged in, redirect to registration page
+  //     router.push("/login");
+  //   }
 
+  //   // Ensure order details are up to date in localStorage
+  //   updateOrderDetails();
+
+  //   const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
+  //   if (!orderDetails) {
+  //     throw new Error("No order details found");
+  //   }
+
+  //   if (accessToken) {
+  //     const lineItems = [];
+  //     if (quantity > 0) {
+  //       const addonProduct = products.find(
+  //         (p) => p.name === "All in One AI Sensor"
+  //       );
+  //       if (addonProduct) {
+  //         lineItems.push({
+  //           price: addonProduct.priceId,
+  //           quantity: quantity,
+  //           adjustable_quantity: { enabled: true, minimum: 0, maximum: 10 },
+  //         });
+  //       } else {
+  //         throw new Error("Additional Device product not found");
+  //       }
+  //     }
+
+  //     if (selecteInstallation === 1) {
+  //       const installationProduct = products.find(
+  //         (p) => p.name === "Installation"
+  //       );
+  //       if (installationProduct) {
+  //         lineItems.push({
+  //           price: installationProduct.priceId,
+  //           quantity: 1,
+  //           adjustable_quantity: { enabled: false },
+  //         });
+  //       } else {
+  //         throw new Error("Installation product not found");
+  //       }
+  //     }
+  
+
+  //     if (lineItems.length === 0) {
+  //       throw new Error("No products selected for checkout");
+  //     }
+
+  //     const session = await createStripeSession({
+  //       customer: stripeCustomerId,
+  //       line_items: lineItems,
+  //     });
+
+  //     window.location.href = session.url;
+  //   } else {
+  //     router.push("/payment");
+  //   }
+  // };
+
+  const handleCheckout = async () => {
+    let stripeCustomerId;
+    // Attempt to get the Stripe customer ID
+    try {
+      stripeCustomerId = await getStripeCustomerId();
+      if (!stripeCustomerId) {
+
+        const customerData = await getCustomerId(email);
+        stripeCustomerId = customerData.id; 
+        if (!stripeCustomerId) {
+          router.push("/login");
+          return; // Exit the function
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching customer ID:", error);
+      router.push("/login"); // Redirect to login if there's an error
+      return; // Exit the function
+    }
+  
     // Ensure order details are up to date in localStorage
     updateOrderDetails();
-
+  
     const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
     if (!orderDetails) {
       throw new Error("No order details found");
     }
-
+  
     if (accessToken) {
       const lineItems = [];
       if (quantity > 0) {
-        const addonProduct = products.find(
-          (p) => p.name === "All in One AI Sensor"
-        );
+        const addonProduct = products.find((p) => p.name === "All in One AI Sensor");
         if (addonProduct) {
           lineItems.push({
             price: addonProduct.priceId,
@@ -145,11 +219,9 @@ export default function HomePage() {
           throw new Error("Additional Device product not found");
         }
       }
-
+  
       if (selecteInstallation === 1) {
-        const installationProduct = products.find(
-          (p) => p.name === "Installation"
-        );
+        const installationProduct = products.find((p) => p.name === "Installation");
         if (installationProduct) {
           lineItems.push({
             price: installationProduct.priceId,
@@ -161,22 +233,20 @@ export default function HomePage() {
         }
       }
   
-
       if (lineItems.length === 0) {
         throw new Error("No products selected for checkout");
       }
-
+  
       const session = await createStripeSession({
         customer: stripeCustomerId,
         line_items: lineItems,
       });
-
+  
       window.location.href = session.url;
     } else {
       router.push("/payment");
     }
   };
-
   return (
     <div className="flex w-full flex-col gap-10 bg-white p-5">
       <Header />

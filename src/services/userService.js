@@ -241,6 +241,15 @@ export const useUserService = () => {
         throw error; // Rethrow the error for handling in the component
       }
     };
+    const getCustomerId = async (customeremail) => {
+      try {
+        const response = await get(`/orders/customer-email/${customeremail}`);
+        return response; // Return the transaction details
+      } catch (error) {
+        console.error("Error fetching transaction details:", error);
+        throw error; // Rethrow the error for handling in the component
+      }
+    };
     
     const resetPassword = async ({ otp, email, password }) => {
       // Make a PATCH request to the reset-password endpoint
@@ -282,6 +291,7 @@ export const useUserService = () => {
     updateEmail,
     updateUserInfo,
     getTransactionDetails,
-    resetPassword
+    resetPassword, 
+    getCustomerId
   };
 };

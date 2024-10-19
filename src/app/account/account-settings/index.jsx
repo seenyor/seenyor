@@ -217,7 +217,7 @@ const AccountSetting = () => {
             >
               Password
             </Heading>
-            <Link href="/forgot-password">
+            <Link href="/login/forgot-password">
               <Text
                 as="p"
                 // onClick={() => handleForgotModalToggle(true)}

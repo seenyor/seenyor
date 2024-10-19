@@ -35,7 +35,7 @@ export default function ProfileNav() {
     try {
       const userDetails = await getUserDetailsById(id);
       setUserName(userDetails.data.name);
-      setMail(userDetails.data.email);
+      setEmail(userDetails.data.email);
     } catch (error) {
       console.error("Failed to fetch user details:", error);
     }
@@ -66,7 +66,7 @@ export default function ProfileNav() {
             as="p"
             className="text-[1.13rem] font-normal lowercase text-[#6c7482]"
           >
-            {mail}
+            {email}
           </Text>
         </div>
       </div>
