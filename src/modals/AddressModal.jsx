@@ -34,27 +34,27 @@ const AddressModal = ({ isOpen, onChange, address }) => {
   const { getCountries, updateUserInfo } = useUserService(); // Import userUpdate
   const [countries, setCountries] = useState([]);
 
-  // Fetch countries when the modal opens
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await getCountries();
-        if (response && response.data) {
-          const formattedCountries = response.data.map((country) => ({
-            label: country.country_name,
-            value: country._id,
-          }));
-          setCountries(formattedCountries);
-        }
-      } catch (error) {
-        console.error("Error fetching countries:", error);
-      }
-    };
+  // // Fetch countries when the modal opens
+  // useEffect(() => {
+  //   const fetchCountries = async () => {
+  //     try {
+  //       const response = await getCountries();
+  //       if (response && response.data) {
+  //         const formattedCountries = response.data.map((country) => ({
+  //           label: country.country_name,
+  //           value: country._id,
+  //         }));
+  //         setCountries(formattedCountries);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching countries:", error);
+  //     }
+  //   };
 
-    if (isOpen) {
-      fetchCountries(); // Fetch countries only when the modal is open
-    }
-  }, [isOpen]); // Depend on isOpen to avoid unnecessary calls
+  //   if (isOpen) {
+  //     fetchCountries(); // Fetch countries only when the modal is open
+  //   }
+  // }, [isOpen]); // Depend on isOpen to avoid unnecessary calls
 
   // Reset form with address data when modal opens
   useEffect(() => {
@@ -63,7 +63,7 @@ const AddressModal = ({ isOpen, onChange, address }) => {
         address1: address?.address || "",
         address2: address?.address2 || "",
         city: address?.city || "",
-        country: address?.country_id || "", // Assuming country_id is part of address
+        // country: address?.country_id || "",
         phoneNumber: address?.contact_number || "",
       });
     }
@@ -76,7 +76,7 @@ const AddressModal = ({ isOpen, onChange, address }) => {
         address: data.address1,
         address2: data.address2,
         city: data.city,
-        country_id: data.country,
+        // country_id: data.country,
         contact_number: data.phoneNumber,
       });
       toast.success("Address updated successfully!");
@@ -154,7 +154,7 @@ const AddressModal = ({ isOpen, onChange, address }) => {
                     className="self-stretch rounded-[12px] !border px-[1.63rem] sm:px-[1.25rem]"
                   />
                 </div>
-                <div className="flex flex-col items-start gap-[0.38rem] mb-4">
+                {/* <div className="flex flex-col items-start gap-[0.38rem] mb-4">
                   <Heading
                     size="headingmd"
                     as="h6"
@@ -169,7 +169,7 @@ const AddressModal = ({ isOpen, onChange, address }) => {
                     {...register("country")} // Register input with react-hook-form
                     className="w-full rounded-[12px] !border border-solid border-gray-200 px-[1.63rem] capitalize !text-text sm:px-[1.25rem] h-[3.75rem] bg-white"
                   />
-                </div>
+                </div> */}
                 <div className="flex flex-col items-start gap-[0.38rem] mb-4">
                   <Heading
                     size="headingmd"
