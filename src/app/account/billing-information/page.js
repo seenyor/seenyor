@@ -10,17 +10,19 @@ import PaymentMethodCard from "./PaymentMethodCard";
 function Page() {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [transactionDetails, setTransactionDetails] = useState(null); // State to hold transaction details
-  const { getTransactionDetails, getStripeCustomerId } = useUserService();
+  const { getTransactionDetails, getStripeCustomerId, subscriptionDetails } =
+    useUserService();
+  const [subscriptionDetail, setSubscriptionDetail] = useState(null);
+  const [isUnsubscribed, setIsUnsubscribed] = useState(false); // State to track subscription status
 
   const handleAddressModalToggle = (isOpen) => {
     setIsAddressModalOpen(isOpen);
   };
-  
 
   const fetchTransactionDetails = async () => {
     try {
       const stripeCustomerId = await getStripeCustomerId();
-      const customerId = stripeCustomerId // Replace with the actual customer ID
+      const customerId = stripeCustomerId; // Replace with the actual customer ID
       const details = await getTransactionDetails(customerId);
       setTransactionDetails(details); // Store the fetched transaction details
       console.log(details);
@@ -29,11 +31,21 @@ function Page() {
     }
   };
 
+  const fetchSubscriptionDetails = async () => {
+    try {
+      const subscriptionId = localStorage.getItem("subscription_id");
+      const details = await subscriptionDetails(subscriptionId);
+      setSubscriptionDetail(details);
+      console.log(details);
+    } catch (error) {
+      console.error("Failed to fetch subscription details:", error);
+    }
+  };
+
   useEffect(() => {
     fetchTransactionDetails(); // Fetch transaction details when the component mounts
+    fetchSubscriptionDetails();
   }, []);
-
-  const [isUnsubscribed, setIsUnsubscribed] = useState(false); // State to track subscription status
 
   const handleUnsubscribe = () => {
     setIsUnsubscribed((prev) => !prev); // Toggle the subscription status
@@ -128,11 +140,12 @@ function Page() {
                 >
                   Subscription Status:{" "}
                   <span
-                    className={`font-medium ${
+                    className={`font-medium capitalize ${
                       !isUnsubscribed ? "text-primary" : "text-[#FF0000]"
                     }`}
                   >
-                    {!isUnsubscribed ? "Active" : "Inactive"}
+                    {/* {!isUnsubscribed ? "Active" : "Inactive"} */}
+                    {subscriptionDetail?.status}
                   </span>
                 </Text>
                 <Text
@@ -140,8 +153,13 @@ function Page() {
                   className="text-[1.13rem] font-normal text-[#6c7482]"
                 >
                   Billing Amount:{" "}
-                  <span className="font-medium text-[#1d293f]">
-                    $40 /Monthly
+                  <span className="font-medium capitalize text-[#1d293f]">
+                    {subscriptionDetail?.items?.data[0]?.plan
+                      ? `${
+                          subscriptionDetail?.items?.data[0]?.plan?.amount / 100
+                        }/
+                      ${subscriptionDetail?.items?.data[0]?.plan?.interval}`
+                      : "... ..."}
                   </span>
                 </Text>
               </div>
@@ -208,10 +226,26 @@ function Page() {
                 className="text-[1.13rem] font-normal leading-[1.69rem] text-[#6c7482] md:text-center "
               >
                 Your service will renew on{" "}
-                <span className="font-medium text-[#1d293f]">May 8, 2024</span>{" "}
+                <span className="font-medium text-[#1d293f]">
+                  {subscriptionDetail?.current_period_end
+                    ? new Date(
+                        subscriptionDetail?.current_period_end
+                      ).toLocaleDateString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                      })
+                    : "... ..."}
+                </span>{" "}
                 for
-                <span className="font-medium text-[#1d293f]"> $800</span>.
-                Renewal price includes applicable taxes.
+                <span className="font-medium text-[#1d293f]">
+                  {" "}
+                  {""}$
+                  {subscriptionDetail?.items?.data[0]?.plan?.amount
+                    ? subscriptionDetail?.items?.data[0]?.plan?.amount / 100
+                    : "... .."}
+                </span>
+                . Renewal price includes applicable taxes.
               </Text>
             </div>
             <div className="flex flex-col items-start gap-[0.63rem] pb-10 md:items-center">
@@ -234,7 +268,8 @@ function Page() {
           </div>
         </TabPanel>
         <TabPanel className="absolute items-center">
-          <BillingStatus transactionDetails={transactionDetails} /> {/* Pass transaction details */}
+          <BillingStatus transactionDetails={transactionDetails} />{" "}
+          {/* Pass transaction details */}
         </TabPanel>
 
         <TabPanel className="absolute items-center w-[34.37rem] md:w-full">

@@ -183,6 +183,21 @@ export const useUserService = () => {
     return get(`/orders/session-details/${sessionId}`);
   };
 
+  //Nessesary API's For Make Subscription Stuff
+  const handlePaymentStatus = async (sessionId) => {
+    return post(`/orders/handle-payment-success`, { session_id: sessionId });
+  };
+  const handlePaymentSubscription = async (customerId, priceId) => {
+    return post(`/orders/create-subscription`, {
+      customerId: customerId,
+      priceId: priceId,
+    });
+  };
+  const subscriptionDetails = async (subscriptionId) => {
+    return get(`/orders/subscription-status/${subscriptionId}`);
+  };
+  //=====End========//
+
   const createOrder = async (orderData) => {
     try {
       const response = await post("/orders", orderData);
@@ -224,37 +239,35 @@ export const useUserService = () => {
       throw error;
     }
   };
-    // Update Password Function
-    const updateEmail = async (emailData) => {
-      try {
-        const response = await patch("/auth/update-email", emailData);
-        return response; // Return the response if needed
-      } catch (error) {
-        console.error("Error updating password:", error);
-        throw error;
-      }
-    };
-    const getTransactionDetails = async (customerId) => {
-      try {
-        const response = await get(`/orders/transaction-details/${customerId}`);
-        return response; // Return the transaction details
-      } catch (error) {
-        console.error("Error fetching transaction details:", error);
-        throw error; // Rethrow the error for handling in the component
-      }
-    };
-       // Update Password Function
-       const updateUserInfo = async (id, userData) => {
-        try {
-          const response = await patch(
-            `/users/${id}`, userData
-          );
-          return response; 
-        } catch (error) {
-          console.error("Error updating password:", error);
-          throw error;
-        }
-      };
+  // Update Password Function
+  const updateEmail = async (emailData) => {
+    try {
+      const response = await patch("/auth/update-email", emailData);
+      return response; // Return the response if needed
+    } catch (error) {
+      console.error("Error updating password:", error);
+      throw error;
+    }
+  };
+  const getTransactionDetails = async (customerId) => {
+    try {
+      const response = await get(`/orders/transaction-details/${customerId}`);
+      return response; // Return the transaction details
+    } catch (error) {
+      console.error("Error fetching transaction details:", error);
+      throw error; // Rethrow the error for handling in the component
+    }
+  };
+  // Update Password Function
+  const updateUserInfo = async (id, userData) => {
+    try {
+      const response = await patch(`/users/${id}`, userData);
+      return response;
+    } catch (error) {
+      console.error("Error updating password:", error);
+      throw error;
+    }
+  };
   return {
     registerUser,
     verifyOtp,
@@ -269,12 +282,15 @@ export const useUserService = () => {
     getAgents,
     getSessionDetails,
     createOrder,
+    handlePaymentStatus,
+    handlePaymentSubscription,
+    subscriptionDetails,
     updateUserName,
     getUserDetailsById,
     updatePassword,
     updateEmail,
     updateUserInfo,
     getTransactionDetails,
-    resetPassword
+    resetPassword,
   };
 };

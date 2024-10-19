@@ -36,6 +36,7 @@ export default function ProfileNav() {
       const userDetails = await getUserDetailsById(id);
       setUserName(userDetails.data.name);
       setMail(userDetails.data.email);
+      localStorage.setItem("subscription_id", userDetails.data.subscription_id);
     } catch (error) {
       console.error("Failed to fetch user details:", error);
     }

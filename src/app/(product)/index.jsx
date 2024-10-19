@@ -55,6 +55,15 @@ export default function HomePage() {
         if (addon) setAddonDevicePrice(addon.price);
         if (installation) setInstallationPrice(installation.price);
         if (aimonitoring) setAimonitoring(aimonitoring.price);
+
+        //Store Subcription Product Details in Local Storage that has isRecurring true
+        const subscriptionProducts = fetchedProducts.filter(
+          (p) => p.isRecurring
+        );
+        localStorage.setItem(
+          "subscriptionProducts",
+          JSON.stringify(subscriptionProducts)
+        );
       } catch (error) {
         console.error("Error fetching products:", error);
       }
