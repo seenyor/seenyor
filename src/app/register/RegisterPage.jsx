@@ -650,9 +650,10 @@ export default function RegisterPage() {
                       value === password || "Passwords do not match",
                   })}
                       <Text className={`text-sm ${passwordStrength === "Strong" ? "text-green-600" : passwordStrength === "Weak" ? "text-red-600" : "text-yellow-600"}`}>
-                    {passwordStrength}
-                    {error}
+                    {passwordStrength} <br />
+               
                   </Text>
+                  {/* <Text className="text-red-600">{error}</Text> */}
                 </div>
               </div>
               <div className="w-full flex flex-col items-center">
