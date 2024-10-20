@@ -19,7 +19,7 @@ import { useState } from "react";
 import "./style.css";
 
 const stripePromise = loadStripe(
-  "pk_test_51Q5RdFGPITMkDJgUOb2iZNW2Y3MLWkIxYR06qC6Oww5ZyvYGJhqz8Cato4ggjhBpyC0iphT42LPT2tMGNljlzT2V00vE2KnUBP"
+  "pk_test_51OcNAhAeKrofOvseCq6ZezE9JcZVSzmbL4GAF8Sc1JBKLwmx390ic38pxdFHi3whSuormQllJkhsFZiFNuYY0okq00ZKrJvln4"
 );
 
 const AddPaymentMethod = () => {
@@ -29,8 +29,7 @@ const AddPaymentMethod = () => {
   const [error, setError] = useState(null);
   // const customerId = "cus_R3JjtlL7vYXFhe"; // Replace with actual customer ID
   const { customerMail } = useAuth();
-  const { getCustomerId } =
-    useUserService()
+  const { getCustomerId } = useUserService();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,12 +51,12 @@ const AddPaymentMethod = () => {
       setError(error.message);
       setIsLoading(false);
     } else {
-      let stripeCustomerId
+      let stripeCustomerId;
       try {
-        console.log("i am customer mail", customerMail)
+        console.log("i am customer mail", customerMail);
         const customerData = await getCustomerId(customerMail);
         stripeCustomerId = customerData.id;
-        console.log(stripeCustomerId)
+        console.log(stripeCustomerId);
         const response = await fetch(
           "https://www.backend.elderlycareplatform.com/api/v1/orders/add-payment-method",
           {
@@ -157,7 +156,7 @@ const AddPaymentMethod = () => {
       </div>
       {error && <div className="text-red-500 text-sm">{error}</div>}
       <Button
-      color="red"
+        color="red"
         type="submit"
         disabled={!stripe || isLoading}
         className="w-full text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 my-bg"
@@ -181,7 +180,10 @@ const PaymentMethodCard = ({ isOpen, onChange }) => {
             </Elements>
           </Dialog.Description>
           <Dialog.Close asChild>
-            <button className="IconButton cursor-pointer IconButton" aria-label="Close">
+            <button
+              className="IconButton cursor-pointer IconButton"
+              aria-label="Close"
+            >
               <Cross2Icon className="w-5 h-5 IconButton" />
             </button>
           </Dialog.Close>
