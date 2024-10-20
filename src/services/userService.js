@@ -291,6 +291,31 @@ export const useUserService = () => {
     return response;
   };
 
+  // add payment method
+  const AddNewPaymentMethod = async (methodInfo) => {
+    try {
+      const response = await post("/orders/add-payment-method", methodInfo);
+      return response;
+    } catch (error) {
+      console.error("Error adding payment:", error);
+      throw error;
+    }
+  };
+
+  // getmethod
+  const getAllPaymentMethod = async (customerid) => {
+    try {
+      const response = await get(`/orders/payment-method/${customerid}`);
+      return response; // Return the transaction details
+    } catch (error) {
+      console.error("Error fetching payment method:", error);
+      throw error; // Rethrow the error for handling in the component
+    }
+  };
+
+
+
+
   // Update Password Function
   const updateUserInfo = async (id, userData) => {
     try {
@@ -328,6 +353,8 @@ export const useUserService = () => {
 
     resetPassword,
     getCustomerId,
-    authEmail
+    authEmail,
+    AddNewPaymentMethod,
+    getAllPaymentMethod
   };
 };

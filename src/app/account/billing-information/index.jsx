@@ -10,6 +10,7 @@ import PaymentMethodCard from "./PaymentMethodCard";
 
 function Page() {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [transactionDetails, setTransactionDetails] = useState(null); // State
   const { setEmail, email, user, accessToken, customerMail } = useAuth();
