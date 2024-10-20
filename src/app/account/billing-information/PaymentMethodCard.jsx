@@ -10,7 +10,7 @@ export default function PaymentMethodCard({
   onDelete,
   ...props
 }) {
-  const cardDescription = `${billing_details?.name} ending in ${card?.last4}`;
+  const cardDescription = `${billing_details?.name} Ending in ${card?.last4}`;
   const cardExpiry = `Expiry ${card?.exp_month < 10 ? "0" : ""}${
     card?.exp_month
   }/${card?.exp_year}`;
@@ -35,7 +35,7 @@ export default function PaymentMethodCard({
           <Heading
             size="textmd"
             as="p"
-            className="font-inter text-[0.88rem] font-medium text-[2f4d3f]"
+            className="font-inter text-[0.88rem] font-medium text-[#2f4d3f] "
           >
             {cardDescription}
           </Heading>
@@ -53,14 +53,14 @@ export default function PaymentMethodCard({
             <Heading
               size="textmd"
               as="p"
-              className="font-inter text-[0.88rem] font-medium text-green-300"
+              className="font-inter text-[0.88rem] font-medium text-primary"
             >
               {isDefault ? "Default Method" : defaultMethodText}
             </Heading>
             <Heading
               size="textmd"
               as="p"
-              className="font-inter text-[0.88rem] pl-3 font-medium text-red-600 cursor-pointer"
+              className="font-inter text-[0.88rem] pl-3 font-medium !text-red-600 cursor-pointer capitalize"
               onClick={() => onDelete(id)} // Call the delete handler
             >
               delete
