@@ -298,7 +298,7 @@ function Page() {
                   as="p"
                   className="text-[1.50rem] font-medium text-text md:text-[1.38rem]"
                 >
-                  Added Methods (04)
+                  Added Methods ({paymentMethods.length})
                 </Heading>
 
                 <Button
