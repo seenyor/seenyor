@@ -1,6 +1,8 @@
 "use client";
 
 import { Button } from "@/components";
+import { useAuth } from "@/context/AuthContext";
+import { useUserService } from "@/services/userService";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import {
@@ -26,6 +28,9 @@ const AddPaymentMethod = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const customerId = "cus_R3JjtlL7vYXFhe"; // Replace with actual customer ID
+  const { setEmail, email, user, accessToken, customerMail } = useAuth();
+  const { getCustomerId } =
+    useUserService()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,7 +52,12 @@ const AddPaymentMethod = () => {
       setError(error.message);
       setIsLoading(false);
     } else {
+      let stripeCustomerId
       try {
+        console.log("i am customer mail", customerMail)
+        const customerData = await getCustomerId(customerMail);
+        stripeCustomerId = customerData.id;
+        console.log(stripeCustomerId)
         const response = await fetch(
           "https://www.backend.elderlycareplatform.com/api/v1/orders/add-payment-method",
           {
@@ -56,7 +66,7 @@ const AddPaymentMethod = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              customerId: customerId,
+              customerId: stripeCustomerId,
               paymentMethodId: paymentMethod.id,
             }),
           }
