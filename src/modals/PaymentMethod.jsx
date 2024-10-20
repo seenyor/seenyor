@@ -27,8 +27,8 @@ const AddPaymentMethod = () => {
   const elements = useElements();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const customerId = "cus_R3JjtlL7vYXFhe"; // Replace with actual customer ID
-  const { setEmail, email, user, accessToken, customerMail } = useAuth();
+  // const customerId = "cus_R3JjtlL7vYXFhe"; // Replace with actual customer ID
+  const { customerMail } = useAuth();
   const { getCustomerId } =
     useUserService()
 

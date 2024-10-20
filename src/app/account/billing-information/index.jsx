@@ -10,13 +10,17 @@ import PaymentMethodCard from "./PaymentMethodCard";
 
 function Page() {
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [paymentMethods, setPaymentMethods] = useState([]);
   const [transactionDetails, setTransactionDetails] = useState(null); // State
   const { setEmail, email, user, accessToken, customerMail } = useAuth();
 
-  const { getTransactionDetails, subscriptionDetails, getCustomerId } =
-    useUserService();
+  const {
+    getTransactionDetails,
+    subscriptionDetails,
+    getCustomerId,
+    getAllPaymentMethod,
+  } = useUserService();
   const [subscriptionDetail, setSubscriptionDetail] = useState(null);
   const [isUnsubscribed, setIsUnsubscribed] = useState(false); // State to track subscription status
 
@@ -49,47 +53,51 @@ function Page() {
     }
   };
 
+  const fetchPaymentMethods = async () => {
+    try {
+      const customerData = await getCustomerId(customerMail);
+      const stripeCustomerId = customerData.id;
+      const details = await getAllPaymentMethod(stripeCustomerId);
+
+      console.log("i am detais", details);
+      // Check if the response has the correct structure
+      if (details && details.object === "list" && Array.isArray(details.data)) {
+        const formattedPaymentMethods = details.data.map((method) => ({
+          id: method.id,
+          card: {
+            brand: method.card.brand,
+            last4: method.card.last4,
+            exp_month: method.card.exp_month,
+            exp_year: method.card.exp_year,
+          },
+          billing_details: method.billing_details,
+          isDefault: false, // Assuming you will set this correctly later
+        }));
+
+        setPaymentMethods(formattedPaymentMethods);
+      } else {
+        console.error("Payment methods should be an array", details);
+        setPaymentMethods([]);
+      }
+    } catch (error) {
+      console.error("Error fetching payment methods:", error);
+      setPaymentMethods([]);
+    }
+  };
+
   useEffect(() => {
     if (email) {
       fetchTransactionDetails();
     }
     fetchSubscriptionDetails();
+    fetchPaymentMethods();
   }, [email]); // Ensure email is loaing
 
   const handleUnsubscribe = () => {
     setIsUnsubscribed((prev) => !prev); // Toggle the subscription status
   };
 
-  const data = [
-    {
-      id: 1,
-      settingsIcon: "Visa.svg",
-      cardDescription: "Visa Ending in 1234",
-      cardExpire: "12/25",
-      isDefault: true, // Set to true for the default card
-    },
-    {
-      id: 2, // Changed id to be unique
-      settingsIcon: "MasterCard.svg",
-      cardDescription: "MasterCard ending in 1234",
-      cardExpire: "12/25",
-      isDefault: false,
-    },
-    {
-      id: 3, // Changed id to be unique
-      settingsIcon: "img_settings.svg",
-      cardDescription: "Visa ending in 1234",
-      cardExpire: "12/25",
-      isDefault: false,
-    },
-    {
-      id: 4, // Changed id to be unique
-      settingsIcon: "img_settings.svg",
-      cardDescription: "Stripe Visa ending in 1234",
-      cardExpire: "12/25",
-      isDefault: false,
-    },
-  ];
+  console.log("i am payment method", paymentMethods);
 
   return (
     <div className="w-full">
@@ -314,20 +322,21 @@ function Page() {
 
               <div className="flex flex-col gap-[0.75rem]">
                 <Suspense fallback={<div>Loading feed...</div>}>
-                  {data.map((card) => (
-                    <PaymentMethodCard
-                      key={card.id}
-                      settingsIcon={card.settingsIcon}
-                      cardDescription={card.cardDescription}
-                      cardExpiry={card.cardExpire}
-                      defaultMethodText={
-                        card.isDefault ? "Default Method" : "Set As Default"
-                      }
-                      className={`${
-                        card.isDefault ? "!bg-[#f1f8f5]" : "bg-white"
-                      }`}
-                    />
-                  ))}
+                  {paymentMethods.length > 0 ? (
+                    paymentMethods.map((method) => (
+                      <PaymentMethodCard
+                        key={method.id}
+                        id={method.id}
+                        card={method.card}
+                        billing_details={method.billing_details}
+                        isDefault={method.isDefault}
+                        // onDelete={handleDelete}
+                        className="bg-gray-100" // Add any additional styling here
+                      />
+                    ))
+                  ) : (
+                    <div>No payment methods found.</div>
+                  )}
                 </Suspense>
               </div>
             </div>
