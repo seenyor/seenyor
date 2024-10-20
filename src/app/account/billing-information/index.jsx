@@ -171,12 +171,18 @@ function Page() {
                 >
                   Billing Amount:{" "}
                   <span className="font-medium capitalize text-[#1d293f]">
+                    $
                     {subscriptionDetail?.items?.data[0]?.plan
                       ? `${
                           subscriptionDetail?.items?.data[0]?.plan?.amount / 100
-                        }/
-                      ${subscriptionDetail?.items?.data[0]?.plan?.interval}`
-                      : "... ..."}
+                        }`
+                      : "... ..."}{" "}
+                    <span className="uppercase">
+                      {subscriptionDetail?.items?.data[0]?.plan
+                        ? `${subscriptionDetail?.items?.data[0]?.plan?.currency}/`
+                        : "... ..."}
+                    </span>
+                    {subscriptionDetail?.items?.data[0]?.plan?.interval}
                   </span>
                 </Text>
               </div>
@@ -260,7 +266,12 @@ function Page() {
                   {""}$
                   {subscriptionDetail?.items?.data[0]?.plan?.amount
                     ? subscriptionDetail?.items?.data[0]?.plan?.amount / 100
-                    : "... .."}
+                    : "... .."}{" "}
+                  <span className="uppercase">
+                    {subscriptionDetail?.items?.data[0]?.plan
+                      ? `${subscriptionDetail?.items?.data[0]?.plan?.currency}`
+                      : "... ..."}
+                  </span>
                 </span>
                 . Renewal price includes applicable taxes.
               </Text>
