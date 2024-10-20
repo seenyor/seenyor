@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 export default function ProfileNav() {
   const router = useRouter();
-  const { setEmail, email, user, userName, setUserName } = useAuth();
+  const { setEmail, email, user, userName, setUserName, setCustomerMail, customerMail } = useAuth();
   const { removeStripeCustomerId, getUserDetailsById } = useUserService();
   const { accessToken, logout } = useAuth();
   const pathname = usePathname(); // Get the current pathname
@@ -36,6 +36,7 @@ export default function ProfileNav() {
       const userDetails = await getUserDetailsById(id);
       setUserName(userDetails.data.name);
       setEmail(userDetails.data.email);
+      setCustomerMail(userDetails.data.customer_info.email)
       localStorage.setItem("subscription_id", userDetails.data.subscription_id);
     } catch (error) {
       console.error("Failed to fetch user details:", error);

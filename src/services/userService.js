@@ -238,55 +238,94 @@ export const useUserService = () => {
     }
   };
 
-    // Update Password Function
-    const updateEmail = async (emailData) => {
-      try {
-        const response = await patch("/auth/update-email", emailData);
-        return response; // Return the response if needed
-      } catch (error) {
-        console.error("Error updating password:", error);
-        throw error;
-      }
-    };
-    const getTransactionDetails = async (customerId) => {
-      try {
-        const response = await get(`/orders/transaction-details/${customerId}`);
-        return response; // Return the transaction details
-      } catch (error) {
-        console.error("Error fetching transaction details:", error);
-        throw error; // Rethrow the error for handling in the component
-      }
-    };
-    const getCustomerId = async (customeremail) => {
-      try {
-        const response = await get(`/orders/customer-email/${customeremail}`);
-        return response; // Return the transaction details
-      } catch (error) {
-        console.error("Error fetching transaction details:", error);
-        throw error; // Rethrow the error for handling in the component
-      }
-    };
-    
-    const resetPassword = async ({ otp, email, password }) => {
-      // Make a PATCH request to the reset-password endpoint
-      const response = await patch("/auth/reset-password", { otp, email, password });
-      
-      // Return the response for further handling in the component
+  // Update Password Function
+  const updateEmail = async (emailData) => {
+    try {
+      const response = await patch("/auth/update-email", emailData);
+      return response; // Return the response if needed
+    } catch (error) {
+      console.error("Error updating password:", error);
+      throw error;
+    }
+  };
+
+  // Update Password Function
+  const authEmail = async ({email, otp}) => {
+    try {
+      const response = await patch("/auth/email", {email, otp});
+      return response; // Return the response if needed
+    } catch (error) {
+      console.error("Error updating password:", error);
+      throw error;
+    }
+  };
+
+  const getTransactionDetails = async (customerId) => {
+    try {
+      const response = await get(`/orders/transaction-details/${customerId}`);
+      return response; // Return the transaction details
+    } catch (error) {
+      console.error("Error fetching transaction details:", error);
+      throw error; // Rethrow the error for handling in the component
+    }
+  };
+  const getCustomerId = async (customeremail) => {
+    try {
+      const response = await get(`/orders/customer-email/${customeremail}`);
+      return response; // Return the transaction details
+    } catch (error) {
+      console.error("Error fetching transaction details:", error);
+      throw error; // Rethrow the error for handling in the component
+    }
+  };
+
+  const resetPassword = async ({ otp, email, password }) => {
+    // Make a PATCH request to the reset-password endpoint
+    const response = await patch("/auth/reset-password", {
+      otp,
+      email,
+      password,
+    });
+
+    // Return the response for further handling in the component
+    return response;
+  };
+
+  // add payment method
+  const AddNewPaymentMethod = async (methodInfo) => {
+    try {
+      const response = await post("/orders/add-payment-method", methodInfo);
       return response;
-    };
-  
-       // Update Password Function
-       const updateUserInfo = async (id, userData) => {
-        try {
-          const response = await patch(
-            `/users/${id}`, userData
-          );
-          return response; 
-        } catch (error) {
-          console.error("Error updating password:", error);
-          throw error;
-        }
-      };
+    } catch (error) {
+      console.error("Error adding payment:", error);
+      throw error;
+    }
+  };
+
+  // getmethod
+  const getAllPaymentMethod = async (customerid) => {
+    try {
+      const response = await get(`/orders/payment-method/${customerid}`);
+      return response; // Return the transaction details
+    } catch (error) {
+      console.error("Error fetching payment method:", error);
+      throw error; // Rethrow the error for handling in the component
+    }
+  };
+
+
+
+
+  // Update Password Function
+  const updateUserInfo = async (id, userData) => {
+    try {
+      const response = await patch(`/users/${id}`, userData);
+      return response;
+    } catch (error) {
+      console.error("Error updating password:", error);
+      throw error;
+    }
+  };
 
   return {
     registerUser,
@@ -312,8 +351,10 @@ export const useUserService = () => {
     updateUserInfo,
     getTransactionDetails,
 
-    resetPassword, 
-    getCustomerId
-
+    resetPassword,
+    getCustomerId,
+    authEmail,
+    AddNewPaymentMethod,
+    getAllPaymentMethod
   };
 };

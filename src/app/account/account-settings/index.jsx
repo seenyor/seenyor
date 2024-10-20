@@ -1,4 +1,5 @@
 "use client";
+import { useAuth } from "@/context/AuthContext";
 import AddressModal from "@/modals/AddressModal";
 import ForgotPass from "@/modals/ForgotPass";
 import OtpModal from "@/modals/OtpModal";
@@ -23,14 +24,14 @@ const AccountSetting = () => {
   const [countries, setCountries] = useState([]);
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-
+  const { accessToken, logout } = useAuth();
   const {
     updateUserName,
     updatePassword,
     getUserDetailsById,
     updateEmail,
-    verifyOtp,
     getCountries,
+    authEmail,
   } = useUserService();
 
   const handleAddressModalToggle = (isOpen) => {
@@ -97,27 +98,66 @@ const AccountSetting = () => {
   };
 
   const handleChangeEmail = async () => {
+    setError(""); // Reset any previous error
     try {
       const response = await updateEmail({ email, tempEmail, password });
       console.log("Mail updated successfully:", response);
-      toast.success("OTP has been sent to your new email!"); // Notify user
-      setIsOtpModalOpen(true); // Open OTP modal
+
+      // Notify the user that OTP has been sent
+      toast.success("OTP has been sent to your new email!");
+
+      // Open OTP modal
+      setIsOtpModalOpen(true);
     } catch (error) {
       console.error("Failed to update email:", error);
-      toast.error("An error occurred while updating the email."); // Show error toast
+
+      // Handle network errors
+      if (!error.response) {
+        // No response from server (network error)
+        setError("Network error. Please check your connection and try again.");
+        toast.error(
+          "Network error. Please check your connection and try again."
+        );
+      } else {
+        // API responded with an error status code
+        const { status, data } = error.response;
+
+        // Handle specific status codes and update error state
+        if (status === 400) {
+          setError(
+            data.message || "Invalid email or password. Please try again."
+          );
+          toast.error(
+            data.message || "Invalid email or password. Please try again."
+          );
+        } else if (status === 401) {
+          setError("Incorrect password. Please enter the correct password.");
+          toast.error("Incorrect password. Please enter the correct password.");
+        } else if (status === 500) {
+          setError("Internal server error. Please try again later.");
+          toast.error("Internal server error. Please try again later.");
+        } else {
+          setError(
+            data.message || "An error occurred while updating the email."
+          );
+          toast.error(
+            data.message || "An error occurred while updating the email."
+          );
+        }
+      }
     }
   };
 
-  const handleOtpVerification = async (otp) => {
+  const handleAuthVerification = async (otp) => {
     try {
-      const response = await verifyOtp({
+      const response = await authEmail({
         email: tempEmail,
         otp: otp,
       });
-      if (response.success) {
+      if (response.status) {
         toast.success("OTP verified successfully!"); // Notify user
-        setIsOtpModalOpen(false); // Close OTP modal
-        // Proceed with any additional actions after successful verification
+        setIsOtpModalOpen(false);
+        logout();
       } else {
         setError(
           response.message || "OTP verification failed. Please try again."
@@ -143,7 +183,7 @@ const AccountSetting = () => {
         <OtpModal
           isOpen={isOtpModalOpen}
           onChange={setIsOtpModalOpen}
-          onVerify={handleOtpVerification}
+          onVerify={handleAuthVerification}
           error={error}
           email={tempEmail}
           setError={setError}
@@ -229,6 +269,7 @@ const AccountSetting = () => {
               </Text>
             </Link>
           </div>
+
           {/* <Input
             size="xl"
             shape="round"
@@ -259,6 +300,7 @@ const AccountSetting = () => {
               )}
             </button>
           </div>
+          {error && <div className="text-red-400">{error}</div>}
         </div>
         <Button
           color="green_200_green_400_01"
