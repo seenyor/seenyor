@@ -98,11 +98,11 @@ const AddPaymentMethod = () => {
       <div className="space-y-4">
         <label
           htmlFor="card-number"
-          className="block text-md font-medium text-gray-700"
+          className="block text-md font-medium text-gray-700 "
         >
           Card number
         </label>
-        <div className="relative">
+        <div className="relative paymentcards ">
           <CardNumberElement
             id="card-number"
             options={cardStyle}
@@ -111,7 +111,7 @@ const AddPaymentMethod = () => {
           <CreditCard className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
       </div>
-      <div className="flex space-x-4 pb-4">
+      <div className="flex paymentcardsEx">
         <div className="flex-1 space-y-2">
           <label
             htmlFor="card-expiry"
@@ -163,7 +163,7 @@ const PaymentMethodCard = ({ isOpen, onChange }) => {
     <Dialog.Root open={isOpen} onOpenChange={onChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="DialogOverlay" />
-        <Dialog.Content className="DialogContent !max-w-[600px] !md:w-[360px] overflow-auto">
+        <Dialog.Content className="DialogContent !max-w-[500px] !md:w-[360px] overflow-auto">
           <Dialog.Title className="DialogTitle"></Dialog.Title>
           <Dialog.Description className="DialogDescription p-2">
             <Elements stripe={stripePromise}>
