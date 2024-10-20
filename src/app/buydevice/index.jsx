@@ -27,8 +27,12 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [selecteInstallation, setselecteInstallation] = useState(1);
   const [isChecked, setIsChecked] = useState(false);
-  const { getProducts, getStripeCustomerId, createStripeSession, getCustomerId } =
-    useUserService();
+  const {
+    getProducts,
+    getStripeCustomerId,
+    createStripeSession,
+    getCustomerId,
+  } = useUserService();
   const { setEmail, email, user, accessToken, customerMail } = useAuth();
 
   useEffect(() => {
@@ -37,7 +41,7 @@ export default function HomePage() {
         const fetchedProducts = await getProducts();
         setProducts(fetchedProducts);
         console.log(fetchedProducts);
-      
+
         const addon = fetchedProducts.find(
           (p) => p.name === "All in One AI Sensor"
         );
@@ -60,14 +64,10 @@ export default function HomePage() {
       (selecteInstallation === 1 ? installationPrice : 0) +
       addonDevicePrice * quantity;
     setTotal(calculatedTotal);
-  }, [
-    installationPrice,
-    selecteInstallation,
-    addonDevicePrice,
-    quantity,
-  ]);
+  }, [installationPrice, selecteInstallation, addonDevicePrice, quantity]);
 
   const updateOrderDetails = () => {
+    console.log(quantity);
     const orderDetails = {
       installationPrice: selecteInstallation === 1 ? installationPrice : 0,
       addonDevicePrice,
@@ -160,7 +160,6 @@ export default function HomePage() {
   //         throw new Error("Installation product not found");
   //       }
   //     }
-  
 
   //     if (lineItems.length === 0) {
   //       throw new Error("No products selected for checkout");
@@ -183,9 +182,9 @@ export default function HomePage() {
     try {
       stripeCustomerId = await getStripeCustomerId();
       if (!stripeCustomerId) {
-
+        console.log(customerMail);
         const customerData = await getCustomerId(customerMail);
-        stripeCustomerId = customerData.id; 
+        stripeCustomerId = customerData.id;
         if (!stripeCustomerId) {
           router.push("/login");
           return; // Exit the function
@@ -196,19 +195,21 @@ export default function HomePage() {
       router.push("/login"); // Redirect to login if there's an error
       return; // Exit the function
     }
-  
+
     // Ensure order details are up to date in localStorage
     updateOrderDetails();
-  
+
     const orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
     if (!orderDetails) {
       throw new Error("No order details found");
     }
-  
+
     if (accessToken) {
       const lineItems = [];
       if (quantity > 0) {
-        const addonProduct = products.find((p) => p.name === "All in One AI Sensor");
+        const addonProduct = products.find(
+          (p) => p.name === "All in One AI Sensor"
+        );
         if (addonProduct) {
           lineItems.push({
             price: addonProduct.priceId,
@@ -219,9 +220,11 @@ export default function HomePage() {
           throw new Error("Additional Device product not found");
         }
       }
-  
+
       if (selecteInstallation === 1) {
-        const installationProduct = products.find((p) => p.name === "Installation");
+        const installationProduct = products.find(
+          (p) => p.name === "Installation"
+        );
         if (installationProduct) {
           lineItems.push({
             price: installationProduct.priceId,
@@ -232,26 +235,31 @@ export default function HomePage() {
           throw new Error("Installation product not found");
         }
       }
-  
+
       if (lineItems.length === 0) {
         throw new Error("No products selected for checkout");
       }
-  
+
       const session = await createStripeSession({
         customer: stripeCustomerId,
         line_items: lineItems,
       });
-  
+
       window.location.href = session.url;
     } else {
       router.push("/payment");
     }
   };
+  useEffect(() => {
+    ["subscriptionProducts", "orderDetails"].forEach((item) =>
+      localStorage.removeItem(item)
+    );
+  }, [accessToken]);
   return (
     <div className="flex w-full flex-col gap-10 bg-white p-5">
       <Header />
       <ProductHero />
-{/* 
+      {/* 
       <div
         id="PageHeader"
         className=" w-full p-4 flex items-center justify-center"
@@ -481,12 +489,12 @@ export default function HomePage() {
               />
 
               <Button
-                disabled={isChecked}
+                disabled={isChecked === true || quantity === 0}
                 onClick={handleCheckout}
                 type="submit"
                 shape="round"
                 color="green_200_green_400_01"
-                className="w-[50%] my-0 ml-auto rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] sm:m-auto text-white"
+                className="w-[50%] my-0 ml-auto rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] sm:m-auto text-white "
               >
                 Check Out
               </Button>

@@ -47,11 +47,11 @@ const Button = ({
 }) => {
   return (
     <button
-      className={`${className} flex flex-row items-center justify-center text-center cursor-pointer whitespace-nowrap 
+      className={`${className}  flex flex-row items-center justify-center text-center cursor-pointer whitespace-nowrap 
         ${shape && shapes[shape]} 
         ${size && sizes[size]} 
         ${variant && variants[variant]?.[color]} 
-        ${disabled ? "opacity-50 cursor-not-allowed" : ""}`} // Add disabled styles
+        ${disabled ? "opacity-50 !cursor-not-allowed" : ""}`} // Add disabled styles
       disabled={disabled} // Set the disabled property
       {...restProps}
     >
