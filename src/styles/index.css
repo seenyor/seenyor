@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Poppins", sans-serif;
+  overflow-y: scroll;
   /* font-size: clamp(1rem, 2vw + 1rem, 2rem); */
 }
 
@@ -123,31 +124,4 @@ table {
     white 90%,
     transparent 100%
   );
-}
-
-.custom-scrollbar {
-  /* For WebKit-based browsers */
-  scrollbar-width: thin; /* Firefox */
-  scrollbar-color: transparent transparent; /* Firefox */
-
-  /* Hide the scrollbar for IE, Edge */
-  -ms-overflow-style: none; /* IE and Edge */
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
 }
