@@ -68,7 +68,7 @@ export default function AccountDone() {
             currency: "usd",
             product_data: {
               name: product.name,
-              description: `Description for ${product.name}`,
+              description: product.description || " ",
               metadata: {
                 category: product.isRecurring ? "subscription" : "one-time",
               },
@@ -85,11 +85,11 @@ export default function AccountDone() {
             : undefined,
         }))
         .filter((item) => item.quantity > 0);
-
       const session = await createStripeSession({
         customer: stripeCustomerId,
         line_items: lineItems,
       });
+
       // Redirect to Stripe Checkout
       window.location.href = session.url;
     } catch (error) {

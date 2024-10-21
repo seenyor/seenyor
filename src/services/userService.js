@@ -185,10 +185,17 @@ export const useUserService = () => {
   const handlePaymentStatus = async (sessionId) => {
     return post(`/orders/handle-payment-success`, { session_id: sessionId });
   };
-  const handlePaymentSubscription = async (customerId, priceId) => {
+  const handlePaymentSubscription = async (
+    customerId,
+    priceId,
+    email,
+    password
+  ) => {
     return post(`/orders/create-subscription`, {
       customerId: customerId,
       priceId: priceId,
+      email: email,
+      password: password,
     });
   };
   const subscriptionDetails = async (subscriptionId) => {
@@ -250,9 +257,9 @@ export const useUserService = () => {
   };
 
   // Update Password Function
-  const authEmail = async ({email, otp}) => {
+  const authEmail = async ({ email, otp }) => {
     try {
-      const response = await patch("/auth/email", {email, otp});
+      const response = await patch("/auth/email", { email, otp });
       return response; // Return the response if needed
     } catch (error) {
       console.error("Error updating password:", error);
@@ -313,9 +320,6 @@ export const useUserService = () => {
     }
   };
 
-
-
-
   // Update Password Function
   const updateUserInfo = async (id, userData) => {
     try {
@@ -355,6 +359,6 @@ export const useUserService = () => {
     getCustomerId,
     authEmail,
     AddNewPaymentMethod,
-    getAllPaymentMethod
+    getAllPaymentMethod,
   };
 };

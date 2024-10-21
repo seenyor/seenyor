@@ -98,10 +98,16 @@ function Page() {
             const subscriptionProducts = JSON.parse(
               localStorage.getItem("subscriptionProducts")
             );
+            const user_credentials = localStorage.getItem("user_credentials");
+
             if (subscriptionProducts && subscriptionProducts.length > 0) {
+              console.log(user_credentials);
+
               return handlePaymentSubscription(
                 customerId,
-                subscriptionProducts[0].priceId
+                subscriptionProducts[0].priceId,
+                JSON.parse(user_credentials).email,
+                JSON.parse(user_credentials).password
               );
             }
           } else {

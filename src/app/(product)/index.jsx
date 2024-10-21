@@ -101,6 +101,7 @@ export default function HomePage() {
           id: p.id,
           priceId: p.priceId,
           name: p.name,
+          description: p.description,
           price: p.price,
           quantity:
             p.name === "AI Monitoring"
@@ -164,9 +165,9 @@ export default function HomePage() {
             currency: "usd",
             product_data: {
               name: p.name,
-              description: p.description || `Description for ${p.name}`,
+              description: p.description,
               metadata: {
-                category: p.category || "uncategorized",
+                category: p.category,
               },
             },
             unit_amount: p.price * 100, // Convert to cents
@@ -193,13 +194,12 @@ export default function HomePage() {
                 },
         }))
         .filter((item) => item.quantity > 0);
-      console.log(lineItems);
 
       const session = await createStripeSession({
         customer: stripeCustomerId,
         line_items: lineItems,
       });
-
+      console.log(session);
       window.location.href = session.url;
     } else {
       router.push("/payment");
