@@ -23,11 +23,24 @@ export default function ProfileNav() {
   const pathname = usePathname(); // Get the current pathname
   const [showName, setShowName] = useState("");
   const [userId, setUserId] = useState("");
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleLogout = () => {
     removeStripeCustomerId();
     logout();
     window.location.href = "https://seenyor.com";
+  };
+  const handleSignOutClick = () => {
+    setShowConfirmation(true); // Show the confirmation dialog
+  };
+
+  const confirmSignOut = () => {
+    handleLogout(); // Sign out if confirmed
+    setShowConfirmation(false); // Close confirmation dialog
+  };
+
+  const cancelSignOut = () => {
+    setShowConfirmation(false); // Cancel sign-out
   };
 
   useEffect(() => {
@@ -52,7 +65,7 @@ export default function ProfileNav() {
   };
 
   return (
-    <div className="flex flex-col gap-[1.50rem] min-w-[20rem] md:w-full bg-white rounded-lg ">
+    <div className="flex flex-col gap-[1.50rem] min-w-[22rem] md:w-full bg-white rounded-lg ">
       <div className="flex items-center gap-[1.25rem] md:flex-col md:text-center">
         <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
           <Avatar.Image
@@ -123,7 +136,7 @@ export default function ProfileNav() {
             </Heading>
           </div>
         </Link>
-        <button onClick={handleLogout}>
+        <button onClick={handleSignOutClick}>
           <Heading
             as="h5"
             className="text-[1.00rem] font-normal !text-red-600 transition-colors duration-200"
@@ -131,6 +144,67 @@ export default function ProfileNav() {
             Sign Out
           </Heading>
         </button>
+        {showConfirmation && (
+          <div className="confirmation-dialog">
+            <div className="confirmation-content">
+              <p>Are you sure you want to sign out?</p>
+              <button onClick={confirmSignOut}>Yes</button>
+              <button onClick={cancelSignOut}>No</button>
+            </div>
+          </div>
+        )}
+        <style jsx>{`
+          .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5); /* Dim background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it’s above other elements */
+          }
+
+          .confirmation-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          }
+
+          .confirmation-content p {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            color: #000;
+          }
+
+          .confirmation-content button {
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff; /* Primary button style */
+            color: white;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+          }
+
+          .confirmation-content button:hover {
+            background-color: #0056b3;
+          }
+
+          .confirmation-content button:last-child {
+            background-color: #dc3545; /* Danger button style for cancel */
+          }
+
+          .confirmation-content button:last-child:hover {
+            background-color: #c82333;
+          }
+        `}</style>
       </div>
     </div>
   );
