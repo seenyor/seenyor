@@ -123,6 +123,10 @@ export default function RegisterPage() {
   }, []);
 
   const checkPasswordStrength = (password) => {
+    if (!password) {
+      setPasswordStrength("");
+      return;
+    }
     if (password.length < 6) {
       setPasswordStrength("Weak (minimum 6 characters)");
     } else if (password.length < 10) {

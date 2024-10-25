@@ -109,18 +109,16 @@ const AccountSetting = () => {
       // Open OTP modal
       setIsOtpModalOpen(true);
     } catch (error) {
-      console.error("Failed to update email:", error);
+      console.error("Failed to update emaili ammm:", error.message);
 
       // Handle network errors
-      if (!error.response) {
+      if (error.message) {
         // No response from server (network error)
-        setError("Network error. Please check your connection and try again.");
-        toast.error(
-          "Network error. Please check your connection and try again."
-        );
+        setError(error.message);
+        toast.error(error.message);
       } else {
         // API responded with an error status code
-        const { status, data } = error.response;
+        const { status, data } = error.message;
 
         // Handle specific status codes and update error state
         if (status === 400) {
