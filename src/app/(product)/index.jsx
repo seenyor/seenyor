@@ -30,6 +30,7 @@ export default function HomePage() {
   const { getProducts, getStripeCustomerId, createStripeSession } =
     useUserService();
   const { accessToken } = useAuth();
+  const { isCom } = useAuth();
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -205,6 +206,18 @@ export default function HomePage() {
       router.push("/payment");
     }
   };
+  const [terms, setTerms] = useState({
+    com: {
+      privacyPolicy: "https://seenyor.com/privacy-policy/",
+      termsOfSales: "https://seenyor.com/terms-of-sale-2/",
+      termsOfService: "https://seenyor.com/terms-of-service-2/",
+    },
+    au: {
+      privacyPolicy: "https://seenyor.au/privacy-policy/",
+      termsOfSales: "https://seenyor.au/terms-of-sale-2/",
+      termsOfService: "https://seenyor.au/terms-of-service-2/",
+    },
+  });
 
   return (
     <div className="flex w-full flex-col gap-10 bg-white p-5">
@@ -239,6 +252,9 @@ export default function HomePage() {
             height={32}
             alt="Group 1"
             className="h-[2.00rem] w-[12%] md:w-[30%] object-contain"
+            onClick={() => {
+              window.open(isCom ? "https://seenyor.com" : "https://seenyor.au");
+            }}
           />
         </div>
       )}
@@ -489,7 +505,10 @@ export default function HomePage() {
                 <span
                   className="cursor-pointer underline"
                   onClick={() =>
-                    window.open("https://seenyor.com/terms-of-sale/", "_blank")
+                    window.open(
+                      terms[isCom ? "com" : "au"].termsOfSales,
+                      "_blank"
+                    )
                   }
                 >
                   Terms of Sale
@@ -499,7 +518,7 @@ export default function HomePage() {
                   className="cursor-pointer underline"
                   onClick={() =>
                     window.open(
-                      "https://seenyor.com/terms-of-service/",
+                      terms[isCom ? "com" : "au"].termsOfService,
                       "_blank"
                     )
                   }
@@ -511,7 +530,7 @@ export default function HomePage() {
                   className="cursor-pointer underline"
                   onClick={() =>
                     window.open(
-                      "https://seenyor.com/privacy-policy-2-2/",
+                      terms[isCom ? "com" : "au"].privacyPolicy,
                       "_blank"
                     )
                   }

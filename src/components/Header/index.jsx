@@ -1,11 +1,14 @@
-"use client"
+"use client";
 import * as Avatar from "@radix-ui/react-avatar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Heading, Img } from "./..";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Header({ ...props }) {
-  const pathname = usePathname(); 
+  const pathname = usePathname();
+  const { isCom } = useAuth();
+
   return (
     <header
       {...props}
@@ -13,15 +16,18 @@ export default function Header({ ...props }) {
     >
       <div className="mx-auto flex w-full items-center justify-center md:flex-col md:px-[1.25rem]">
         {/* Wrap Img with Link to make it clickable */}
-        <Link href="https://seenyor.com">
-          <Img
-            src="img_group_1.svg"
-            width={158}
-            height={32}
-            alt="Frame 1000008413"
-            className="flex object-contain md:w-full hover:opacity-80 transition-opacity duration-300"
-          />
-        </Link>
+
+        <Img
+          src="img_group_1.svg"
+          width={158}
+          height={32}
+          alt="Frame 1000008413"
+          className="flex object-contain md:w-full hover:opacity-80 transition-opacity duration-300 cursor-pointer"
+          onClick={() => {
+            window.open(isCom ? "https://seenyor.com" : "https://seenyor.au");
+          }}
+        />
+
         <ul className="relative flex flex-wrap gap-[2.13rem] md:ml-0 px-[12rem]">
           <li>
             <Link href="/">
@@ -85,21 +91,18 @@ export default function Header({ ...props }) {
           </li>
           <li>
             <Link href="/buydevice">
-
               <Heading
-              as="p"
-              className={`text-[1rem] font-bold !text-[#6c7482] transition-colors duration-200 ${
-                pathname === "/buydevice"
-                  ? "!text-[rgb(29,41,63)]"
-                  : ""
-              }`}
-            >
-               Buy Device
-            </Heading>
+                as="p"
+                className={`text-[1rem] font-bold !text-[#6c7482] transition-colors duration-200 ${
+                  pathname === "/buydevice" ? "!text-[rgb(29,41,63)]" : ""
+                }`}
+              >
+                Buy Device
+              </Heading>
             </Link>
           </li>
         </ul>
-        
+
         <Link href="/account" className="relative group">
           <Avatar.Root className="inline-flex size-[45px] select-none items-center justify-center overflow-hidden rounded-full bg-black-200 align-middle">
             <Avatar.Image

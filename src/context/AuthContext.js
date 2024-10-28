@@ -11,17 +11,17 @@ export const AuthProvider = ({ children }) => {
   const [userName, setUserName] = useState("");
   const [customerMail, setCustomerMail] = useState("");
   // Helper function to determine the appropriate cookie domain
-const getCookieDomain = () => {
-  if (typeof window !== 'undefined') {
-    const hostname = window.location.hostname;
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return null; // No domain for localhost
-    } else if (hostname.endsWith('seenyor.com')) {
-      return '.seenyor.com'; // Dot prefix allows cookie to be shared across subdomains
+  const getCookieDomain = () => {
+    if (typeof window !== "undefined") {
+      const hostname = window.location.hostname;
+      if (hostname === "localhost" || hostname === "127.0.0.1") {
+        return null; // No domain for localhost
+      } else if (hostname.endsWith("seenyor.com")) {
+        return ".seenyor.com"; // Dot prefix allows cookie to be shared across subdomains
+      }
     }
-  }
-  return null; // Default to no domain if we can't determine it
-};
+    return null; // Default to no domain if we can't determine it
+  };
 
   useEffect(() => {
     const token = Cookies.get("access_token");
@@ -44,7 +44,6 @@ const getCookieDomain = () => {
     setAccessToken(token);
   };
 
-
   const logout = () => {
     const cookieOptions = {
       secure: process.env.NODE_ENV === "production",
@@ -59,10 +58,32 @@ const getCookieDomain = () => {
     Cookies.remove("access_token", cookieOptions);
     setAccessToken(null);
   };
-
+  const [isCom, setIsCom] = useState(null);
+  useEffect(() => {
+    const currentURL = window.location.href;
+    if (currentURL.includes("user.seenyor.com")) {
+      setIsCom(true);
+    } else if (currentURL.includes("user.seenyor.au")) {
+      setIsCom(false);
+    }
+  }, []);
   return (
     <AuthContext.Provider
-      value={{ email, setEmail, login, logout, accessToken, user, setUser, userName, setUserName, customerMail, setCustomerMail }}
+      value={{
+        email,
+        setEmail,
+        login,
+        logout,
+        accessToken,
+        user,
+        setUser,
+        userName,
+        setUserName,
+        customerMail,
+        setCustomerMail,
+        isCom,
+        setIsCom,
+      }}
     >
       {children}
     </AuthContext.Provider>
