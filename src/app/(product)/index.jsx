@@ -268,8 +268,8 @@ export default function HomePage() {
             Required with your system
           </h2>
           <p className="font-normal text-md text-[#000]/80 text-center">
-            3X All in One AI Sensor Pack for entire house. Fall Detection and
-            Sleep Monitoring Solution
+            3X All in One AI Sensor Pack for the entire house. Fall Detection
+            and Sleep Monitoring Solution
           </p>
         </div>
         <div id="Price" className="price absolute right-16 md:text-center">
@@ -460,7 +460,7 @@ export default function HomePage() {
               </li>
               <li className="flex items-center text-nowrap gap-5">
                 <p className="font-semibold text-lg md:text-base">
-                  {selecteInstallation !== 0 ? 1 : " "} Installation
+                  Installation
                 </p>
                 <hr className="w-full border-2" />
                 <span className="text-nowrap text-lg md:text-base font-normal">
@@ -485,15 +485,15 @@ export default function HomePage() {
                 <div className="flex flex-col items-start">
                   <h2 className="font-semibold text-xl md:md">AI Monitoring</h2>
                   <p className="font-normal text-md md:text-sm text-[#000]/80">
-                    1,176 Total Value Over 24 Months
+                    $1,176 Total Value Over 24 Months
                   </p>
                 </div>
-                <div className="flex flex-col items-end">
+                <div className="flex  items-end">
                   <h2 className="font-semibold text-xl md:text-md">
                     ${aimonitoring}
                   </h2>
                   <p className="font-normal text-md md:text-sm text-[#000]/80">
-                    a Month
+                    /Month
                   </p>
                 </div>
               </div>
