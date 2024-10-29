@@ -18,7 +18,7 @@ import "./style.css";
 export default function HomePage() {
   const router = useRouter();
   const [products, setProducts] = useState([]);
-  let [kitPrice, setKitPrice] = useState(1100);
+  let [kitPrice, setKitPrice] = useState();
   let [installationPrice, setInstallationPrice] = useState(250);
   let [addonDevicePrice, setAddonDevicePrice] = useState(400);
   let [aimonitoring, setAimonitoring] = useState(0);

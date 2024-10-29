@@ -38,6 +38,7 @@ const TermsCheckbox = ({ onMainCheckboxChange }) => {
     term4: false,
     term5: false,
     term6: false,
+    term7: false,
   });
   const allChecked = Object.values(termChecks).every(Boolean);
 
@@ -78,13 +79,23 @@ const TermsCheckbox = ({ onMainCheckboxChange }) => {
         "I agree to the no-refund policy after the 10-day cooling-off period.",
     },
     {
+      title: "Liability Disclaimer",
+      description:
+        "I acknowledge and accept Seenyor’s liability disclaimer, including that the device and services are not substitutes for emergency services.",
+    },
+    {
       title: "No Integration with Third-Party Systems",
       description:
-        "Seenyor is not responsible for integrating third-party systems.",
+        "I understand that Seenyor is not responsible for integrating third-party systems.",
+    },
+    {
+      title: "Consent for Data Collection and Use",
+      description:
+        "I consent to the collection and use of my data as outlined in the Privacy Policy.",
     },
     {
       title: "Terms of Service",
-      description: "I have read and agree to the Seenyor Terms of Service.",
+      description: "I have read and agree to the Seenyor Terms of Service.",
     },
   ];
 
