@@ -275,7 +275,7 @@ export default function HomePage() {
         <div id="Price" className="price absolute right-16 md:text-center">
           <h1 className="font-semibold text-3xl">${kitPrice}</h1>
           <span className="font-normal text-md text-[#000]/80">
-            GST is Included in
+            {isCom ? "TAX is Included in" : "GST is Included in"}
             <br />
             The Price
           </span>
