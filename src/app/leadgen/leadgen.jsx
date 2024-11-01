@@ -10,7 +10,7 @@ import { useUserService } from "../../services/userService";
 
 const liveWith = [
   { label: "Alone", value: "Alone" },
-  { label: "With Someone", value: "With_Someone" },
+  { label: "With Someone", value: "With Someone" },
 ];
 
 const SelectBox = forwardRef(
@@ -96,45 +96,53 @@ export default function Leadgen() {
 
   const onSubmit = async (data) => {
     const formattedData = {
-      "First Name": data.customer_first_name,
-      "Last Name": data.customer_last_name,
+      Name: data.customer_first_name + " " + data.customer_last_name,
       Email: data.customer_email,
-      "Phone Number": data.customer_contact_number,
-      Address: data.customer_address,
-      "Address Line 2": data.customer_address_2,
-      Country: data.customer_country_id,
-      City: data.customer_city,
-      "Zip Code": data.customer_zipcode,
-      State: data.customer_state,
-      "Installation Address": data.installation_address,
-      "Installation Address Line 2": data.installation_address_2,
-      "Installation Country": data.installation_country_id,
-      "Installation City": data.installation_city,
-      "Installation Zip Code": data.installation_zipcode,
-      "Installation State": data.installation_state,
-      "Preferred Installation Date": data.installation_date,
-      "Sales Agent Name": data.agent_name,
-      "Agent ID": data.agent_id,
-      "Live alone or with someone": data.live_with,
-      "Seenyor Call Date": data.seenyor_call_date,
+      "Phone Number": "‎" + data.customer_contact_number,
+      "Customer Address":
+        data.customer_address +
+        "," +
+        data.customer_address_2 +
+        "," +
+        data.customer_city +
+        "," +
+        data.customer_state +
+        "-" +
+        data.customer_zipcode +
+        "," +
+        data.customer_country_id,
+      "Installation Address":
+        data.installation_address +
+        "," +
+        data.installation_address_2 +
+        "," +
+        data.installation_city +
+        "," +
+        data.installation_state +
+        "-" +
+        data.installation_zipcode +
+        "," +
+        data.installation_country_id,
+      "Installation Date": data.installation_date,
+      "Agent Name": data.agent_name,
+      "Agent ID": "#" + data.agent_id,
+      "Live Alone or With Someone": data.live_with,
+      "Specialist Call Date": data.seenyor_call_date,
       "Source of Lead": data.source_lead,
     };
-    fetch(
-      "https://script.google.com/macros/s/AKfycbxz3IuMO5nl1PSfWT7sj6kIpn_uzdXfCxSD2Jqxr1gQMEwyoi655eMTpEGDIGBz_eIn/exec",
-      {
-        method: "POST",
-        body: formattedData,
-      }
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        console.log("Success");
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log("Error");
-      });
+    const url =
+      "https://script.google.com/macros/s/AKfycbz1gfzzJoZKEH9TWdpemvJl6L1AQFn0Ye1zMrI-QiSvK48i-piOL39NhR7nLCZVhTWGBQ/exec";
+    console.log(formattedData);
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams(formattedData),
+    }).then((res) => {
+      console.log(res);
+    });
   };
 
   // Helper function to render form fields
