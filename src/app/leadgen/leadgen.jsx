@@ -7,7 +7,7 @@ import { forwardRef, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Heading, Input, Text } from "../../components";
 import { useUserService } from "../../services/userService";
-
+import { toast } from "react-toastify";
 const liveWith = [
   { label: "Alone", value: "Alone" },
   { label: "With Someone", value: "With Someone" },
@@ -59,34 +59,39 @@ export default function Leadgen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch countries
-        console.log("Fetching countries...");
-        const countriesResponse = await getCountries();
-        console.log("Countries response:", countriesResponse);
+        // Fetch the data from the REST Countries API
+        const response = await fetch("https://restcountries.com/v3.1/all");
 
-        if (
-          countriesResponse &&
-          countriesResponse.data &&
-          Array.isArray(countriesResponse.data)
-        ) {
-          const formattedCountries = countriesResponse.data.map((country) => ({
-            label: country.country_name,
-            value: country.country_name,
-          }));
-          setCountries(formattedCountries);
-          console.log("Formatted countries:", formattedCountries);
-        } else {
-          console.error("Invalid country data structure:", countriesResponse);
-          throw new Error(
-            "Invalid country data structure received from the API"
-          );
+        // Check if the response is OK
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
         }
+
+        // Parse the JSON data
+        const countries = await response.json();
+
+        // Extract country names
+        const countryNames = countries.map((country) => country.name.common);
+
+        // Sort country names from A to Z
+        const sortedCountries = countryNames.sort();
+
+        // Output the sorted country names
+        console.log(sortedCountries);
+
+        // Format the countries for your application
+        const formattedCountries = sortedCountries.map((countryName) => ({
+          label: countryName,
+          value: countryName, // or any other unique identifier
+        }));
+
+        // Set the countries state
+        setCountries(formattedCountries);
       } catch (error) {
-        console.error("Error fetching data:", error);
-        if (error.response) {
-          console.error("Error response:", error.response.data);
-          console.error("Error status:", error.response.status);
-        }
+        console.error(
+          "There has been a problem with your fetch operation:",
+          error
+        );
         setError("Failed to load necessary data. Please try again.");
       }
     };
@@ -140,9 +145,16 @@ export default function Leadgen() {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams(formattedData),
-    }).then((res) => {
-      console.log(res);
-    });
+    })
+      .then((res) => {
+        console.log(res);
+        reset();
+        toast.success("Form submitted successfully!");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("An error occurred. Please try again.");
+      });
   };
 
   // Helper function to render form fields
