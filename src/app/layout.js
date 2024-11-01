@@ -2,13 +2,13 @@ import { AuthProvider } from "@/context/AuthContext";
 import "@/styles/index.css";
 import "@/styles/tailwind.css";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 // import { Poppins } from "next/font/google";
 
 export const metadata = {
   title: "Seenyor",
-  description: "Build By Arif",
+  description: "Seenyor AI Care System",
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -24,9 +24,9 @@ export default function RootLayout({ children }) {
   return (
     <AuthProvider>
       <html lang="en">
-        <body>{children}
-        <ToastContainer /> 
-        
+        <body>
+          {children}
+          <ToastContainer />
         </body>
       </html>
     </AuthProvider>
