@@ -50,12 +50,7 @@ export default function Leadgen() {
     useUserService();
   const [countries, setCountries] = useState([]);
   const [agents, setAgents] = useState([]);
-  const { setEmail, email, user } = useAuth();
-  const [error, setError] = useState("");
-  const [cityOptions, setCityOptions] = useState([]);
-  const [isOtpSent, setIsOtpSent] = useState(false);
-  const [isOtpVerified, setIsOtpVerified] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -100,6 +95,7 @@ export default function Leadgen() {
   }, []);
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     const formattedData = {
       Name: data.customer_first_name + " " + data.customer_last_name,
       Email: data.customer_email,
@@ -150,10 +146,12 @@ export default function Leadgen() {
         console.log(res);
         reset();
         toast.success("Form submitted successfully!");
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
         toast.error("An error occurred. Please try again.");
+        setIsLoading(false);
       });
   };
 
@@ -489,14 +487,17 @@ export default function Leadgen() {
             </div>
           </div>
           <div className="w-full flex flex-col items-center">
-            <Button
-              type="submit"
-              shape="round"
-              color="green_200_green_400_01"
-              className=" w-[76%] sm:w-full rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] mt-3"
-            >
-              Submit
-            </Button>
+            <div className="w-full flex flex-col items-center">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                shape="round"
+                color="green_200_green_400_01"
+                className=" w-[76%] sm:w-full rounded-[14px] px-[2.13rem] font-semibold sm:px-[1.25rem] mt-3"
+              >
+                {isLoading ? "Submitting..." : "Submit"}
+              </Button>
+            </div>
           </div>
         </div>
       </form>
