@@ -3,7 +3,7 @@ import { useUserService } from "@/services/userService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button, Heading, Img, Text } from "../../components";
-
+import { useAuth } from "@/context/AuthContext";
 export default function AccountDone() {
   const {
     createStripeCustomer,
@@ -13,7 +13,7 @@ export default function AccountDone() {
   } = useUserService();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
-
+  const { isCom } = useAuth();
   const processPayment = async () => {
     const stripeCustomerId = await getStripeCustomerId();
     console.log("i am stripeCustomerId", stripeCustomerId);
@@ -65,7 +65,7 @@ export default function AccountDone() {
       const lineItems = orderDetails.products
         .map((product) => ({
           price_data: {
-            currency: "usd",
+            currency: isCom ? "usd" : "aud",
             product_data: {
               name: product.name,
               description: product.description || " ",

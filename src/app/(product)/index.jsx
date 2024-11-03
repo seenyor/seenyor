@@ -163,7 +163,7 @@ export default function HomePage() {
         .filter((p) => !p.isRecurring)
         .map((p) => ({
           price_data: {
-            currency: "usd",
+            currency: isCom ? "usd" : "aud",
             product_data: {
               name: p.name,
               description: p.description,
@@ -196,12 +196,12 @@ export default function HomePage() {
         }))
         .filter((item) => item.quantity > 0);
 
-      const session = await createStripeSession({
-        customer: stripeCustomerId,
-        line_items: lineItems,
-      });
-      console.log(session);
-      window.location.href = session.url;
+      // const session = await createStripeSession({
+      //   customer: stripeCustomerId,
+      //   line_items: lineItems,
+      // });
+      console.log(lineItems);
+      // window.location.href = session.url;
     } else {
       router.push("/payment");
     }
